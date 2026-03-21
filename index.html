@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Paddle Vault — Pickleball Collection Tracker</title>
+<link rel="stylesheet" href="style.css">
+<!-- Firebase v9 compat (CDN) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<!-- ══════ AUTH SCREEN ══════ -->
+<div id="auth-screen" class="auth-screen">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <svg width="52" height="52" viewBox="0 0 44 44" fill="none">
+        <path d="M17 2 C11.5 2 7 6.2 7 12 C7 18.5 10 24 17 26 C24 24 27 18.5 27 12 C27 6.2 22.5 2 17 2 Z" fill="white" opacity="0.96"/>
+        <path d="M17 2 C11.5 2 7 6.2 7 12 C7 18.5 10 24 17 26 C24 24 27 18.5 27 12 C27 6.2 22.5 2 17 2 Z" fill="none" stroke="rgba(45,114,210,0.25)" stroke-width="0.8"/>
+        <path d="M13.5 26 Q13 28.5 14 29.5 L14 43 Q15.5 44.5 17 44.5 Q18.5 44.5 20 43 L20 29.5 Q21 28.5 20.5 26 Z" fill="#1a4b8c"/>
+        <line x1="14.3" y1="32" x2="19.7" y2="32" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/>
+        <line x1="14.3" y1="35.5" x2="19.7" y2="35.5" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/>
+        <line x1="14.3" y1="39" x2="19.7" y2="39" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/>
+        <rect x="13.5" y="42" width="7" height="2.5" rx="1.2" fill="rgba(196,220,251,0.9)"/>
+        <circle cx="34" cy="11" r="8.5" fill="#fbbf24"/>
+        <circle cx="31.5" cy="8.5" r="2.2" fill="rgba(255,255,255,0.25)"/>
+        <circle cx="34"   cy="4.2"  r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="38.2" cy="6.2"  r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="40.5" cy="10.5" r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="38.5" cy="15"   r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="34"   cy="17.8" r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="29.5" cy="15.5" r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="27.5" cy="11"   r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="29.8" cy="6.5"  r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="34"   cy="11"   r="1.0"  fill="rgba(150,75,0,0.52)"/>
+      </svg>
+    </div>
+
+    <h1 class="auth-title">Paddle Vault</h1>
+    <p class="auth-sub">Pickleball Collection Tracker</p>
+
+    <!-- Google Sign In -->
+    <button class="google-btn" onclick="signInWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+        <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+        <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <div class="auth-divider"><span>or</span></div>
+
+    <!-- Tab switcher -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+    </div>
+
+    <!-- Sign In Form -->
+    <div id="form-login">
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div id="login-error" class="auth-error"></div>
+      <button class="auth-btn" onclick="signIn()">Sign In</button>
+      <button class="auth-btn-ghost" onclick="signInGuest()">Continue as Guest</button>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="form-signup" style="display:none">
+      <div class="auth-field">
+        <label>Display Name</label>
+        <input type="text" id="signup-name" placeholder="Your name">
+      </div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="signup-pass" placeholder="Min 6 characters" autocomplete="new-password">
+      </div>
+      <div id="signup-error" class="auth-error"></div>
+      <button class="auth-btn" onclick="signUp()">Create Account</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════ MAIN APP ══════ -->
+<div id="main-app" style="display:none">
+<div id="app">
+
+  <div class="app-header">
+    <div class="logo-icon">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <path d="M17 2 C11.5 2 7 6.2 7 12 C7 18.5 10 24 17 26 C24 24 27 18.5 27 12 C27 6.2 22.5 2 17 2 Z" fill="white" opacity="0.96"/>
+        <path d="M17 2 C11.5 2 7 6.2 7 12 C7 18.5 10 24 17 26 C24 24 27 18.5 27 12 C27 6.2 22.5 2 17 2 Z" fill="none" stroke="rgba(45,114,210,0.25)" stroke-width="0.8"/>
+        <path d="M13.5 26 Q13 28.5 14 29.5 L14 43 Q15.5 44.5 17 44.5 Q18.5 44.5 20 43 L20 29.5 Q21 28.5 20.5 26 Z" fill="#1a4b8c"/>
+        <line x1="14.3" y1="32" x2="19.7" y2="32" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/>
+        <line x1="14.3" y1="35.5" x2="19.7" y2="35.5" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/>
+        <line x1="14.3" y1="39" x2="19.7" y2="39" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/>
+        <rect x="13.5" y="42" width="7" height="2.5" rx="1.2" fill="rgba(196,220,251,0.9)"/>
+        <circle cx="34" cy="11" r="8.5" fill="#fbbf24"/>
+        <circle cx="31.5" cy="8.5" r="2.2" fill="rgba(255,255,255,0.25)"/>
+        <circle cx="34"   cy="4.2"  r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="38.2" cy="6.2"  r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="40.5" cy="10.5" r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="38.5" cy="15"   r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="34"   cy="17.8" r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="29.5" cy="15.5" r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="27.5" cy="11"   r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="29.8" cy="6.5"  r="1.15" fill="rgba(150,75,0,0.58)"/>
+        <circle cx="34"   cy="11"   r="1.0"  fill="rgba(150,75,0,0.52)"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <div class="app-title">Paddle Vault</div>
+      <div class="app-subtitle" id="user-greeting">Pickleball Collection Tracker</div>
+    </div>
+    <button class="sign-out-btn" onclick="signOut()" title="Sign out">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-chip"><div class="stat-num" id="stat-collection">0</div><div class="stat-label">In Vault</div></div>
+    <div class="stat-chip"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Paddles</div></div>
+    <div class="stat-chip"><div class="stat-num" id="stat-brands">—</div><div class="stat-label">Brands</div></div>
+    <div class="stat-chip"><div class="stat-num" id="stat-avg">—</div><div class="stat-label">Avg ★</div></div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showView('browse')">🏓 Browse</button>
+    <button class="nav-tab" onclick="showView('collection')">⭐ My Vault</button>
+    <button class="nav-tab" onclick="showView('add')">+ Custom</button>
+    <button class="nav-tab" onclick="showView('report')">🚩 Report</button>
+  </div>
+
+  <!-- BROWSE -->
+  <div class="view active" id="view-browse">
+    <div class="search-wrap">
+      <svg class="search-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#2d72d2"><circle cx="11" cy="11" r="7" stroke-width="2"/><path d="M21 21l-4-4" stroke-width="2" stroke-linecap="round"/></svg>
+      <input class="search-input" type="text" placeholder="Search paddles, brands, tags…" oninput="filterPaddles(this.value)" id="search-input">
+    </div>
+    <div class="filter-row" id="brand-filters"></div>
+    <div id="paddle-list"></div>
+  </div>
+
+  <!-- COLLECTION -->
+  <div class="view" id="view-collection">
+    <div class="section-title">MY VAULT</div>
+    <div id="collection-list"></div>
+  </div>
+
+  <!-- ADD CUSTOM -->
+  <div class="view" id="view-add">
+    <div class="section-title">ADD CUSTOM PADDLE</div>
+    <div class="form-group"><label>Manufacturer</label>
+      <select id="custom-brand" onchange="onCustomBrandChange()"><option value="">Select brand…</option></select></div>
+    <div class="form-group" id="custom-other-brand-wrap" style="display:none"><label>Brand Name (Custom)</label>
+      <input type="text" id="custom-other-brand" placeholder="Enter brand name…"></div>
+    <div class="form-group"><label>Paddle Model</label>
+      <input type="text" id="custom-model" placeholder="e.g. Hyperion CFS 16"></div>
+    <div class="form-group"><label>Year Released</label>
+      <select id="custom-year"><option value="">Select year…</option></select></div>
+    <div class="form-group"><label>Your Rating</label>
+      <div class="star-input" id="custom-stars">
+        <button class="star-btn" onclick="setRating(1)">★</button>
+        <button class="star-btn" onclick="setRating(2)">★</button>
+        <button class="star-btn" onclick="setRating(3)">★</button>
+        <button class="star-btn" onclick="setRating(4)">★</button>
+        <button class="star-btn" onclick="setRating(5)">★</button>
+      </div></div>
+    <div class="form-group"><label>Notes</label>
+      <textarea id="custom-notes" placeholder="How does it play? Spin, power, control…"></textarea></div>
+    <div class="form-group"><label>Photo <span style="font-size:10px;color:var(--text-soft);font-weight:400;text-transform:none;">(saved locally on this device)</span></label>
+      <label class="photo-upload" for="custom-photo-input">
+        <input type="file" id="custom-photo-input" accept="image/*" onchange="previewPhoto(this)">
+        <div class="photo-upload-icon">📷</div>
+        <div class="photo-upload-text">Tap to upload your paddle photo</div>
+        <img id="photo-preview-img" class="photo-preview" style="display:none"></label></div>
+    <button class="primary-btn" onclick="saveCustomPaddle()">Save to My Vault</button>
+    <button class="secondary-btn" onclick="clearCustomForm()">Clear Form</button>
+  </div>
+
+  <!-- REPORT -->
+  <div class="view" id="view-report">
+    <div class="section-title">REPORT MISSING PADDLE</div>
+    <p class="report-subtitle">Can't find a paddle? Let us know and we'll add it.</p>
+    <div class="form-group"><label>Manufacturer / Brand</label>
+      <select id="report-brand" onchange="onReportBrandChange()"><option value="">Select brand…</option></select></div>
+    <div class="form-group" id="report-other-brand-wrap" style="display:none"><label>Brand Name (if not listed)</label>
+      <input type="text" id="report-other-brand" placeholder="Enter brand name…"></div>
+    <div class="form-group"><label>Paddle Model Name</label>
+      <input type="text" id="report-model" placeholder="e.g. Pro Series XL 14mm"></div>
+    <div class="form-group"><label>Approximate Year</label>
+      <select id="report-year"><option value="">Select year…</option></select></div>
+    <div class="form-group"><label>Additional Details (optional)</label>
+      <textarea id="report-details" placeholder="Surface material, weight, shape, etc."></textarea></div>
+    <button class="primary-btn" onclick="submitReport()">Submit Report</button>
+    <div id="reports-list" style="margin-top:22px;"></div>
+  </div>
+
+</div><!-- /app -->
+</div><!-- /main-app -->
+
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal"><div class="modal-handle"></div><div id="modal-content"></div>
+    <button class="secondary-btn" onclick="closeModal()">Close</button></div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="bottom-nav">
+  <button class="bottom-nav-btn active" onclick="showView('browse')" id="nav-browse">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg><span>Browse</span></button>
+  <button class="bottom-nav-btn" onclick="showView('collection')" id="nav-collection">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>My Vault</span></button>
+  <button class="bottom-nav-btn" onclick="showView('add')" id="nav-add">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span>Add</span></button>
+  <button class="bottom-nav-btn" onclick="showView('report')" id="nav-report">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg><span>Report</span></button>
+</div>
+
+<script src="db.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

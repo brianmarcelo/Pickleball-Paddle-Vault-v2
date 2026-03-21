@@ -1,0 +1,23 @@
+
+/* ── GOOGLE BUTTON ── */
+.google-btn {
+  width: 100%; padding: 13px 16px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: white; border: 1.5px solid #dadce0;
+  border-radius: var(--radius); color: #3c4043;
+  font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: box-shadow 0.2s, background 0.2s;
+  margin-bottom: 4px;
+}
+.google-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); background: #f8f9fa; }
+.google-btn:active { background: #f1f3f4; }
+
+/* ── AUTH DIVIDER ── */
+.auth-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 14px 0; color: var(--text-soft); font-size: 12px;
+}
+.auth-divider::before, .auth-divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--card-border);
+}
