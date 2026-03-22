@@ -207,11 +207,6 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 </div>
 
 <script>
-// ── FIREBASE LOAD CHECK ───────────────────────────────────────
-if (typeof firebase === 'undefined') {
-  document.body.innerHTML = '<div style="font-family:sans-serif;padding:40px;text-align:center;"><h2>⚠️ Loading Error</h2><p style="margin-top:16px;color:#666;">Firebase failed to load. Please check your internet connection and reload the page.</p><button onclick="location.reload()" style="margin-top:20px;padding:12px 24px;background:#2d72d2;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;">Reload</button></div>';
-} else {
-
 // ── FIREBASE INIT ──────────────────────────────────────────────
 firebase.initializeApp({apiKey:"AIzaSyDt5HokiZrAOR1_u9rHtlS9yoMdkuzwI4A",authDomain:"paddle-vault-v2.firebaseapp.com",projectId:"paddle-vault-v2",storageBucket:"paddle-vault-v2.firebasestorage.app",messagingSenderId:"164950492923",appId:"1:164950492923:web:a81aac5339fc80fe2a125e"});
 const auth=firebase.auth(),db=firebase.firestore();
@@ -1150,7 +1145,6 @@ function renderRep(){
 let tTimer;
 function showT(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tTimer);tTimer=setTimeout(()=>t.classList.remove('show'),2300);}
 
-} // end firebase check
 </script>
 </body>
 </html>
