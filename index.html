@@ -45,6 +45,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .sob:hover{border-color:var(--bb);color:var(--bb);}
 .sbar{display:flex;gap:9px;padding:15px 20px 4px;}
 .sc{flex:1;background:var(--cb);border:1.5px solid var(--cbr);border-radius:12px;padding:10px 8px;text-align:center;backdrop-filter:blur(12px);box-shadow:var(--sh);}
+.scc{cursor:pointer;transition:transform 0.15s,box-shadow 0.15s,border-color 0.15s;}
+.scc:hover{border-color:var(--bb);box-shadow:var(--shl);transform:translateY(-1px);}
+.scc:active{transform:scale(0.97);}
 .sn{font-family:'Bebas Neue',sans-serif;font-size:23px;color:var(--bb);line-height:1;}
 .sl{font-size:9px;color:var(--tf);text-transform:uppercase;letter-spacing:0.7px;margin-top:2px;}
 .ntabs{display:flex;gap:6px;padding:13px 20px 0;}
@@ -154,10 +157,10 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
     <button class="sob" onclick="doSignOut()" title="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
   </div>
   <div class="sbar">
-    <div class="sc"><div class="sn" id="sc0">0</div><div class="sl">In Vault</div></div>
-    <div class="sc"><div class="sn" id="sc1">—</div><div class="sl">Paddles</div></div>
-    <div class="sc"><div class="sn" id="sc2">—</div><div class="sl">Brands</div></div>
-    <div class="sc"><div class="sn" id="sc3">—</div><div class="sl">Avg ★</div></div>
+    <div class="sc scc" onclick="showView('collection')" title="View My Vault"><div class="sn" id="sc0">0</div><div class="sl">In Vault</div></div>
+    <div class="sc scc" onclick="showStatView('all')" title="Browse all paddles"><div class="sn" id="sc1">—</div><div class="sl">Paddles</div></div>
+    <div class="sc scc" onclick="showStatView('brands')" title="View all brands"><div class="sn" id="sc2">—</div><div class="sl">Brands</div></div>
+    <div class="sc scc" onclick="showStatView('ratings')" title="View by rating"><div class="sn" id="sc3">—</div><div class="sl">Avg ★</div></div>
   </div>
   <div class="ntabs">
     <button class="ntab active" onclick="showView('browse')">🏓 Browse</button>
@@ -179,7 +182,7 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
     <div class="fg"><label>Year Released</label><select id="cy"><option value="">Select year…</option></select></div>
     <div class="fg"><label>Your Rating</label><div class="stri" id="custom-stars"><button class="strbtn" onclick="setR(1)">★</button><button class="strbtn" onclick="setR(2)">★</button><button class="strbtn" onclick="setR(3)">★</button><button class="strbtn" onclick="setR(4)">★</button><button class="strbtn" onclick="setR(5)">★</button></div></div>
     <div class="fg"><label>Notes</label><textarea id="cn" placeholder="How does it play?"></textarea></div>
-    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(saved locally)</span></label><label class="pu" for="cpf"><input type="file" id="cpf" accept="image/*" onchange="prevPhoto(this)"><div class="puico">📷</div><div class="putxt">Tap to upload your paddle photo</div><img id="cprev" class="pprev" style="display:none"></label></div>
+    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(synced to cloud)</span></label><label class="pu" for="cpf"><input type="file" id="cpf" accept="image/*" onchange="prevPhoto(this)"><div class="puico">📷</div><div class="putxt">Tap to upload your paddle photo</div><img id="cprev" class="pprev" style="display:none"></label></div>
     <button class="pbtn" onclick="saveCustom()">Save to My Vault</button>
     <button class="sbtn" onclick="clearCustom()">Clear Form</button>
   </div>
@@ -198,6 +201,7 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 </div>
 
 <div class="mo" id="modal"><div class="md"><div class="mh"></div><div id="mc"></div><button class="sbtn" onclick="closeM()">Close</button></div></div>
+<div class="mo" id="stat-modal"><div class="md"><div class="mh"></div><div id="smc"></div><button class="sbtn" onclick="closeStatM()">Close</button></div></div>
 <div class="toast" id="toast"></div>
 <div class="bn">
   <button class="bb2 active" onclick="showView('browse')" id="nav-browse"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg><span>Browse</span></button>
@@ -943,13 +947,16 @@ let customRating=0,customPhotoData=null;
 let activeBrandFilter='CRBN',searchQuery='',currentView='browse';
 let saveTimer=null,currentUser=null,isGuest=false;
 
-// ── IMAGE DB ──────────────────────────────────────────────────
+// ── IMAGE DB (IndexedDB + compression) ───────────────────────
+// Photos compressed to max 800px JPEG 75% quality — saves space locally.
 let imageDB=null;
 function openIDB(){return new Promise(r=>{const q=indexedDB.open('PVImg',1);q.onupgradeneeded=e=>e.target.result.createObjectStore('photos');q.onsuccess=e=>{imageDB=e.target.result;r(imageDB);};q.onerror=()=>r(null);});}
 async function saveImg(k,d){if(!imageDB)return;return new Promise(r=>{const t=imageDB.transaction('photos','readwrite');t.objectStore('photos').put(d,k);t.oncomplete=()=>r(true);t.onerror=()=>r(false);});}
 async function loadImg(k){if(!imageDB||!k)return null;return new Promise(r=>{const t=imageDB.transaction('photos','readonly');const q=t.objectStore('photos').get(k);q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null);});}
 async function delImg(k){if(!imageDB||!k)return;return new Promise(r=>{const t=imageDB.transaction('photos','readwrite');t.objectStore('photos').delete(k);t.oncomplete=()=>r();});}
 function imgKey(id){return`pv_${currentUser?currentUser.uid:'guest'}_${id}`;}
+function compressImage(dataURL){return new Promise(res=>{const img=new Image();img.onload=()=>{const MAX=800;let w=img.width,h=img.height;if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',0.75));};img.src=dataURL;});}
+
 
 // ── AUTH ──────────────────────────────────────────────────────
 function swTab(t){
@@ -1030,7 +1037,7 @@ function renderP(){
   l.innerHTML=p.map(x=>pCard(x)).join('');
   p.forEach(x=>{const d=collData[x.id];if(d?.photoKey)loadAndShow(x.id,d.photoKey);});
 }
-async function loadAndShow(id,k){const img=document.querySelector(`[data-pt="${id}"]`);if(!img)return;const s=await loadImg(k);if(s){img.src=s;img.style.display='block';}}
+async function loadAndShow(id,k){const imgs=document.querySelectorAll(`[data-pt="${id}"]`);if(!imgs.length)return;const s=await loadImg(k);if(s){imgs.forEach(img=>{img.src=s;img.style.display='block';}); }}
 function pCard(p){
   const ic=collection.includes(p.id),d=collData[p.id];
   return`<div class="pc" onclick="openD(${JSON.stringify(p.id)})"><div class="pch">
@@ -1050,6 +1057,76 @@ async function renderColl(){
   const all=allP();l.innerHTML=collection.map(id=>{const p=all.find(x=>x.id==id);return p?pCard(p):'';}).join('');
   collection.forEach(id=>{const d=collData[id];if(d?.photoKey)loadAndShow(id,d.photoKey);});
 }
+function closeStatM(){document.getElementById('stat-modal').classList.remove('open');}
+
+function showStatView(type){
+  const all=allP();
+  let html='';
+  if(type==='all'){
+    html='<div class="mt">ALL PADDLES ('+all.length+')</div>';
+    // group by brand
+    const brands=[...new Set(all.map(p=>p.brand))].sort();
+    brands.forEach(b=>{
+      const bp=all.filter(p=>p.brand===b);
+      html+='<div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--bb);margin:14px 0 6px;border-bottom:1px solid var(--cbr);padding-bottom:4px;">'+b+' ('+bp.length+')</div>';
+      bp.forEach(p=>{
+        html+='<div style="padding:7px 0;border-bottom:1px solid var(--cbr);cursor:pointer;" onclick="closeStatM();setTimeout(()=>openD('+JSON.stringify(p.id)+'),200)">'
+          +'<div style="font-size:13px;font-weight:600;color:var(--tm);">'+p.model+'</div>'
+          +'<div style="font-size:11px;color:var(--tf);">'+p.year+(p.surface?' · '+p.surface:'')+'</div>'
+          +'</div>';
+      });
+    });
+  } else if(type==='brands'){
+    const brands=[...new Set(all.map(p=>p.brand))].sort();
+    html='<div class="mt">ALL BRANDS ('+brands.length+')</div>';
+    brands.forEach(b=>{
+      const count=all.filter(p=>p.brand===b).length;
+      const inVault=collection.filter(id=>all.find(p=>p.id==id&&p.brand===b)).length;
+      html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--cbr);cursor:pointer;" onclick="closeStatM();setTimeout(()=>{setBFByName('+JSON.stringify(b)+');showView('browse');},200)">'
+        +'<div><div style="font-size:14px;font-weight:600;color:var(--tm);">'+b+'</div>'
+        +'<div style="font-size:11px;color:var(--tf);">'+count+' paddle'+(count!==1?'s':'')+(inVault?' · '+inVault+' in your vault':'')+'</div></div>'
+        +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.3"><polyline points="9 18 15 12 9 6"/></svg>'
+        +'</div>';
+    });
+  } else if(type==='ratings'){
+    const rated=collection.map(id=>{const p=all.find(x=>x.id==id);const d=collData[id];return p&&d&&d.rating>0?{p,d}:null;}).filter(Boolean).sort((a,b)=>b.d.rating-a.d.rating);
+    const unrated=collection.map(id=>{const p=all.find(x=>x.id==id);const d=collData[id];return p&&(!d||!d.rating)?p:null;}).filter(Boolean);
+    html='<div class="mt">RATINGS</div>';
+    if(!collection.length){html+='<div class="es"><div class="ei">⭐</div><div class="et">Add paddles to your vault<br>and rate them to see rankings.</div></div>';}
+    else{
+      if(rated.length){
+        rated.forEach(({p,d})=>{
+          html+='<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--cbr);cursor:pointer;" onclick="closeStatM();setTimeout(()=>openD('+JSON.stringify(p.id)+'),200)">'
+            +'<div style="font-size:18px;font-weight:700;color:var(--bb);width:22px;text-align:center;flex-shrink:0;">'+d.rating+'</div>'
+            +'<div style="flex:1;min-width:0;">'
+            +'<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--bb);font-weight:700;">'+p.brand+'</div>'
+            +'<div style="font-size:13px;font-weight:600;color:var(--tm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+p.model+'</div>'
+            +'<div style="font-size:11px;color:#f59e0b;">'+['','★','★★','★★★','★★★★','★★★★★'][d.rating]+'</div>'
+            +'</div></div>';
+        });
+      }
+      if(unrated.length){
+        html+='<div style="font-size:11px;color:var(--tf);text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px;">Unrated ('+unrated.length+')</div>';
+        unrated.forEach(p=>{
+          html+='<div style="padding:8px 0;border-bottom:1px solid var(--cbr);cursor:pointer;" onclick="closeStatM();setTimeout(()=>openD('+JSON.stringify(p.id)+'),200)">'
+            +'<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--bb);font-weight:700;">'+p.brand+'</div>'
+            +'<div style="font-size:13px;font-weight:600;color:var(--tm);">'+p.model+'</div>'
+            +'</div>';
+        });
+      }
+    }
+  }
+  document.getElementById('smc').innerHTML=html;
+  document.getElementById('stat-modal').classList.add('open');
+}
+
+function setBFByName(b){
+  const chips=document.querySelectorAll('#brand-filters .fc');
+  chips.forEach(c=>{
+    if(c.textContent===b){c.click();}
+  });
+}
+
 function updateStats(){
   document.getElementById('sc0').textContent=collection.length;
   const all=allP();document.getElementById('sc1').textContent=all.length;document.getElementById('sc2').textContent=new Set(all.map(p=>p.brand)).size;
@@ -1076,7 +1153,7 @@ async function openD(pid){
     <div class="fg"><label>Your Rating</label><div class="stri" id="mstars">
       ${[1,2,3,4,5].map(i=>`<button class="strbtn ${i<=d.rating?'active':''}" onclick="setMR(${JSON.stringify(pid)},${i})">★</button>`).join('')}</div></div>
     <div class="fg"><label>Notes</label><textarea id="mnotes" placeholder="Your thoughts…">${d.notes||''}</textarea></div>
-    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(saved locally)</span></label>
+    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(synced to cloud)</span></label>
       <label class="pu" for="mpf"><input type="file" id="mpf" accept="image/*" onchange="prevMP(this)">
       <div class="puico">📷</div><div class="putxt">Upload your own photo</div>
       ${src?`<img src="${src}" class="pprev" id="mpprev">`:'<img class="pprev" id="mpprev" style="display:none">'}</label></div>
@@ -1086,7 +1163,7 @@ async function openD(pid){
   document.getElementById('modal').classList.add('open');
 }
 function setMR(pid,v){window._mR=v;document.querySelectorAll('#mstars .strbtn').forEach((b,i)=>b.classList.toggle('active',i<v));}
-function prevMP(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{window._mNP=e.target.result;const i=document.getElementById('mpprev');if(i){i.src=e.target.result;i.style.display='block';}};r.readAsDataURL(f);}
+function prevMP(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=async e=>{const compressed=await compressImage(e.target.result);window._mNP=compressed;const i=document.getElementById('mpprev');if(i){i.src=compressed;i.style.display='block';}};r.readAsDataURL(f);}
 async function saveMD(pid,was){
   const n=document.getElementById('mnotes').value;
   let k=collData[pid]?.photoKey||null;
@@ -1104,12 +1181,13 @@ async function remV(pid){
 }
 function closeM(){document.getElementById('modal').classList.remove('open');}
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeM();});
+document.getElementById('stat-modal').addEventListener('click',function(e){if(e.target===this)closeStatM();});
 
 // ── CUSTOM ────────────────────────────────────────────────────
 function setR(v){customRating=v;document.querySelectorAll('#custom-stars .strbtn').forEach((b,i)=>b.classList.toggle('active',i<v));}
 function onCB(){document.getElementById('cb-other').style.display=document.getElementById('cb').value==='Other'?'block':'none';}
 function onRB(){document.getElementById('rb-other').style.display=document.getElementById('rb').value==='Other'?'block':'none';}
-function prevPhoto(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{customPhotoData=e.target.result;const i=document.getElementById('cprev');i.src=e.target.result;i.style.display='block';};r.readAsDataURL(f);}
+function prevPhoto(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=async e=>{const compressed=await compressImage(e.target.result);customPhotoData=compressed;const i=document.getElementById('cprev');i.src=compressed;i.style.display='block';};r.readAsDataURL(f);}
 async function saveCustom(){
   const brand=document.getElementById('cb').value,ob=document.getElementById('cbo').value;
   const model=document.getElementById('cm').value.trim(),year=document.getElementById('cy').value;
