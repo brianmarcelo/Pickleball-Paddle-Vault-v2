@@ -1064,13 +1064,13 @@ function showStatView(type){
   let html='';
   if(type==='all'){
     html='<div class="mt">ALL PADDLES ('+all.length+')</div>';
-    // group by brand
     const brands=[...new Set(all.map(p=>p.brand))].sort();
     brands.forEach(b=>{
       const bp=all.filter(p=>p.brand===b);
-      html+='<div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--bb);margin:14px 0 6px;border-bottom:1px solid var(--cbr);padding-bottom:4px;">'+b+' ('+bp.length+')</div>';
+      html+='<div class="sectit" style="font-size:13px;margin:14px 0 4px;">'+b+' ('+bp.length+')</div>';
       bp.forEach(p=>{
-        html+='<div style="padding:7px 0;border-bottom:1px solid var(--cbr);cursor:pointer;" onclick="closeStatM();setTimeout(()=>openD('+JSON.stringify(p.id)+'),200)">'
+        const pid=typeof p.id==='number'?p.id:'"'+p.id+'"';
+        html+='<div class="sv-item" data-action="paddle" data-pid="'+p.id+'" style="padding:7px 0;border-bottom:1px solid var(--cbr);cursor:pointer;">'
           +'<div style="font-size:13px;font-weight:600;color:var(--tm);">'+p.model+'</div>'
           +'<div style="font-size:11px;color:var(--tf);">'+p.year+(p.surface?' · '+p.surface:'')+'</div>'
           +'</div>';
@@ -1082,33 +1082,34 @@ function showStatView(type){
     brands.forEach(b=>{
       const count=all.filter(p=>p.brand===b).length;
       const inVault=collection.filter(id=>all.find(p=>p.id==id&&p.brand===b)).length;
-      html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--cbr);cursor:pointer;" onclick="closeStatM();setTimeout(()=>{setBFByName('+JSON.stringify(b)+');showView('browse');},200)">'
+      html+='<div class="sv-item" data-action="brand" data-brand="'+b+'" style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--cbr);cursor:pointer;">'
         +'<div><div style="font-size:14px;font-weight:600;color:var(--tm);">'+b+'</div>'
         +'<div style="font-size:11px;color:var(--tf);">'+count+' paddle'+(count!==1?'s':'')+(inVault?' · '+inVault+' in your vault':'')+'</div></div>'
-        +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.3"><polyline points="9 18 15 12 9 6"/></svg>'
+        +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.3;flex-shrink:0;"><polyline points="9 18 15 12 9 6"/></svg>'
         +'</div>';
     });
   } else if(type==='ratings'){
     const rated=collection.map(id=>{const p=all.find(x=>x.id==id);const d=collData[id];return p&&d&&d.rating>0?{p,d}:null;}).filter(Boolean).sort((a,b)=>b.d.rating-a.d.rating);
     const unrated=collection.map(id=>{const p=all.find(x=>x.id==id);const d=collData[id];return p&&(!d||!d.rating)?p:null;}).filter(Boolean);
     html='<div class="mt">RATINGS</div>';
-    if(!collection.length){html+='<div class="es"><div class="ei">⭐</div><div class="et">Add paddles to your vault<br>and rate them to see rankings.</div></div>';}
-    else{
+    if(!collection.length){
+      html+='<div class="es"><div class="ei">⭐</div><div class="et">Add paddles to your vault<br>and rate them to see rankings.</div></div>';
+    } else {
       if(rated.length){
         rated.forEach(({p,d})=>{
-          html+='<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--cbr);cursor:pointer;" onclick="closeStatM();setTimeout(()=>openD('+JSON.stringify(p.id)+'),200)">'
-            +'<div style="font-size:18px;font-weight:700;color:var(--bb);width:22px;text-align:center;flex-shrink:0;">'+d.rating+'</div>'
+          html+='<div class="sv-item" data-action="paddle" data-pid="'+p.id+'" style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--cbr);cursor:pointer;">'
+            +'<div style="font-size:20px;font-weight:700;color:var(--bb);width:24px;text-align:center;flex-shrink:0;">'+d.rating+'</div>'
             +'<div style="flex:1;min-width:0;">'
             +'<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--bb);font-weight:700;">'+p.brand+'</div>'
             +'<div style="font-size:13px;font-weight:600;color:var(--tm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+p.model+'</div>'
-            +'<div style="font-size:11px;color:#f59e0b;">'+['','★','★★','★★★','★★★★','★★★★★'][d.rating]+'</div>'
+            +'<div style="font-size:12px;color:#f59e0b;">'+['','★','★★','★★★','★★★★','★★★★★'][d.rating]+'</div>'
             +'</div></div>';
         });
       }
       if(unrated.length){
         html+='<div style="font-size:11px;color:var(--tf);text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px;">Unrated ('+unrated.length+')</div>';
         unrated.forEach(p=>{
-          html+='<div style="padding:8px 0;border-bottom:1px solid var(--cbr);cursor:pointer;" onclick="closeStatM();setTimeout(()=>openD('+JSON.stringify(p.id)+'),200)">'
+          html+='<div class="sv-item" data-action="paddle" data-pid="'+p.id+'" style="padding:8px 0;border-bottom:1px solid var(--cbr);cursor:pointer;">'
             +'<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--bb);font-weight:700;">'+p.brand+'</div>'
             +'<div style="font-size:13px;font-weight:600;color:var(--tm);">'+p.model+'</div>'
             +'</div>';
@@ -1116,16 +1117,30 @@ function showStatView(type){
       }
     }
   }
-  document.getElementById('smc').innerHTML=html;
+  const smc=document.getElementById('smc');
+  smc.innerHTML=html;
+  // Delegated click handler — no inline onclick needed
+  smc.querySelectorAll('.sv-item').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const action=el.dataset.action;
+      if(action==='paddle'){
+        const pid=isNaN(el.dataset.pid)?el.dataset.pid:Number(el.dataset.pid);
+        closeStatM();setTimeout(()=>openD(pid),220);
+      } else if(action==='brand'){
+        closeStatM();
+        setTimeout(()=>{setBFByName(el.dataset.brand);showView('browse');},220);
+      }
+    });
+  });
   document.getElementById('stat-modal').classList.add('open');
 }
 
 function setBFByName(b){
-  const chips=document.querySelectorAll('#brand-filters .fc');
-  chips.forEach(c=>{
-    if(c.textContent===b){c.click();}
+  document.querySelectorAll('#brand-filters .fc').forEach(c=>{
+    if(c.textContent===b)c.click();
   });
 }
+
 
 function updateStats(){
   document.getElementById('sc0').textContent=collection.length;
