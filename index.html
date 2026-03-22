@@ -59,10 +59,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .si{width:100%;background:var(--ib);border:1.5px solid var(--cbr);border-radius:var(--rs);padding:11px 14px 11px 42px;color:var(--tm);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;box-shadow:var(--sh);}
 .si:focus{border-color:var(--bb);}.si::placeholder{color:var(--tf);}
 .sico{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:0.4;}
-.fr{display:flex;gap:7px;margin-bottom:13px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
-.fr::-webkit-scrollbar{display:none;}
-.fc{flex-shrink:0;padding:5px 12px;border:1.5px solid var(--cbr);border-radius:20px;background:var(--cb);color:var(--ts);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap;backdrop-filter:blur(8px);}
-.fc.active{background:var(--bb);border-color:var(--bb);color:white;}
+.bsel-wrap{position:relative;margin-bottom:13px;}
+.bsel{width:100%;background:var(--ib);border:1.5px solid var(--cbr);border-radius:var(--rs);padding:11px 38px 11px 14px;color:var(--tm);font-size:14px;font-weight:600;font-family:"DM Sans",sans-serif;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;box-shadow:var(--sh);transition:border-color 0.2s;}
+.bsel:focus{border-color:var(--bb);}
+.bsel-arrow{position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--bb);}
 .pc{background:var(--cb);border:1.5px solid var(--cbr);border-radius:var(--r);padding:13px;margin-bottom:10px;backdrop-filter:blur(12px);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;box-shadow:var(--sh);}
 .pc:hover{box-shadow:var(--shl);border-color:rgba(45,114,210,0.32);transform:translateY(-1px);}
 .pc:active{transform:scale(0.985);}
@@ -117,7 +117,7 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 <div id="auth-screen" class="as">
   <div class="ac">
     <div class="al">
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M17 2 C11.5 2 7 6.2 7 12 C7 18.5 10 24 17 26 C24 24 27 18.5 27 12 C27 6.2 22.5 2 17 2 Z" fill="white" opacity="0.96"/><path d="M13.5 26 Q13 28.5 14 29.5 L14 43 Q15.5 44.5 17 44.5 Q18.5 44.5 20 43 L20 29.5 Q21 28.5 20.5 26 Z" fill="#1a4b8c"/><line x1="14.3" y1="32" x2="19.7" y2="32" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/><line x1="14.3" y1="35.5" x2="19.7" y2="35.5" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/><line x1="14.3" y1="39" x2="19.7" y2="39" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/><rect x="13.5" y="42" width="7" height="2.5" rx="1.2" fill="rgba(196,220,251,0.9)"/><circle cx="34" cy="11" r="8.5" fill="#fbbf24"/><circle cx="31.5" cy="8.5" r="2.2" fill="rgba(255,255,255,0.25)"/><circle cx="34" cy="4.2" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="38.2" cy="6.2" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="40.5" cy="10.5" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="38.5" cy="15" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="34" cy="17.8" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="29.5" cy="15.5" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="27.5" cy="11" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="29.8" cy="6.5" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="34" cy="11" r="1.0" fill="rgba(150,75,0,0.52)"/></svg>
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><g transform="rotate(20,14,22)"><ellipse cx="14" cy="10" rx="8.5" ry="10.5" fill="white" opacity="0.97"/><ellipse cx="14" cy="10" rx="8.5" ry="10.5" fill="none" stroke="#0d2954" stroke-width="0.8" opacity="0.3"/><path d="M8.5 19 Q8 21.5 10.2 22.5 L17.8 22.5 Q20 21.5 19.5 19 Q17 20.5 14 20.5 Q11 20.5 8.5 19Z" fill="#0d2954"/><rect x="10.2" y="22" width="7.6" height="16" rx="2" fill="#0d2954"/><line x1="11" y1="26.5" x2="17" y2="26.5" stroke="#74b0f5" stroke-width="1.1" stroke-linecap="round" opacity="0.75"/><line x1="11" y1="30.5" x2="17" y2="30.5" stroke="#74b0f5" stroke-width="1.1" stroke-linecap="round" opacity="0.75"/><line x1="11" y1="34.5" x2="17" y2="34.5" stroke="#74b0f5" stroke-width="1.1" stroke-linecap="round" opacity="0.75"/><rect x="9.5" y="36.5" width="9" height="3.5" rx="1.75" fill="#1a3a6e" opacity="0.9"/></g><circle cx="35" cy="10" r="8" fill="#fbbf24"/><circle cx="32.5" cy="7.5" r="1.9" fill="rgba(255,255,255,0.22)"/><circle cx="35" cy="3.4" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="38.7" cy="5.2" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="40.7" cy="9.8" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="38.7" cy="14.5" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="16.6" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="31.3" cy="14.5" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="29.3" cy="9.8" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="31.3" cy="5.2" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="10" r="0.95" fill="rgba(120,60,0,0.48)"/></svg>
     </div>
     <h1 class="at">Paddle Vault</h1>
     <p class="asub">Pickleball Collection Tracker</p>
@@ -151,7 +151,7 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 <div id="app">
   <div class="hdr">
     <div class="logo">
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M17 2 C11.5 2 7 6.2 7 12 C7 18.5 10 24 17 26 C24 24 27 18.5 27 12 C27 6.2 22.5 2 17 2 Z" fill="white" opacity="0.96"/><path d="M13.5 26 Q13 28.5 14 29.5 L14 43 Q15.5 44.5 17 44.5 Q18.5 44.5 20 43 L20 29.5 Q21 28.5 20.5 26 Z" fill="#1a4b8c"/><line x1="14.3" y1="32" x2="19.7" y2="32" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/><line x1="14.3" y1="35.5" x2="19.7" y2="35.5" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/><line x1="14.3" y1="39" x2="19.7" y2="39" stroke="#74b0f5" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/><rect x="13.5" y="42" width="7" height="2.5" rx="1.2" fill="rgba(196,220,251,0.9)"/><circle cx="34" cy="11" r="8.5" fill="#fbbf24"/><circle cx="31.5" cy="8.5" r="2.2" fill="rgba(255,255,255,0.25)"/><circle cx="34" cy="4.2" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="38.2" cy="6.2" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="40.5" cy="10.5" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="38.5" cy="15" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="34" cy="17.8" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="29.5" cy="15.5" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="27.5" cy="11" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="29.8" cy="6.5" r="1.15" fill="rgba(150,75,0,0.58)"/><circle cx="34" cy="11" r="1.0" fill="rgba(150,75,0,0.52)"/></svg>
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><g transform="rotate(20,14,22)"><ellipse cx="14" cy="10" rx="8.5" ry="10.5" fill="white" opacity="0.97"/><ellipse cx="14" cy="10" rx="8.5" ry="10.5" fill="none" stroke="#0d2954" stroke-width="0.8" opacity="0.3"/><path d="M8.5 19 Q8 21.5 10.2 22.5 L17.8 22.5 Q20 21.5 19.5 19 Q17 20.5 14 20.5 Q11 20.5 8.5 19Z" fill="#0d2954"/><rect x="10.2" y="22" width="7.6" height="16" rx="2" fill="#0d2954"/><line x1="11" y1="26.5" x2="17" y2="26.5" stroke="#74b0f5" stroke-width="1.1" stroke-linecap="round" opacity="0.75"/><line x1="11" y1="30.5" x2="17" y2="30.5" stroke="#74b0f5" stroke-width="1.1" stroke-linecap="round" opacity="0.75"/><line x1="11" y1="34.5" x2="17" y2="34.5" stroke="#74b0f5" stroke-width="1.1" stroke-linecap="round" opacity="0.75"/><rect x="9.5" y="36.5" width="9" height="3.5" rx="1.75" fill="#1a3a6e" opacity="0.9"/></g><circle cx="35" cy="10" r="8" fill="#fbbf24"/><circle cx="32.5" cy="7.5" r="1.9" fill="rgba(255,255,255,0.22)"/><circle cx="35" cy="3.4" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="38.7" cy="5.2" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="40.7" cy="9.8" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="38.7" cy="14.5" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="16.6" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="31.3" cy="14.5" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="29.3" cy="9.8" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="31.3" cy="5.2" r="1.05" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="10" r="0.95" fill="rgba(120,60,0,0.48)"/></svg>
     </div>
     <div class="htxt"><div class="ttl">Paddle Vault</div><div class="stl" id="greet">Pickleball Collection Tracker</div></div>
     <button class="sob" onclick="doSignOut()" title="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
@@ -170,7 +170,12 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
   </div>
   <div class="view active" id="view-browse">
     <div class="sw"><svg class="sico" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#2d72d2"><circle cx="11" cy="11" r="7" stroke-width="2"/><path d="M21 21l-4-4" stroke-width="2" stroke-linecap="round"/></svg><input class="si" type="text" placeholder="Search paddles, brands, tags…" oninput="filterP(this.value)" id="search-input"></div>
-    <div class="fr" id="brand-filters"></div>
+    <div class="bsel-wrap">
+      <select class="bsel" id="brand-filters-sel" onchange="setBFSel(this.value)">
+        <option value="CRBN">CRBN</option>
+      </select>
+      <svg class="bsel-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
     <div id="paddle-list"></div>
   </div>
   <div class="view" id="view-collection"><div class="sectit">MY VAULT</div><div id="collection-list"></div></div>
@@ -230,8 +235,6 @@ const auth=firebase.auth(),db=firebase.firestore();
 // ╚══════════════════════════════════════════════════════════╝
 
 const PADDLES=[
-// ═══ CRBN (default brand — shown first) ═══
-// Founded 2021. Gen 1 = classic unibody. Gen 2 = X Series thermoformed. Gen 3/4 = TruFoam injected.
 {id:1,brand:"CRBN",model:"CRBN¹ Classic Elongated Long Handle",year:2022,surface:"T700 Carbon",shape:"Elongated",tags:["Gen-1","Classic","Spin","Long Handle"]},
 {id:2,brand:"CRBN",model:"CRBN² Classic Square",year:2022,surface:"T700 Carbon",shape:"Widebody",tags:["Gen-1","Classic","Spin","Widebody"]},
 {id:3,brand:"CRBN",model:"CRBN³ Classic Elongated Short Handle",year:2022,surface:"T700 Carbon",shape:"Elongated",tags:["Gen-1","Classic","Control"]},
@@ -251,10 +254,6 @@ const PADDLES=[
 {id:17,brand:"CRBN",model:"CRBN² TruFoam Barrage Square",year:2026,surface:"T700 Carbon",shape:"Widebody",tags:["Gen-4","TruFoam","Barrage","Void Core","Power","Pop","New"]},
 {id:18,brand:"CRBN",model:"CRBN³ TruFoam Barrage Elongated SH",year:2026,surface:"T700 Carbon",shape:"Elongated",tags:["Gen-4","TruFoam","Barrage","Void Core","Power","Pop","New"]},
 {id:19,brand:"CRBN",model:"CRBN⁴ TruFoam Barrage Hybrid AeroCurve",year:2026,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen-4","TruFoam","Barrage","Void Core","Power","Pop","New"]},
-
-// ═══ JOOLA ═══
-// JOOLA entered pickleball in 2022. Gen 1 = launch models. Pro IV = 2024. 3S/Pro V = 2025.
-// Historical Vision/FDS/FAS line: 2022 launch. Hyperion CFS = CFS surface, CGS = uncoated carbon.
 {id:30,brand:"JOOLA",model:"Ben Johns Hyperion CFS 14mm",year:2022,surface:"T700 CFS Carbon",shape:"Standard",tags:["Gen-1","Pro","Control","Signature","Ben Johns"]},
 {id:31,brand:"JOOLA",model:"Ben Johns Hyperion CFS 16mm",year:2022,surface:"T700 CFS Carbon",shape:"Standard",tags:["Gen-1","Pro","Power","Signature","Ben Johns"]},
 {id:32,brand:"JOOLA",model:"Ben Johns Hyperion CGS 14mm",year:2022,surface:"T700 CGS Carbon",shape:"Standard",tags:["Gen-1","Pro","Spin","Ben Johns"]},
@@ -277,48 +276,36 @@ const PADDLES=[
 {id:49,brand:"JOOLA",model:"Radius CGS 14mm",year:2023,surface:"T700 CGS Carbon",shape:"Round",tags:["Gen-1","Round Shape","Control","Unique"]},
 {id:50,brand:"JOOLA",model:"Solaire CFS 14mm",year:2023,surface:"T700 CFS Carbon",shape:"Widebody",tags:["Gen-1","Widebody","Power"]},
 {id:51,brand:"JOOLA",model:"Solaire CGS 14mm",year:2023,surface:"T700 CGS Carbon",shape:"Widebody",tags:["Gen-1","Widebody","Spin"]},
-// Pro IV — 2024 thermoformed
 {id:52,brand:"JOOLA",model:"Ben Johns Perseus Pro IV CFS 14mm",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Pro-IV","Pro","Thermoformed","Top Rated","Ben Johns"]},
 {id:53,brand:"JOOLA",model:"Ben Johns Perseus Pro IV CFS 16mm",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Pro-IV","Pro","Thermoformed","Best Overall","Ben Johns"]},
 {id:54,brand:"JOOLA",model:"Ben Johns Hyperion Pro IV CAS 14mm",year:2024,surface:"T700 CAS Carbon",shape:"Standard",tags:["Pro-IV","Pro","Signature","Thermoformed","Ben Johns"]},
 {id:55,brand:"JOOLA",model:"Anna Bright Scorpeus Pro IV 14mm",year:2024,surface:"T700 Carbon",shape:"Widebody",tags:["Pro-IV","Pro","Signature","Spin","Anna Bright"]},
 {id:56,brand:"JOOLA",model:"Tyson McGuffin Scorpeus Pro IV 14mm",year:2024,surface:"T700 Carbon",shape:"Widebody",tags:["Pro-IV","Pro","Signature","Power","Tyson McGuffin"]},
-// C2 intermediate line
 {id:57,brand:"JOOLA",model:"Vision II CGS 14mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["C2","Intermediate","Mid-range"]},
 {id:58,brand:"JOOLA",model:"Vision II CGS 16mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["C2","Intermediate","Control"]},
 {id:59,brand:"JOOLA",model:"Vision II CGS 14mm Elongated",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["C2","Intermediate","Elongated"]},
-// 3S line — 2025
 {id:60,brand:"JOOLA",model:"Ben Johns Perseus 3S 14mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["3S","Pro","New","UPA-A","Ben Johns"]},
 {id:61,brand:"JOOLA",model:"Ben Johns Perseus 3S 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["3S","Pro","New","UPA-A","Ben Johns"]},
 {id:62,brand:"JOOLA",model:"Collin Johns Scorpeus 3S 14mm",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["3S","Pro","New","UPA-A","Collin Johns"]},
 {id:63,brand:"JOOLA",model:"Andre Agassi 3S 14mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["3S","Pro","Signature","New","UPA-A","Andre Agassi"]},
 {id:64,brand:"JOOLA",model:"Ben Johns Perseus Pro Max 3S 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["3S","Pro","New","UPA-A","Ben Johns"]},
-// Pro V — 2025 foam injected
 {id:65,brand:"JOOLA",model:"Ben Johns Hyperion Pro V Standard 14mm",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Pro-V","Pro","KineticFrame","Foam Injected","New","Ben Johns"]},
 {id:66,brand:"JOOLA",model:"Ben Johns Perseus Pro V Elongated 14mm",year:2026,surface:"T700 Carbon",shape:"Elongated",tags:["Pro-V","Pro","KineticFrame","Foam Injected","New","Ben Johns"]},
 {id:67,brand:"JOOLA",model:"Collin Johns Scorpeus Pro V 14mm",year:2026,surface:"T700 Carbon",shape:"Widebody",tags:["Pro-V","Pro","KineticFrame","Foam Injected","New","Collin Johns"]},
 {id:68,brand:"JOOLA",model:"Kosmos Pro V 14mm Hybrid",year:2026,surface:"T700 Carbon",shape:"Hybrid",tags:["Pro-V","Hybrid Shape","Foam Injected","New"]},
 {id:69,brand:"JOOLA",model:"Tyson McGuffin Kosmos Pro V 14mm",year:2026,surface:"T700 Carbon",shape:"Hybrid",tags:["Pro-V","Pro","Signature","Hybrid Shape","New","Tyson McGuffin"]},
 {id:70,brand:"JOOLA",model:"Magnus Pro V 14mm",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Pro-V","Pro","High Grit","New"]},
-// 2026
 {id:71,brand:"JOOLA",model:"Andre Agassi Pro IV 16mm",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Pro-IV","Pro","Signature","Foam Injected","New 2026","Top Rated","Andre Agassi"]},
-// Hyperion IV — 2025
 {id:72,brand:"JOOLA",model:"Hyperion Pro IV CFS 14mm",year:2024,surface:"T700 CFS Carbon",shape:"Standard",tags:["Pro-IV","Intermediate","New"]},
 {id:73,brand:"JOOLA",model:"Hyperion Pro IV CFS 16mm",year:2024,surface:"T700 CFS Carbon",shape:"Standard",tags:["Pro-IV","Intermediate","Control","New"]},
-// Heat Vision — 2025 intermediate
 {id:74,brand:"JOOLA",model:"Heat Vision Perseus 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Intermediate","Mid-range","New"]},
 {id:75,brand:"JOOLA",model:"Heat Vision Perseus 16mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Intermediate","Mid-range","Control","New"]},
 {id:76,brand:"JOOLA",model:"Heat Vision Scorpeus 14mm",year:2025,surface:"Carbon Fiber",shape:"Widebody",tags:["Intermediate","Mid-range","New"]},
 {id:77,brand:"JOOLA",model:"Heat Vision Hyperion 14mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Intermediate","Mid-range","New"]},
-// Double Vision recreational
 {id:78,brand:"JOOLA",model:"Double Vision Perseus",year:2025,surface:"Fiberglass",shape:"Elongated",tags:["Recreational","Beginner","Value","New"]},
 {id:79,brand:"JOOLA",model:"Double Vision Scorpeus",year:2025,surface:"Fiberglass",shape:"Widebody",tags:["Recreational","Beginner","Value","New"]},
 {id:80,brand:"JOOLA",model:"Essentials Standard",year:2022,surface:"Fiberglass",shape:"Standard",tags:["Recreational","Beginner","Value"]},
 {id:81,brand:"JOOLA",model:"Essentials Elongated",year:2022,surface:"Fiberglass",shape:"Elongated",tags:["Recreational","Beginner","Value","Elongated"]},
-
-// ═══ SELKIRK ═══
-// Founded 2014, entered pickleball ~2014-2016. Accurate years per selkirk.com
-// 200A/300A: composite/graphite era 2014-2017. AMPED: 2018-2023. Vanguard/LUXX: 2021-2023. LABS/SLK: 2022+
 {id:90,brand:"Selkirk",model:"200A Composite",year:2015,surface:"Composite",shape:"Standard",tags:["Original","Classic","Beginner","Early USA Made"]},
 {id:91,brand:"Selkirk",model:"300A Composite",year:2015,surface:"Composite",shape:"Standard",tags:["Original","Classic","Intermediate","Early USA Made"]},
 {id:92,brand:"Selkirk",model:"Neo FiberFlex Standard",year:2016,surface:"FiberFlex",shape:"Standard",tags:["Classic","Beginner","USA Made"]},
@@ -342,8 +329,8 @@ const PADDLES=[
 {id:110,brand:"Selkirk",model:"Vanguard 2.0 Maxima 16mm",year:2022,surface:"FiberFlex",shape:"Widebody",tags:["Vanguard","Mid-range","Widebody","USA Made"]},
 {id:111,brand:"Selkirk",model:"Vanguard 2.0 Epic 16mm",year:2022,surface:"FiberFlex",shape:"Standard",tags:["Vanguard","Mid-range","USA Made"]},
 {id:112,brand:"Selkirk",model:"Sport Invikta FiberFlex",year:2020,surface:"FiberFlex",shape:"Elongated",tags:["AMPED","Classic","Elongated","USA Made"]},
-{id:113,brand:"Selkirk",model:"AMPED Control Epic InfiniGrit",year:2023,surface:"InfiniGrit",shape:"Standard",tags:["AMPED","Control","Spin","USA Made"]},
-{id:114,brand:"Selkirk",model:"AMPED Control Invikta InfiniGrit",year:2023,surface:"InfiniGrit",shape:"Elongated",tags:["AMPED","Control","Elongated","USA Made"]},
+{id:113,brand:"Selkirk",model:"AMPED Control Epic InfiniGrit",year:2022,surface:"InfiniGrit",shape:"Standard",tags:["AMPED","Control","Spin","USA Made"]},
+{id:114,brand:"Selkirk",model:"AMPED Control Invikta InfiniGrit",year:2022,surface:"InfiniGrit",shape:"Elongated",tags:["AMPED","Control","Elongated","USA Made"]},
 {id:115,brand:"Selkirk",model:"LUXX Control Air Epic 16mm",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["LUXX","Pro","Control","USA Made"]},
 {id:116,brand:"Selkirk",model:"LUXX Control Air Invikta 16mm",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["LUXX","Pro","Spin","Elongated","USA Made"]},
 {id:117,brand:"Selkirk",model:"LUXX Power Air Invikta 14mm",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["LUXX","Pro","Power","Spin","Elongated","USA Made"]},
@@ -351,9 +338,8 @@ const PADDLES=[
 {id:119,brand:"Selkirk",model:"Vanguard Power Air Invikta 14mm",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Vanguard","Pro","Power","Spin","Elongated","USA Made"]},
 {id:120,brand:"Selkirk",model:"Vanguard Control Invikta 16mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Vanguard","Control","Elongated","USA Made"]},
 {id:121,brand:"Selkirk",model:"Vanguard Control Epic 16mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Vanguard","Control","USA Made"]},
-{id:122,brand:"Selkirk",model:"Vanguard Hybrid Invikta 16mm",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Vanguard","Hybrid","Elongated","USA Made"]},
+{id:122,brand:"Selkirk",model:"Vanguard Hybrid Invikta 16mm",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Vanguard","Hybrid","Elongated","USA Made"]},
 {id:123,brand:"Selkirk",model:"Vanguard Pro Invikta 14mm",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Vanguard","Pro","New","USA Made"]},
-// LABS
 {id:124,brand:"Selkirk",model:"LABS Project 002",year:2022,surface:"InfiniGrit",shape:"Standard",tags:["LABS","Collector","Edgeless","USA Made"]},
 {id:125,brand:"Selkirk",model:"LABS Project 003",year:2022,surface:"InfiniGrit",shape:"Elongated",tags:["LABS","Collector","Elongated","USA Made"]},
 {id:126,brand:"Selkirk",model:"LABS Project 005",year:2023,surface:"InfiniGrit",shape:"Standard",tags:["LABS","Carbon Fiber","USA Made"]},
@@ -367,7 +353,6 @@ const PADDLES=[
 {id:134,brand:"Selkirk",model:"LABS Boomstik Elongated 14mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["LABS","Pro","Foam","Power","Top Rated","New","USA Made"]},
 {id:135,brand:"Selkirk",model:"LABS Boomstik Elongated 16mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["LABS","Pro","Foam","Power","Control","New","USA Made"]},
 {id:136,brand:"Selkirk",model:"LABS Boomstik Widebody",year:2025,surface:"BoomCore CF",shape:"Widebody",tags:["LABS","Pro","Foam","Power","New","USA Made"]},
-// SLK line
 {id:137,brand:"Selkirk",model:"SLK Evo Power 2.0 Standard",year:2022,surface:"Fiberglass",shape:"Standard",tags:["SLK","Mid-range","USA Made"]},
 {id:138,brand:"Selkirk",model:"SLK Evo Control 2.0 Standard",year:2022,surface:"Fiberglass",shape:"Standard",tags:["SLK","Mid-range","Control","USA Made"]},
 {id:139,brand:"Selkirk",model:"SLK Omega Max",year:2022,surface:"Fiberglass",shape:"Standard",tags:["SLK","Mid-range","USA Made"]},
@@ -379,8 +364,8 @@ const PADDLES=[
 {id:145,brand:"Selkirk",model:"SLK Halo Power Max",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Power","Value","USA Made"]},
 {id:146,brand:"Selkirk",model:"SLK Halo Control XL",year:2023,surface:"Raw Carbon",shape:"Elongated",tags:["SLK","Control","Elongated","Value","USA Made"]},
 {id:147,brand:"Selkirk",model:"SLK Parris Todd Halo Control XL",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["SLK","Signature","Value","New","USA Made","Parris Todd"]},
-{id:148,brand:"Selkirk",model:"SLK ERA Carbon 14mm",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Mid-range","Value","USA Made"]},
-{id:149,brand:"Selkirk",model:"SLK ERA Power",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Power","Value","USA Made"]},
+{id:148,brand:"Selkirk",model:"SLK ERA Carbon 14mm",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Mid-range","Value","USA Made"]},
+{id:149,brand:"Selkirk",model:"SLK ERA Power",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Power","Value","USA Made"]},
 {id:150,brand:"Selkirk",model:"SLK Illusion 14mm",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Mid-range","USA Made"]},
 {id:151,brand:"Selkirk",model:"SLK Geo Standard 14mm",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Hybrid Shape","New","USA Made"]},
 {id:152,brand:"Selkirk",model:"SLK Geo Elongated 14mm",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["SLK","Hybrid Shape","Elongated","New","USA Made"]},
@@ -388,16 +373,12 @@ const PADDLES=[
 {id:154,brand:"Selkirk",model:"SLK Dauntless 16mm",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Control","New","USA Made"]},
 {id:155,brand:"Selkirk",model:"SLK Valkyrie 14mm",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Control","New","USA Made"]},
 {id:156,brand:"Selkirk",model:"SLK Valkyrie 16mm",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Control","New","USA Made"]},
-
-// ═══ ENGAGE ═══
-// Engage has made pickleball paddles since ~2014. USA Made in Austin TX.
-// Accurate historical years per engagepickleball.com and pickleballcentral.com
 {id:165,brand:"Engage",model:"Encore Graphite",year:2014,surface:"Graphite",shape:"Standard",tags:["Classic","Original","USA Made","Early"]},
 {id:166,brand:"Engage",model:"Encore Composite",year:2014,surface:"Composite",shape:"Standard",tags:["Classic","Original","USA Made","Early"]},
 {id:167,brand:"Engage",model:"Encore 14",year:2016,surface:"Textured",shape:"Standard",tags:["Classic","USA Made"]},
 {id:168,brand:"Engage",model:"Encore Pro 14",year:2016,surface:"Textured",shape:"Standard",tags:["Classic","Pro","USA Made"]},
 {id:169,brand:"Engage",model:"Conquest",year:2017,surface:"Textured",shape:"Standard",tags:["Classic","USA Made"]},
-{id:170,brand:"Engage",model:"Elite Pro Standard",year:2018,surface:"Textured",shape:"Standard",tags:["Classic","Pro","USA Made"]},
+{id:170,brand:"Engage",model:"Elite Pro Standard",year:2017,surface:"Textured",shape:"Standard",tags:["Classic","Pro","USA Made"]},
 {id:171,brand:"Engage",model:"Poach Advantage",year:2019,surface:"Textured",shape:"Standard",tags:["Classic","Popular","USA Made"]},
 {id:172,brand:"Engage",model:"Poach Extreme",year:2019,surface:"Textured",shape:"Standard",tags:["Classic","USA Made"]},
 {id:173,brand:"Engage",model:"Encore Pro Standard",year:2020,surface:"Textured",shape:"Standard",tags:["Classic","Pro","USA Made"]},
@@ -418,26 +399,23 @@ const PADDLES=[
 {id:188,brand:"Engage",model:"Pursuit Pro Innovation 12.7mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","USA Made","Thin Core","New"]},
 {id:189,brand:"Engage",model:"Encore Pro V2.0 Standard",year:2025,surface:"Textured",shape:"Standard",tags:["Mid-range","Updated","USA Made","New"]},
 {id:190,brand:"Engage",model:"Pursuit Ultra EX 6.0 Elongated",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","Elongated","USA Made","New"]},
-
-// ═══ PADDLETEK ═══
-// USA Made in Grand Rapids MI since ~2015. Accurate years per paddletek.com
 {id:198,brand:"Paddletek",model:"Phoenix Redux Composite",year:2015,surface:"Composite",shape:"Standard",tags:["Classic","USA Made","Original"]},
 {id:199,brand:"Paddletek",model:"Bantam EX-L Composite",year:2015,surface:"Fiberglass",shape:"Standard",tags:["Classic","Beginner","USA Made"]},
 {id:200,brand:"Paddletek",model:"Bantam TS-5 Composite",year:2016,surface:"Fiberglass",shape:"Standard",tags:["Classic","USA Made"]},
-{id:201,brand:"Paddletek",model:"Bantam EX-L Pro Graphite",year:2017,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made"]},
-{id:202,brand:"Paddletek",model:"Tempest Wave Graphite",year:2017,surface:"Graphite",shape:"Standard",tags:["Classic","Control","USA Made"]},
+{id:201,brand:"Paddletek",model:"Bantam EX-L Pro Graphite",year:2018,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made"]},
+{id:202,brand:"Paddletek",model:"Tempest Wave Graphite",year:2016,surface:"Graphite",shape:"Standard",tags:["Classic","Control","USA Made"]},
 {id:203,brand:"Paddletek",model:"Bantam EX-L Tempest Graphite",year:2017,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made"]},
 {id:204,brand:"Paddletek",model:"Simone Jardim Expert II",year:2018,surface:"Graphite",shape:"Standard",tags:["Classic","Signature","USA Made","Simone Jardim"]},
 {id:205,brand:"Paddletek",model:"Tempest Pro Standard",year:2018,surface:"Graphite",shape:"Standard",tags:["Classic","Pro","14mm","USA Made"]},
-{id:206,brand:"Paddletek",model:"Tempest Wave Pro Standard",year:2019,surface:"Graphite",shape:"Standard",tags:["Classic","Pro","USA Made"]},
+{id:206,brand:"Paddletek",model:"Tempest Wave Pro Standard",year:2018,surface:"Graphite",shape:"Standard",tags:["Classic","Pro","USA Made"]},
 {id:207,brand:"Paddletek",model:"Tempest Wave II Standard",year:2020,surface:"Graphite",shape:"Standard",tags:["Classic","Control","USA Made"]},
 {id:208,brand:"Paddletek",model:"Tempest Wave Pro II Standard",year:2020,surface:"Graphite",shape:"Standard",tags:["Classic","Pro","USA Made"]},
 {id:209,brand:"Paddletek",model:"Bantam EX-L Pro II Graphite",year:2020,surface:"Graphite",shape:"Standard",tags:["Classic","Pro","USA Made"]},
 {id:210,brand:"Paddletek",model:"Bantam TS-5 Pro II Graphite",year:2020,surface:"Fiberglass",shape:"Standard",tags:["Classic","USA Made"]},
 {id:211,brand:"Paddletek",model:"Tempest Reach Pro Elongated",year:2022,surface:"Graphite",shape:"Elongated",tags:["Pro","Elongated","USA Made"]},
 {id:212,brand:"Paddletek",model:"Bantam SK-7 Pro Standard",year:2022,surface:"Graphite",shape:"Standard",tags:["Mid-range","Pro","USA Made"]},
-{id:213,brand:"Paddletek",model:"Bantam TKO-C Standard",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Power","USA Made","Carbon"]},
-{id:214,brand:"Paddletek",model:"Bantam TKO-C Elongated",year:2023,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Elongated","USA Made","Carbon"]},
+{id:213,brand:"Paddletek",model:"Bantam TKO-C Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Power","USA Made","Carbon"]},
+{id:214,brand:"Paddletek",model:"Bantam TKO-C Elongated",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Elongated","USA Made","Carbon"]},
 {id:215,brand:"Paddletek",model:"Bantam TKO-CX 12.7mm Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Pro","Power","USA Made","Top Rated","TKO"]},
 {id:216,brand:"Paddletek",model:"Bantam TKO-CX 14.3mm Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Pro","Control","USA Made","TKO"]},
 {id:217,brand:"Paddletek",model:"Bantam TKO-CX 12.7mm Elongated",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Pro","Power","Elongated","USA Made","TKO"]},
@@ -446,16 +424,12 @@ const PADDLES=[
 {id:220,brand:"Paddletek",model:"Bantam GTO-C Standard",year:2025,surface:"Raw Carbon",shape:"Hybrid",tags:["Hybrid","USA Made","New","GTO"]},
 {id:221,brand:"Paddletek",model:"Bantam GTO-C Elongated",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Hybrid","Elongated","USA Made","New","GTO"]},
 {id:222,brand:"Paddletek",model:"Tempest Wave Pro-C Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Control","USA Made","Carbon","New"]},
-
-// ═══ GEARBOX ═══
-// Founded 2007 by racquetball player. GX5/GX6: composite SST. CX6: 2019. CX11: 2020. CX14: 2021. GX2: 2024.
-// All edgeless single-piece construction
-{id:230,brand:"Gearbox",model:"GX5 Power Composite",year:2017,surface:"Composite",shape:"Standard",tags:["Classic","Edgeless","SST","Power","GX5"]},
-{id:231,brand:"Gearbox",model:"GX5 Control Composite",year:2017,surface:"Composite",shape:"Standard",tags:["Classic","Edgeless","SST","Control","GX5"]},
-{id:232,brand:"Gearbox",model:"GX6 Power Composite",year:2018,surface:"Composite",shape:"Elongated",tags:["Classic","Edgeless","SST","Power","Elongated","GX6"]},
-{id:233,brand:"Gearbox",model:"GX6 Control Composite",year:2018,surface:"Composite",shape:"Elongated",tags:["Classic","Edgeless","SST","Control","Elongated","GX6"]},
-{id:234,brand:"Gearbox",model:"CX6 Power Carbon",year:2019,surface:"Carbon Fiber",shape:"Standard",tags:["Edgeless","SST","Power","Carbon","CX6"]},
-{id:235,brand:"Gearbox",model:"CX6 Control Carbon",year:2019,surface:"Carbon Fiber",shape:"Standard",tags:["Edgeless","SST","Control","Carbon","CX6"]},
+{id:230,brand:"Gearbox",model:"GX5 Power Composite",year:2018,surface:"Composite",shape:"Standard",tags:["Classic","Edgeless","SST","Power","GX5"]},
+{id:231,brand:"Gearbox",model:"GX5 Control Composite",year:2018,surface:"Composite",shape:"Standard",tags:["Classic","Edgeless","SST","Control","GX5"]},
+{id:232,brand:"Gearbox",model:"GX6 Power Composite",year:2019,surface:"Composite",shape:"Elongated",tags:["Classic","Edgeless","SST","Power","Elongated","GX6"]},
+{id:233,brand:"Gearbox",model:"GX6 Control Composite",year:2019,surface:"Composite",shape:"Elongated",tags:["Classic","Edgeless","SST","Control","Elongated","GX6"]},
+{id:234,brand:"Gearbox",model:"CX6 Power Carbon",year:2020,surface:"Carbon Fiber",shape:"Standard",tags:["Edgeless","SST","Power","Carbon","CX6"]},
+{id:235,brand:"Gearbox",model:"CX6 Control Carbon",year:2020,surface:"Carbon Fiber",shape:"Standard",tags:["Edgeless","SST","Control","Carbon","CX6"]},
 {id:236,brand:"Gearbox",model:"GH7 Hybrid",year:2020,surface:"Fiber H7",shape:"Standard",tags:["Edgeless","Mid-range","Hybrid Tech","GH7"]},
 {id:237,brand:"Gearbox",model:"CX11Q Power",year:2020,surface:"3K Carbon",shape:"Standard",tags:["Edgeless","SST","Power","CX11","Quad"]},
 {id:238,brand:"Gearbox",model:"CX11Q Control",year:2020,surface:"3K Carbon",shape:"Standard",tags:["Edgeless","SST","Control","CX11","Quad"]},
@@ -480,9 +454,6 @@ const PADDLES=[
 {id:257,brand:"Gearbox",model:"Pro Control Integra XL",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Pro","Edgeless","Integra","Unique Design","Control","New"]},
 {id:258,brand:"Gearbox",model:"GBX 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Edgeless","Value"]},
 {id:259,brand:"Gearbox",model:"S1 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Edgeless","Power"]},
-
-// ═══ FRANKLIN ═══
-// Franklin entered pickleball seriously ~2019 with Ben Johns partnership.
 {id:267,brand:"Franklin",model:"Ben Johns Signature 13mm",year:2019,surface:"Fiberglass",shape:"Elongated",tags:["Classic","Signature","Popular","Ben Johns"]},
 {id:268,brand:"Franklin",model:"Ben Johns Signature 16mm",year:2020,surface:"Fiberglass",shape:"Elongated",tags:["Classic","Signature","Ben Johns"]},
 {id:269,brand:"Franklin",model:"Christine McGrath Signature Composite",year:2020,surface:"Composite",shape:"Standard",tags:["Classic","Signature","Christine McGrath"]},
@@ -506,8 +477,6 @@ const PADDLES=[
 {id:287,brand:"Franklin",model:"C45° Hayden Patriquin 16mm",year:2025,surface:"T700 45° Carbon",shape:"Standard",tags:["C45","Pro","Signature","Foam","Control","New","Hayden Patriquin"]},
 {id:288,brand:"Franklin",model:"C45° Parris Todd Elongated",year:2025,surface:"T700 45° Carbon",shape:"Elongated",tags:["C45","Pro","Signature","Foam","New","Parris Todd"]},
 {id:289,brand:"Franklin",model:"X-40 Performance Standard",year:2020,surface:"Fiberglass",shape:"Standard",tags:["Beginner","Value","Recreational"]},
-
-// ═══ HEAD ═══
 {id:297,brand:"HEAD",model:"Radical Elite Composite",year:2018,surface:"Composite",shape:"Standard",tags:["Classic","Beginner"]},
 {id:298,brand:"HEAD",model:"Radical Pro Composite",year:2019,surface:"Composite",shape:"Standard",tags:["Mid-range"]},
 {id:299,brand:"HEAD",model:"Radical Team Composite",year:2019,surface:"Composite",shape:"Standard",tags:["Beginner","Classic"]},
@@ -524,8 +493,6 @@ const PADDLES=[
 {id:310,brand:"HEAD",model:"Speed Pro 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Speed","Carbon"]},
 {id:311,brand:"HEAD",model:"Extreme Tour 2.0 14mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Carbon","New"]},
 {id:312,brand:"HEAD",model:"BOA Standard 14mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Foam Injected","New"]},
-
-// ═══ ONIX ═══
 {id:318,brand:"Onix",model:"Z5 Graphite Standard",year:2016,surface:"Graphite",shape:"Standard",tags:["Classic","Iconic","Popular","Beginner"]},
 {id:319,brand:"Onix",model:"Z5 Composite Standard",year:2016,surface:"Composite",shape:"Standard",tags:["Classic","Beginner"]},
 {id:320,brand:"Onix",model:"Nomex Recruit Composite",year:2016,surface:"Composite",shape:"Standard",tags:["Classic","Beginner","Nomex Core"]},
@@ -537,8 +504,6 @@ const PADDLES=[
 {id:326,brand:"Onix",model:"Summit C1 Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Carbon"]},
 {id:327,brand:"Onix",model:"Evoke Pro Carbon Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Power","Carbon"]},
 {id:328,brand:"Onix",model:"Stryker Carbon Fiber Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Beginner","Value","Carbon"]},
-
-// ═══ GAMMA ═══
 {id:334,brand:"Gamma",model:"Compass 206 Composite",year:2016,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made"]},
 {id:335,brand:"Gamma",model:"Micron 2.0 Composite",year:2016,surface:"Graphite",shape:"Standard",tags:["Classic","Beginner","USA Made"]},
 {id:336,brand:"Gamma",model:"Shard Composite",year:2017,surface:"Composite",shape:"Standard",tags:["Classic","USA Made"]},
@@ -553,8 +518,6 @@ const PADDLES=[
 {id:345,brand:"Gamma",model:"RZR 2 14mm Standard",year:2024,surface:"Textured",shape:"Standard",tags:["Power","Updated","USA Made"]},
 {id:346,brand:"Gamma",model:"RZR 2 16mm Standard",year:2024,surface:"Textured",shape:"Standard",tags:["Control","Updated","USA Made"]},
 {id:347,brand:"Gamma",model:"RZR 2 Elongated 14mm",year:2024,surface:"Textured",shape:"Elongated",tags:["Power","Elongated","USA Made"]},
-
-// ═══ PROKENNEX ═══
 {id:353,brand:"ProKennex",model:"Q5 Composite Standard",year:2017,surface:"Composite",shape:"Standard",tags:["Classic","Joint-Friendly"]},
 {id:354,brand:"ProKennex",model:"Pro Speed 14mm Standard",year:2019,surface:"Textured",shape:"Standard",tags:["Spin","Joint-Friendly","Kinetic"]},
 {id:355,brand:"ProKennex",model:"Pro Speed 16mm Standard",year:2020,surface:"Textured",shape:"Standard",tags:["Control","Joint-Friendly","Kinetic"]},
@@ -566,13 +529,11 @@ const PADDLES=[
 {id:361,brand:"ProKennex",model:"Black Ace 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","Spin","Joint-Friendly","Carbon"]},
 {id:362,brand:"ProKennex",model:"Black Ace LG Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","Elongated","Joint-Friendly","Carbon"]},
 {id:363,brand:"ProKennex",model:"Kinetic Energy 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["New","Power","Joint-Friendly","Carbon"]},
-
-// ═══ SIX ZERO ═══
 {id:369,brand:"Six Zero",model:"Black Diamond 14mm Standard",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Power","Popular","Raw Carbon"]},
 {id:370,brand:"Six Zero",model:"Black Diamond 16mm Standard",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Control","Popular","Raw Carbon"]},
 {id:371,brand:"Six Zero",model:"Double Black Diamond 14mm Standard",year:2023,surface:"Raw Carbon",shape:"Hybrid",tags:["Power","Thermoformed","Top Rated","Hybrid"]},
 {id:372,brand:"Six Zero",model:"Double Black Diamond 16mm Standard",year:2023,surface:"Raw Carbon",shape:"Hybrid",tags:["Control","Thermoformed","Top Rated","Hybrid"]},
-{id:373,brand:"Six Zero",model:"Double Black Diamond Control 16mm",year:2024,surface:"Raw Carbon",shape:"Hybrid",tags:["Control","Best Control","Popular","Hybrid"]},
+{id:373,brand:"Six Zero",model:"Double Black Diamond Control 16mm",year:2023,surface:"Raw Carbon",shape:"Hybrid",tags:["Control","Best Control","Popular","Hybrid"]},
 {id:374,brand:"Six Zero",model:"Double Black Diamond Elongated 14mm",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Thermoformed","Elongated"]},
 {id:375,brand:"Six Zero",model:"Ruby 14mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Mid-range","Carbon"]},
 {id:376,brand:"Six Zero",model:"Ruby 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Mid-range","Carbon"]},
@@ -582,8 +543,6 @@ const PADDLES=[
 {id:380,brand:"Six Zero",model:"Black Opal 14mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Foam","Diamond-Infused","New 2026","Top Rated"]},
 {id:381,brand:"Six Zero",model:"Black Opal RCD-E 14mm Elongated",year:2026,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Foam","Diamond-Infused","New 2026","Top Rated","Elongated"]},
 {id:382,brand:"Six Zero",model:"Quartz 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Beginner","Value","New","Carbon"]},
-
-// ═══ DIADEM ═══
 {id:388,brand:"Diadem",model:"Icon V2 Standard",year:2020,surface:"Textured",shape:"Standard",tags:["Mid-range","Classic"]},
 {id:389,brand:"Diadem",model:"Warrior 19mm Standard",year:2021,surface:"Textured",shape:"Standard",tags:["Thick Core","19mm","First 19mm"]},
 {id:390,brand:"Diadem",model:"Edge Series 16mm Standard",year:2022,surface:"Textured",shape:"Standard",tags:["Mid-range"]},
@@ -596,8 +555,6 @@ const PADDLES=[
 {id:397,brand:"Diadem",model:"Warrior BluCore 16mm Pro",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","EPP Foam Core","Control","Carbon"]},
 {id:398,brand:"Diadem",model:"Warrior BluCore 19mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","EPP Foam Core","Thick Core","19mm","Carbon"]},
 {id:399,brand:"Diadem",model:"Warrior CFS 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Power","New","Carbon","CFS"]},
-
-// ═══ VATIC PRO ═══
 {id:405,brand:"Vatic Pro",model:"V7 14mm Standard",year:2022,surface:"Raw Carbon",shape:"Standard",tags:["Power","Thermoformed","Value","Popular","V7"]},
 {id:406,brand:"Vatic Pro",model:"V7 16mm Standard",year:2022,surface:"Raw Carbon",shape:"Standard",tags:["Control","Thermoformed","Value","Popular","V7"]},
 {id:407,brand:"Vatic Pro",model:"V7 Elongated 14mm",year:2023,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Value","Elongated","V7"]},
@@ -615,8 +572,6 @@ const PADDLES=[
 {id:419,brand:"Vatic Pro",model:"Saga Bloom 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Control","Value","New","Saga"]},
 {id:420,brand:"Vatic Pro",model:"Maximus 14mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Power","Value","Gen 1.5","New"]},
 {id:421,brand:"Vatic Pro",model:"Maximus 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Control","Value","Gen 1.5","New"]},
-
-// ═══ PROTON ═══
 {id:427,brand:"Proton",model:"Series One 14mm Standard",year:2024,surface:"Aerospace CF",shape:"Standard",tags:["Pro","Spin","Thermoformed","Series-1"]},
 {id:428,brand:"Proton",model:"Series One 16mm Standard",year:2024,surface:"Aerospace CF",shape:"Standard",tags:["Pro","Control","Thermoformed","Series-1"]},
 {id:429,brand:"Proton",model:"Series Two 14mm Standard",year:2024,surface:"Aerospace CF",shape:"Standard",tags:["Pro","Spin","Thermoformed","Series-2"]},
@@ -633,8 +588,6 @@ const PADDLES=[
 {id:440,brand:"Proton",model:"Project Peacock Square 15mm",year:2025,surface:"Aerospace CF",shape:"Widebody",tags:["Pro","Atomic Foam Core","New","UPA-A","Widebody","Peacock"]},
 {id:441,brand:"Proton",model:"ERA 14mm Standard",year:2025,surface:"Aerospace CF",shape:"Standard",tags:["Pro","Power","New","ERA"]},
 {id:442,brand:"Proton",model:"ERA 16mm Standard",year:2025,surface:"Aerospace CF",shape:"Standard",tags:["Pro","Control","New","ERA"]},
-
-// ═══ HONOLULU ═══
 {id:448,brand:"Honolulu",model:"J2K Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Popular","Carbon"]},
 {id:449,brand:"Honolulu",model:"J2K Elongated",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Elongated","Carbon"]},
 {id:450,brand:"Honolulu",model:"Sword & Shield J2NF Standard",year:2024,surface:"Carbon Fiber",shape:"Hybrid",tags:["Pro","Top Rated","Best Overall","#1 2025","J2NF"]},
@@ -645,8 +598,6 @@ const PADDLES=[
 {id:455,brand:"Honolulu",model:"J6CR Standard",year:2025,surface:"Full Foam CF",shape:"Hybrid",tags:["Foam Core","Top Rated","New","Power","J6CR"]},
 {id:456,brand:"Honolulu",model:"J6CR Elongated",year:2026,surface:"Full Foam CF",shape:"Elongated",tags:["Foam Core","Top Rated","New 2026","Power","UPA-A","J6CR"]},
 {id:457,brand:"Honolulu",model:"J2NF Pro Standard",year:2025,surface:"Carbon Fiber",shape:"Hybrid",tags:["Pro","New","J2NF"]},
-
-// ═══ HOLBROOK ═══
 {id:463,brand:"Holbrook",model:"Origin 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Aramid Fiber","Carbon"]},
 {id:464,brand:"Holbrook",model:"Origin 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Aramid Fiber","Carbon"]},
 {id:465,brand:"Holbrook",model:"Origin Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Aramid Fiber","Elongated","Carbon"]},
@@ -658,8 +609,6 @@ const PADDLES=[
 {id:471,brand:"Holbrook",model:"ARMA Carbon 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Gen-3","Control","New","ARMA"]},
 {id:472,brand:"Holbrook",model:"ARMA Metallic 14mm Standard",year:2025,surface:"Metallic CF",shape:"Standard",tags:["Pro","Gen-3","Unique","New","ARMA"]},
 {id:473,brand:"Holbrook",model:"Fuze Pro",year:2026,surface:"Aramid+CF",shape:"Elongated",tags:["Pro","Foam","New 2026","Fuze"]},
-
-// ═══ BREAD & BUTTER ═══
 {id:479,brand:"Bread & Butter",model:"Loco 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Hybrid",tags:["Power","Popular","Top Rated","Foam","Loco"]},
 {id:480,brand:"Bread & Butter",model:"Loco 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Hybrid",tags:["Control","Popular","Foam","#1 Power 2024","Loco"]},
 {id:481,brand:"Bread & Butter",model:"Loco 14mm Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Popular","Elongated","Foam","Loco"]},
@@ -671,8 +620,6 @@ const PADDLES=[
 {id:487,brand:"Bread & Butter",model:"Loco Picasso 14mm",year:2025,surface:"Carbon Fiber",shape:"Hybrid",tags:["Power","Limited Edition","New","Loco"]},
 {id:488,brand:"Bread & Butter",model:"Hustler 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Spin","Mid-range"]},
 {id:489,brand:"Bread & Butter",model:"Shogun Titanium CF 14mm",year:2025,surface:"Titanium CF",shape:"Standard",tags:["Unique Material","Spin","New","Shogun"]},
-
-// ═══ RONBUS ═══
 {id:495,brand:"Ronbus",model:"R1 Nucleus Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Carbon","R1"]},
 {id:496,brand:"Ronbus",model:"Pulsar 14mm Standard",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Spin","Thermoformed","Pulsar"]},
 {id:497,brand:"Ronbus",model:"Pulsar 16mm Standard",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Control","Thermoformed","Pulsar"]},
@@ -686,15 +633,11 @@ const PADDLES=[
 {id:505,brand:"Ronbus",model:"Quanta R3 Elongated",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Foam","Gen-4","Value","New","Quanta"]},
 {id:506,brand:"Ronbus",model:"Quanta R4 Hybrid",year:2025,surface:"Raw Carbon",shape:"Hybrid",tags:["Foam","Gen-4","Value","New","Hybrid","Quanta"]},
 {id:507,brand:"Ronbus",model:"Quanta R5 Widebody",year:2025,surface:"Raw Carbon",shape:"Widebody",tags:["Foam","Gen-4","Value","New","Widebody","Quanta"]},
-
-// ═══ LEGACY PRO ═══
 {id:513,brand:"Legacy Pro",model:"Legacy Pro 14mm Standard",year:2022,surface:"Raw Carbon",shape:"Standard",tags:["Power","Thermoformed"]},
 {id:514,brand:"Legacy Pro",model:"Legacy Pro 16mm Standard",year:2022,surface:"Raw Carbon",shape:"Standard",tags:["Control","Thermoformed"]},
 {id:515,brand:"Legacy Pro",model:"Legacy Pro 2.0 14mm Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Power","Updated"]},
 {id:516,brand:"Legacy Pro",model:"Legacy Pro Elongated 14mm",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Elongated"]},
 {id:517,brand:"Legacy Pro",model:"Legacy Pro 3.0 14mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Power","New"]},
-
-// ═══ VULCAN ═══
 {id:523,brand:"Vulcan",model:"V560 Control Standard",year:2020,surface:"Graphite",shape:"Standard",tags:["Classic","Control"]},
 {id:524,brand:"Vulcan",model:"V550 Control Standard",year:2021,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Carbon"]},
 {id:525,brand:"Vulcan",model:"V530 Standard",year:2021,surface:"Fiberglass",shape:"Standard",tags:["Mid-range"]},
@@ -706,9 +649,6 @@ const PADDLES=[
 {id:531,brand:"Vulcan",model:"V-Series Model 1 16mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","New","UPA-A"]},
 {id:532,brand:"Vulcan",model:"V-Series Model 2 16mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","New","UPA-A"]},
 {id:533,brand:"Vulcan",model:"V-Series Model 3 16mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Control","New","UPA-A"]},
-
-// ═══ PROLITE ═══
-// USA Made since ~1994. Oldest major pickleball brand.
 {id:539,brand:"PROLITE",model:"Magnum Graphite Standard",year:2016,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made","Magnum"]},
 {id:540,brand:"PROLITE",model:"Bolt Composite Standard",year:2016,surface:"Fiberglass",shape:"Standard",tags:["Classic","Beginner","USA Made","Bolt"]},
 {id:541,brand:"PROLITE",model:"Rebel Pro XL Graphite",year:2017,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made","Rebel"]},
@@ -719,23 +659,17 @@ const PADDLES=[
 {id:546,brand:"PROLITE",model:"Stealth GS2 Elongated",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["USA Made","Power","Elongated","Carbon","Stealth"]},
 {id:547,brand:"PROLITE",model:"GS2 Control Elongated",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["USA Made","Control","Elongated","Carbon","GS2"]},
 {id:548,brand:"PROLITE",model:"Rebel Pro LX Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["USA Made","Spin","Power","Elongated","New","Rebel"]},
-
-// ═══ ELECTRUM ═══
 {id:554,brand:"Electrum",model:"Model E Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Popular","Edgeless","Carbon"]},
 {id:555,brand:"Electrum",model:"Model E Pro 14mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Edgeless","Carbon"]},
 {id:556,brand:"Electrum",model:"Model E Pro 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Control","Edgeless","Carbon"]},
 {id:557,brand:"Electrum",model:"Model E Air 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Thermoformed","New","Carbon"]},
 {id:558,brand:"Electrum",model:"Model E Air 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Thermoformed","New","Carbon"]},
 {id:559,brand:"Electrum",model:"Model E Ultra 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","New","Carbon"]},
-
-// ═══ FORGE + BOND ═══
 {id:565,brand:"Forge + Bond",model:"Runout Elongated Standard",year:2023,surface:"FusionFiber",shape:"Elongated",tags:["USA Made","Edgeless","Elongated","FusionFiber"]},
 {id:566,brand:"Forge + Bond",model:"Runout Hybrid Standard",year:2023,surface:"FusionFiber",shape:"Hybrid",tags:["USA Made","Hybrid Shape","FusionFiber"]},
 {id:567,brand:"Forge + Bond",model:"Runout Widebody Standard",year:2023,surface:"FusionFiber",shape:"Widebody",tags:["USA Made","Widebody","FusionFiber"]},
 {id:568,brand:"Forge + Bond",model:"Pro Elongated Standard",year:2024,surface:"FusionFiber",shape:"Elongated",tags:["USA Made","Pro","New","FusionFiber"]},
 {id:569,brand:"Forge + Bond",model:"Ultra 14mm Standard",year:2025,surface:"FusionFiber",shape:"Standard",tags:["USA Made","Pro","Power","New","FusionFiber"]},
-
-// ═══ BABOLAT ═══
 {id:575,brand:"Babolat",model:"RBEL 14mm Standard",year:2021,surface:"Fiberglass",shape:"Standard",tags:["Mid-range"]},
 {id:576,brand:"Babolat",model:"XCEL Power Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Carbon","XCEL"]},
 {id:577,brand:"Babolat",model:"XCEL Control Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Carbon","XCEL"]},
@@ -743,8 +677,6 @@ const PADDLES=[
 {id:579,brand:"Babolat",model:"Technical VIPER 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Control","Thermoformed","VIPER"]},
 {id:580,brand:"Babolat",model:"Air Viper 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","New","VIPER"]},
 {id:581,brand:"Babolat",model:"Air Viper 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Control","New","VIPER"]},
-
-// ═══ PRINCE / WILSON / adidas ═══
 {id:587,brand:"Prince",model:"Response Pro Standard",year:2018,surface:"Composite",shape:"Standard",tags:["Classic","Prince"]},
 {id:588,brand:"Prince",model:"Thunder Pro Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Carbon"]},
 {id:589,brand:"Prince",model:"Nova Pro Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","New","Carbon"]},
@@ -761,8 +693,6 @@ const PADDLES=[
 {id:600,brand:"adidas",model:"ADIPOWER CTRL",year:2023,surface:"Carbon Aluminized",shape:"Standard",tags:["Pro","Control","ADIPOWER"]},
 {id:601,brand:"adidas",model:"METALBONE Carbon ATTK",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","Foam","New","METALBONE"]},
 {id:602,brand:"adidas",model:"METALBONE Carbon CTRL",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Control","Foam","New","METALBONE"]},
-
-// ═══ 11SIX24 ═══
 {id:608,brand:"11SIX24",model:"Pegasus 14mm Standard",year:2023,surface:"T800 Carbon",shape:"Standard",tags:["Power","Value","Pegasus"]},
 {id:609,brand:"11SIX24",model:"Pegasus 16mm Jelly Bean",year:2023,surface:"T800 Carbon",shape:"Widebody",tags:["Forgiveness","Value","Widebody","Pegasus"]},
 {id:610,brand:"11SIX24",model:"Excalibur 14mm Standard",year:2024,surface:"T800 Carbon",shape:"Standard",tags:["Power","Pro","Excalibur"]},
@@ -774,31 +704,23 @@ const PADDLES=[
 {id:616,brand:"11SIX24",model:"Vapor Power 2 Hybrid",year:2026,surface:"HexGrit CF",shape:"Hybrid",tags:["Foam","HexGrit","New 2026","Top Rated","Best All-Court","Vapor"]},
 {id:617,brand:"11SIX24",model:"Pegasus Power 2 Widebody",year:2026,surface:"HexGrit CF",shape:"Widebody",tags:["Foam","HexGrit","Forgiveness","New 2026","Widebody","Pegasus"]},
 {id:618,brand:"11SIX24",model:"Hurache-X Power 2 Elongated",year:2026,surface:"HexGrit CF",shape:"Elongated",tags:["Foam","HexGrit","Power","New 2026","Elongated","Hurache"]},
-
-// ═══ WARPING POINT ═══
 {id:624,brand:"Warping Point",model:"Neon 14mm Standard",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Value","Power","Popular","Neon"]},
 {id:625,brand:"Warping Point",model:"Neon 16mm Standard",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Value","Control","Top Rated","Popular","Neon"]},
 {id:626,brand:"Warping Point",model:"Neon Elongated 14mm",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Value","Power","Elongated","Neon"]},
 {id:627,brand:"Warping Point",model:"Neon 2.0 14mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Value","Power","New","Neon"]},
 {id:628,brand:"Warping Point",model:"Neon 2.0 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Value","Control","New","Neon"]},
-
-// ═══ FRIDAY ═══
 {id:634,brand:"Friday",model:"Original 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Beginner","Popular","Carbon"]},
 {id:635,brand:"Friday",model:"Original 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Beginner","Control","Carbon"]},
 {id:636,brand:"Friday",model:"Fever Standard",year:2025,surface:"Fiberglass",shape:"Standard",tags:["Mid-range","Value","Pop","New"]},
 {id:637,brand:"Friday",model:"Aura 14mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Foam Core","New 2026","Power","Carbon"]},
 {id:638,brand:"Friday",model:"Aura Pro 14mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Foam Core","New 2026","Top Rated","Carbon"]},
 {id:639,brand:"Friday",model:"Aura 16mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Foam Core","New 2026","Control","Carbon"]},
-
-// ═══ RPM ═══
 {id:645,brand:"RPM",model:"Friction Pro 14mm Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["#1 Spin","Top Spin","Max Grit","Raw Carbon"]},
 {id:646,brand:"RPM",model:"Friction Pro 16mm Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Spin","Control","Raw Carbon"]},
 {id:647,brand:"RPM",model:"Friction Pro Elongated 14mm",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Spin","Power","Elongated","Raw Carbon"]},
 {id:648,brand:"RPM",model:"Friction Pro Elongated 16mm",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Spin","Control","Elongated","Raw Carbon"]},
 {id:649,brand:"RPM",model:"Friction Pro 2.0 14mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Spin","Updated","New","Raw Carbon"]},
 {id:650,brand:"RPM",model:"RPM 135 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["New","Control","USAP 2026","Raw Carbon"]},
-
-// ═══ FLiK ═══
 {id:656,brand:"FLiK",model:"F1 Standard 14mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Pop","F1","Carbon"]},
 {id:657,brand:"FLiK",model:"F1 Standard 16mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Control","F1","Carbon"]},
 {id:658,brand:"FLiK",model:"F2 Standard 14mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Power","F2","Carbon","New"]},
@@ -806,8 +728,6 @@ const PADDLES=[
 {id:660,brand:"FLiK",model:"F3 Standard 14mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Triple Foam Core","Best Control","Dwell","New","Top Rated","F3"]},
 {id:661,brand:"FLiK",model:"F3 Standard 16mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Triple Foam Core","Control","Dwell","New","F3"]},
 {id:662,brand:"FLiK",model:"F3 Elongated 14mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Triple Foam Core","Power","New","Elongated","F3"]},
-
-// ═══ THRIVE ═══
 {id:668,brand:"Thrive",model:"Fierce 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Power","New","Carbon","Fierce"]},
 {id:669,brand:"Thrive",model:"Fierce 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","New","Carbon","Fierce"]},
 {id:670,brand:"Thrive",model:"Fierce Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Elongated","New","Carbon","Fierce"]},
@@ -815,15 +735,11 @@ const PADDLES=[
 {id:672,brand:"Thrive",model:"Project Fury 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Foam","New","Carbon","Fury"]},
 {id:673,brand:"Thrive",model:"Azul 14mm Carbon-Kevlar",year:2026,surface:"Carbon Kevlar",shape:"Standard",tags:["Mid-range","Pop","New","Unique","Kevlar"]},
 {id:674,brand:"Thrive",model:"Azul 16mm Carbon-Kevlar",year:2026,surface:"Carbon Kevlar",shape:"Standard",tags:["Control","Mid-range","New","Unique","Kevlar"]},
-
-// ═══ GRUVN ═══
 {id:680,brand:"Gruvn",model:"REVO-14C Elongated",year:2021,surface:"Carbon Fiber",shape:"Elongated",tags:["Elongated","Carbon"]},
 {id:681,brand:"Gruvn",model:"WAR-16E Elongated",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Elongated","Mid-range","Carbon"]},
 {id:682,brand:"Gruvn",model:"RAW-14W Widebody",year:2023,surface:"Raw Carbon",shape:"Widebody",tags:["Widebody","Raw Carbon"]},
 {id:683,brand:"Gruvn",model:"RAW-16E Elongated",year:2023,surface:"Raw Carbon",shape:"Elongated",tags:["Elongated","Control","Raw Carbon"]},
 {id:684,brand:"Gruvn",model:"LAZR 16X Full Foam",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Foam","Power","New","Raw Carbon"]},
-
-// ═══ TMPR ═══
 {id:690,brand:"TMPR",model:"Ascend Pro Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Carbon"]},
 {id:691,brand:"TMPR",model:"Pathfinder 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Carbon"]},
 {id:692,brand:"TMPR",model:"Voyage 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Power","New","Carbon"]},
@@ -831,65 +747,45 @@ const PADDLES=[
 {id:694,brand:"TMPR",model:"Ascend Pro Max Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","Carbon"]},
 {id:695,brand:"TMPR",model:"ESQ-C Elongated",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","New","Elongated","Carbon"]},
 {id:696,brand:"TMPR",model:"Nimbus 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","New","Carbon"]},
-
-// ═══ VOLAIR ═══
 {id:702,brand:"Volair",model:"Mach 1 Forza Standard",year:2020,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Mach 1"]},
 {id:703,brand:"Volair",model:"Mach 1 Invicta Elongated",year:2021,surface:"Carbon Fiber",shape:"Elongated",tags:["Elongated","Mach 1"]},
 {id:704,brand:"Volair",model:"Mach 1 Pro Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Mach 1"]},
 {id:705,brand:"Volair",model:"Mach 2 Forza Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","High Grit","New","Mach 2"]},
 {id:706,brand:"Volair",model:"Shift HYB 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Hybrid",tags:["New","USAP 2025","UPA-A","Hybrid","Shift"]},
-
-// ═══ PROXR ═══
 {id:712,brand:"ProXR",model:"Signature Series 14mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Ergonomic","Control","Spin","Carbon"]},
 {id:713,brand:"ProXR",model:"Signature Series 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Ergonomic","Control","Carbon"]},
 {id:714,brand:"ProXR",model:"Pro Control 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Ergonomic","New","Carbon"]},
 {id:715,brand:"ProXR",model:"Beth Bellamy Diamond 14mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Signature","Precision","Carbon","Beth Bellamy"]},
-
-// ═══ CPX ═══
 {id:721,brand:"CPX",model:"CPX Air 14mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Thermoformed","New","Carbon"]},
 {id:722,brand:"CPX",model:"CPX Air 16mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Control","Thermoformed","New","Carbon"]},
 {id:723,brand:"CPX",model:"CPX Max 14mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Power","Thermoformed","New","Carbon"]},
 {id:724,brand:"CPX",model:"CPX Max 16mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Control","Thermoformed","New","Carbon"]},
 {id:725,brand:"CPX",model:"CPX Ultra 14mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Power","PBCoR43","New","Carbon"]},
-
-// ═══ LUZZ ═══
 {id:731,brand:"Luzz",model:"Pro Cannon Standard",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Power","Value","Pop","Budget","UPA-A","Cannon"]},
 {id:732,brand:"Luzz",model:"Pro Cannon 2.0",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Power","Value","Gen3+","Updated","UPA-A","USAP","New","Cannon"]},
 {id:733,brand:"Luzz",model:"Pro 4 Inferno Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Foam","Gen-4","MPP Core","Power","New","Popular","Inferno"]},
 {id:734,brand:"Luzz",model:"Pro 4 Tornazo Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Foam","Gen-4","MPP Core","Control","New","Tornazo"]},
-
-// ═══ AIREO ═══
 {id:740,brand:"Aireo",model:"Cyclone 16mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro","PulseFoam Core","Power","Control","USAP","Cyclone"]},
 {id:741,brand:"Aireo",model:"Cyclone 16mm Blackout Edition",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro","PulseFoam Core","Tournament","UPA-A","Cyclone"]},
 {id:742,brand:"Aireo",model:"Cyclone 16mm Levi's Limited",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Limited Edition","PulseFoam Core","New","Cyclone"]},
 {id:743,brand:"Aireo",model:"Cyclone 16mm LH Dragon Limited",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Limited Edition","PulseFoam Core","New","Cyclone"]},
 {id:744,brand:"Aireo",model:"Falcon Pro O16 Standard",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Control","Foam Injected Edge","USAP","Falcon"]},
 {id:745,brand:"Aireo",model:"Falcon Pro L16 Elongated",year:2026,surface:"T700 Carbon",shape:"Elongated",tags:["Control","Power","USAP","Unibody","Two-Handle","New","Falcon"]},
-
-// ═══ GHERKIN ═══
 {id:751,brand:"Gherkin",model:"Phantom Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Spin","Silicone Edge","Edgeless","Mid-range","Phantom"]},
 {id:752,brand:"Gherkin",model:"Quantum Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Power","Silicone Edge","Edgeless","Quantum"]},
 {id:753,brand:"Gherkin",model:"Spectre Elongated",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Spin","Silicone Edge","Edgeless","Elongated","Spectre"]},
 {id:754,brand:"Gherkin",model:"Nightshade Hybrid 14mm",year:2025,surface:"Raw Carbon",shape:"Hybrid",tags:["All-Court","Connected Feel","New","Top Rated","Nightshade"]},
-
-// ═══ PIKKL ═══
 {id:760,brand:"PIKKL",model:"Hurricane Pro 16mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Control","Spin","Thermoformed","Long Handle","Hurricane"]},
 {id:761,brand:"PIKKL",model:"Hurricane Pro 14mm Tyra Black",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Power","Signature","Thermoformed","Hurricane"]},
 {id:762,brand:"PIKKL",model:"Hurricane Pro 16mm Elongated",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Control","Spin","New","Elongated","Hurricane"]},
 {id:763,brand:"PIKKL",model:"Hurricane Pro 2.0 16mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Control","Spin","Updated","New","Hurricane"]},
-
-// ═══ ENHANCE ═══
 {id:769,brand:"Enhance",model:"Gen 4.5 Standard 14mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Foam","Gen-4.5","365-Day Warranty","New","Value"]},
 {id:770,brand:"Enhance",model:"Gen 4.5 Standard 16mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Foam","Gen-4.5","Control","365-Day Warranty","New"]},
 {id:771,brand:"Enhance",model:"Gen 4.5 Elongated 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Foam","Gen-4.5","Power","New","Elongated"]},
-
-// ═══ PICKLEBALL APES ═══
 {id:777,brand:"Pickleball Apes",model:"Pulse S 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Spin","Plush","Pulse"]},
 {id:778,brand:"Pickleball Apes",model:"Pulse S 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Plush","Pulse"]},
 {id:779,brand:"Pickleball Apes",model:"Pulse V 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Plush","New","Popular","Pulse"]},
 {id:780,brand:"Pickleball Apes",model:"Riptide 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Power","New","Riptide"]},
-
-// ═══ SPARTUS / GRIT / SENS / RAD ═══
 {id:786,brand:"Spartus",model:"Olympus 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Power","High Grit","Olympus"]},
 {id:787,brand:"Spartus",model:"Olympus 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","High Grit","Olympus"]},
 {id:788,brand:"Spartus",model:"Atlas 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Power","New","Atlas"]},
@@ -902,8 +798,6 @@ const PADDLES=[
 {id:795,brand:"RAD",model:"Pro 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","USAP"]},
 {id:796,brand:"RAD",model:"Pro 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","USAP","Control"]},
 {id:797,brand:"RAD",model:"Elite 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","New"]},
-
-// ═══ MISCELLANEOUS BRANDS ═══
 {id:803,brand:"Master Athletics",model:"Icon 14mm Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Carbon"]},
 {id:804,brand:"Master Athletics",model:"Origin Elongated 14mm",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Elongated","Carbon"]},
 {id:805,brand:"Stafford",model:"K1 Control Standard",year:2021,surface:"Graphite",shape:"Standard",tags:["USA Made","Control"]},
@@ -945,22 +839,16 @@ const PADDLES=[
 {id:841,brand:"RamSports",model:"Typhoon 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Offensive","New","UPA-A"]},
 {id:842,brand:"Hit Pickleball",model:"Hand Cannon 12.9mm Elongated",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Singles","Thin Core","UPA-A","New"]},
 {id:843,brand:"Zocker",model:"Aspire 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Stability","Power","New","UPA-A"]},
-
-// ═══ NEONIC ═══ (new brand — founded 2023, Canadian brand, value thermoformed)
 {id:844,brand:"Neonic",model:"Force 16mm Standard",year:2023,surface:"T700 Carbon",shape:"Elongated",tags:["Power","Thermoformed","Value","Popular","Force"]},
 {id:845,brand:"Neonic",model:"Flow 16mm Hybrid",year:2024,surface:"T700 Carbon",shape:"Hybrid",tags:["Control","Thermoformed","Foam Injected","Popular","Flow","Hybrid"]},
 {id:846,brand:"Neonic",model:"Flare Prime X Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Power","Value","New","Flare"]},
 {id:847,brand:"Neonic",model:"Flare Titanium Standard",year:2025,surface:"Titanium CF",shape:"Standard",tags:["Power","Titanium","New","Flare"]},
 {id:848,brand:"Neonic",model:"Flow Pro 16mm Hybrid",year:2025,surface:"T700 Carbon",shape:"Hybrid",tags:["Control","Foam Injected","New","Flow","Hybrid"]},
-
-// ═══ VERSIX ═══ (new brand — launched 2024, Genie Bouchard partner)
 {id:849,brand:"Versix",model:"RAW 15mm Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Control","Spin","Value","RAW"]},
 {id:850,brand:"Versix",model:"RAW 15mm Elongated",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Control","Spin","Value","Elongated","RAW"]},
 {id:851,brand:"Versix",model:"Vector 15mm Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Power","Thermoformed","Popular","Vector"]},
 {id:852,brand:"Versix",model:"Vector XL Elongated Genie Bouchard",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Signature","Power","Thermoformed","Elongated","Genie Bouchard","Vector"]},
 {id:853,brand:"Versix",model:"Vector Pro 15mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Pro","Power","New","Vector"]},
-
-// ═══ ONESHOT ═══ (new brand — founded 2019, family-oriented, Aero Flow tech pioneers)
 {id:854,brand:"Oneshot",model:"Powershot 2.0 Composite",year:2021,surface:"Fiberglass",shape:"Standard",tags:["Classic","Power","Beginner","Powershot"]},
 {id:855,brand:"Oneshot",model:"Ultimateshot 2.0 Composite",year:2021,surface:"Fiberglass",shape:"Standard",tags:["Classic","Mid-range","Power","Ultimateshot"]},
 {id:856,brand:"Oneshot",model:"Proshot 2.0 Graphite",year:2021,surface:"Graphite",shape:"Standard",tags:["Classic","Control","Mid-range","Proshot"]},
@@ -970,155 +858,79 @@ const PADDLES=[
 {id:860,brand:"Oneshot",model:"Aero Powershot Composite",year:2021,surface:"Fiberglass",shape:"Elongated",tags:["Aero Flow","Power","Elongated","Airflow Tech","Powershot"]},
 {id:861,brand:"Oneshot",model:"Pureshot Brian Ashworth Carbon",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Signature","Control","Carbon","Brian Ashworth","Pureshot"]},
 {id:862,brand:"Oneshot",model:"Aero Infinityshot Elongated",year:2023,surface:"Graphite",shape:"Elongated",tags:["Aero Flow","Elongated","Control","Edgeless","Airflow Tech","Infinityshot"]},
-
-// ═══ DYNASTY ═══ (new brand — California, Gen 4.5 full foam, lifetime warranty)
 {id:863,brand:"Dynasty",model:"Model 1 14mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen-4.5","Full Foam","Power","Lifetime Warranty","USAP"]},
 {id:864,brand:"Dynasty",model:"Model 2 14mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen-4.5","Full Foam","All-Court","Lifetime Warranty","USAP"]},
 {id:865,brand:"Dynasty",model:"Model 3 16mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen-4.5","Full Foam","Control","Lifetime Warranty","USAP"]},
 {id:866,brand:"Dynasty",model:"Model 4 16mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen-4.5","Full Foam","Control","Power","Lifetime Warranty","USAP"]},
 {id:867,brand:"Dynasty",model:"Legend Future Series 16mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen-4.5","Full Foam","4-Layer","New","Top Rated","Legend"]},
-
-// ═══ drop. ═══ (new brand — collab with Nomadix, eco/lifestyle paddle brand)
 {id:868,brand:"drop.",model:"Statement Standard 14mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Lifestyle","Eco","Nomadix Collab","New"]},
 {id:869,brand:"drop.",model:"Statement Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Lifestyle","Eco","Nomadix Collab","New","Elongated"]},
 {id:870,brand:"drop.",model:"Classic 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Lifestyle","Eco","New"]},
-
-// ═══ MISSING 11SIX24 MODELS ═══
-// Monarch series (widebody, sub-$100 value line)
 {id:871,brand:"11SIX24",model:"Monarch All Court Widebody",year:2024,surface:"CFC Carbon",shape:"Widebody",tags:["Value","All-Court","Widebody","Foam Injected","$99","Monarch"]},
 {id:872,brand:"11SIX24",model:"Monarch Control Widebody",year:2024,surface:"CFC Carbon",shape:"Widebody",tags:["Value","Control","Widebody","Foam Injected","$99","Monarch"]},
 {id:873,brand:"11SIX24",model:"Monarch Jelly Bean Widebody",year:2024,surface:"CFC Carbon",shape:"Widebody",tags:["Value","Control","Widebody","Best Budget","$99","Popular","Top Rated","Monarch","Jelly Bean"]},
 {id:874,brand:"11SIX24",model:"Pegasus Jelly Bean Widebody",year:2025,surface:"CFC Carbon",shape:"Widebody",tags:["Value","Control","Widebody","Best Budget","$99","Popular","New","Jelly Bean"]},
-// Harachi/Hurache series (elongated power)
 {id:875,brand:"11SIX24",model:"Harachi Control + Elongated",year:2024,surface:"T800 Carbon",shape:"Elongated",tags:["Control","Elongated","Pro","New","Harachi"]},
 {id:876,brand:"11SIX24",model:"Hurache X Power Elongated",year:2024,surface:"HexGrit CF",shape:"Elongated",tags:["Power","Elongated","Pro","New","Hurache"]},
-
-// ═══ MISSING JOOLA MODELS ═══
-{id:877,brand:"JOOLA",model:"Magnus Pro V 16mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Pro-V","Pro","High Grit","Control","New"]},
+{id:877,brand:"JOOLA",model:"Magnus Pro V 16mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro-V","Pro","High Grit","Control","New"]},
 {id:878,brand:"JOOLA",model:"Simone Jardim Hyperion CGS 14mm",year:2022,surface:"T700 CGS Carbon",shape:"Standard",tags:["Gen-1","Pro","Spin","Signature","Simone Jardim"]},
-
-// ═══ MISSING SELKIRK MODELS ═══
-// Everglade colorway series 2025
 {id:879,brand:"Selkirk",model:"LABS Boomstik Everglade Elongated 14mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["LABS","Pro","Foam","Power","New","Everglade","Limited"]},
 {id:880,brand:"Selkirk",model:"LABS Boomstik Everglade Elongated 16mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["LABS","Pro","Foam","Power","Control","New","Everglade","Limited"]},
-// Vanguard Power Air Max
 {id:881,brand:"Selkirk",model:"Vanguard Power Air Max 14mm",year:2023,surface:"Carbon Fiber",shape:"Widebody",tags:["Vanguard","Pro","Power","Widebody","USA Made"]},
-
-// ═══ MISSING ENGAGE MODELS ═══
 {id:882,brand:"Engage",model:"Poach Infinity 6.0 Standard",year:2020,surface:"Textured",shape:"Standard",tags:["Classic","Mid-range","USA Made","Poach"]},
 {id:883,brand:"Engage",model:"Poach Infinity 6.0 Elongated",year:2020,surface:"Textured",shape:"Elongated",tags:["Classic","Mid-range","USA Made","Elongated","Poach"]},
 {id:884,brand:"Engage",model:"Encore MX 6.0 XS",year:2021,surface:"Textured",shape:"Standard",tags:["Mid-range","USA Made","XS","Compact"]},
 {id:885,brand:"Engage",model:"Pursuit EX 6.0 Standard",year:2023,surface:"Textured",shape:"Standard",tags:["Pro","Power","USA Made"]},
-
-// ═══ MISSING PADDLETEK MODELS ═══
 {id:886,brand:"Paddletek",model:"Bantam EX-L Pro III Graphite",year:2022,surface:"Graphite",shape:"Standard",tags:["Classic","Pro","USA Made"]},
 {id:887,brand:"Paddletek",model:"Phoenix Pro Carbon",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Power","USA Made","Carbon","Phoenix"]},
-
-// ═══ MISSING GEARBOX MODELS ═══
 {id:888,brand:"Gearbox",model:"CX6E Elongated Carbon",year:2019,surface:"Carbon Fiber",shape:"Elongated",tags:["Edgeless","SST","Control","Elongated","CX6"]},
 {id:889,brand:"Gearbox",model:"Pro4 Control Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Edgeless","Control"]},
 {id:890,brand:"Gearbox",model:"Pro4 Power Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Edgeless","Power"]},
-
-// ═══ MISSING PROLITE MODELS ═══
 {id:891,brand:"PROLITE",model:"Titan Pro Black 14mm Elongated",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["USA Made","Pro","Power","Elongated","Titan"]},
 {id:892,brand:"PROLITE",model:"Forge Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["USA Made","Power","Elongated","New","Forge"]},
 {id:893,brand:"PROLITE",model:"Rebel Blackout Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["USA Made","Power","Elongated","New","Rebel","Limited"]},
-
-// ═══ MISSING SIX ZERO MODELS ═══
 {id:894,brand:"Six Zero",model:"Ruby Power 14mm Standard",year:2024,surface:"Kevlar CF",shape:"Standard",tags:["Power","Kevlar","Popular","Ruby"]},
 {id:895,brand:"Six Zero",model:"Double Black Diamond Power 14mm",year:2025,surface:"Raw Carbon",shape:"Hybrid",tags:["Power","Thermoformed","New","Hybrid","DBD"]},
-
-// ═══ MISSING HEAD MODELS ═══
 {id:896,brand:"HEAD",model:"Gravity Tour Composite",year:2022,surface:"Composite",shape:"Elongated",tags:["Mid-range","Elongated","Classic"]},
 {id:897,brand:"HEAD",model:"Flash Pro 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Power","New","Carbon","Flash"]},
-
-// ═══ MISSING GAMMA MODELS ═══
 {id:898,brand:"Gamma",model:"RZR 2 Control 16mm Elongated",year:2024,surface:"Textured",shape:"Elongated",tags:["Control","Elongated","USA Made"]},
 {id:899,brand:"Gamma",model:"Voltage 3.0 Standard",year:2021,surface:"Textured",shape:"Standard",tags:["Mid-range","USA Made"]},
-
-// ═══ MISSING FRANKLIN MODELS ═══
 {id:900,brand:"Franklin",model:"FS Tour Dynasty 16mm Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Control","Carbon","Tour","Elongated"]},
 {id:901,brand:"Franklin",model:"C45° Anna Leigh Waters Elongated 12mm",year:2025,surface:"T700 45° Carbon",shape:"Elongated",tags:["C45","Pro","Signature","Foam","Power","New","Anna Leigh Waters"]},
-
-// ═══ MISSING RONBUS MODELS ═══
 {id:902,brand:"Ronbus",model:"Nova Carbon Grid 14mm",year:2024,surface:"Carbon Grid",shape:"Standard",tags:["Power","Carbon Grid","Unique","New","Nova"]},
 {id:903,brand:"Ronbus",model:"Nova Carbon Grid 16mm",year:2024,surface:"Carbon Grid",shape:"Standard",tags:["Control","Carbon Grid","Unique","New","Nova"]},
-
-// ═══ MISSING VATIC PRO MODELS ═══
 {id:904,brand:"Vatic Pro",model:"PRISM V7 14mm Standard",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Power","Value","PRISM","V7"]},
 {id:905,brand:"Vatic Pro",model:"Saga V7 14mm Long Handle",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Value","New","Long Handle","Saga","V7"]},
-
-// ═══ MISSING HOLBROOK MODELS ═══
 {id:906,brand:"Holbrook",model:"Origin Widebody 14mm",year:2024,surface:"Carbon Fiber",shape:"Widebody",tags:["Power","Aramid Fiber","Widebody","New"]},
 {id:907,brand:"Holbrook",model:"ARMA Elongated 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Gen-3","Power","New","ARMA","Elongated"]},
-
-// ═══ MISSING DIADEM MODELS ═══
 {id:908,brand:"Diadem",model:"Warrior BluCore 16mm Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Control","EPP Foam Core","Elongated","Carbon"]},
 {id:909,brand:"Diadem",model:"Icon V3 Standard",year:2022,surface:"Textured",shape:"Standard",tags:["Mid-range"]},
-
-// ═══ MISSING PICKLEBALL APES MODELS ═══
 {id:910,brand:"Pickleball Apes",model:"Pro Line Energy S 14mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Spin","Control","New","Energy","Plush"]},
 {id:911,brand:"Pickleball Apes",model:"Pro Line Energy S 16mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Control","New","Energy","Plush"]},
-
-// ═══ MISSING BABOLAT MODELS ═══
 {id:912,brand:"Babolat",model:"Air Viper 12mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","Thin Core","New","VIPER"]},
 {id:913,brand:"Babolat",model:"Technical VIPER Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Thermoformed","Elongated","New","VIPER"]},
-
-// ═══ MISSING VOLAIR MODELS ═══
 {id:914,brand:"Volair",model:"Mach 1 Max Widebody",year:2022,surface:"Carbon Fiber",shape:"Widebody",tags:["Widebody","Mid-range","Mach 1"]},
 {id:915,brand:"Volair",model:"Mach 2 Control Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Control","New","Mach 2"]},
-
-// ═══ MISSING PROTON MODELS ═══
 {id:916,brand:"Proton",model:"Series One 12mm Standard",year:2024,surface:"Aerospace CF",shape:"Standard",tags:["Pro","Power","Thin Core","Thermoformed","Series-1"]},
 {id:917,brand:"Proton",model:"Project Peacock Elongated 12mm",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Pro","Atomic Foam Core","Power","New","UPA-A","Peacock"]},
-
-// ═══ MISSING SIXZERO MODELS ═══
 {id:918,brand:"Six Zero",model:"DBD Control 14mm Standard",year:2024,surface:"Raw Carbon",shape:"Hybrid",tags:["Control","Popular","Hybrid","DBD"]},
-
-// ═══ MISSING WILSON MODELS ═══
 {id:919,brand:"Wilson",model:"Blade Pro 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Control","New","Carbon"]},
 {id:920,brand:"Wilson",model:"Tempest Pro Elongated",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","Elongated","Carbon"]},
-
-// ═══ MISSING ADIDAS MODELS ═══
 {id:921,brand:"adidas",model:"ADIPOWER CTRL Elongated",year:2023,surface:"Carbon Aluminized",shape:"Elongated",tags:["Pro","Control","Elongated","ADIPOWER"]},
 {id:922,brand:"adidas",model:"METALBONE Foam CTRL 16mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Control","Foam","New","METALBONE"]},
-
-// ═══ MISSING RPM MODELS ═══
 {id:923,brand:"RPM",model:"Friction Pro Elongated 2.0",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Spin","Updated","New","Elongated","Raw Carbon"]},
-
-// ═══ MISSING WARPING POINT MODELS ═══
 {id:924,brand:"Warping Point",model:"Neon Pro 14mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Value","Power","Pro","New","Neon"]},
 {id:925,brand:"Warping Point",model:"Neon Pro 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Value","Control","Pro","New","Neon"]},
-
-// ═══ MISSING LUZZ MODELS ═══
 {id:926,brand:"Luzz",model:"Pro 4 Inferno Long Handle",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Foam","Gen-4","MPP Core","Power","New","Long Handle","Inferno"]},
-
-// ═══ MISSING CRBN MODELS ═══
 {id:927,brand:"CRBN",model:"CRBN³ TruFoam Genesis Elongated LH",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen-4","TruFoam","Genesis","Long Handle","Control"]},
-
-// ═══ MISSING FLiK MODELS ═══
 {id:928,brand:"FLiK",model:"F3 Widebody 16mm",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Triple Foam Core","Control","New","Widebody","F3"]},
-
-// ═══ MISSING FRIDAY MODELS ═══
 {id:929,brand:"Friday",model:"Aura Elongated 14mm",year:2026,surface:"Carbon Fiber",shape:"Elongated",tags:["Foam Core","New 2026","Power","Elongated","Carbon"]},
-
-// ═══ MISSING PROKENNEX MODELS ═══
 {id:930,brand:"ProKennex",model:"Kinetic Energy 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["New","Control","Joint-Friendly","Carbon"]},
 {id:931,brand:"ProKennex",model:"Ovation Speed Pro",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Speed","Spin","Joint-Friendly","Carbon"]},
-
-// ═══ MISSING LEGACY PRO MODELS ═══
 {id:932,brand:"Legacy Pro",model:"Legacy Pro Elongated 16mm",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Control","Elongated","New"]},
-
-// ═══ MISSING ELECTRUM MODELS ═══
 {id:933,brand:"Electrum",model:"Model E Pro XL Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","Elongated","Edgeless","New"]},
-
-// ═══ MISSING VULCAN MODELS ═══
 {id:934,brand:"Vulcan",model:"V510 Power Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Carbon"]},
 {id:935,brand:"Vulcan",model:"V-Series Model 4 14mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","New","UPA-A"]},
-
-
-// ═══ CHORUS PICKLEBALL ═══
-// Founded by Matt Cox. 18K cubic carbon fiber triaxial weave surface. USA-based indie brand.
 {id:936,brand:"Chorus",model:"Shapeshifter SX Standard 16mm",year:2023,surface:"18K Cubic Carbon",shape:"Standard",tags:["Control","Spin","18K Carbon","Gold Award","All-Court","Triaxial Weave","Shapeshifter"]},
 {id:937,brand:"Chorus",model:"Shapeshifter EX Elongated 16mm",year:2023,surface:"18K Cubic Carbon",shape:"Elongated",tags:["Control","Spin","18K Carbon","All-Court","Elongated","Shapeshifter"]},
 {id:938,brand:"Chorus",model:"Shapeshifter HX Hybrid 16mm",year:2024,surface:"18K Cubic Carbon",shape:"Hybrid",tags:["Control","Spin","18K Carbon","All-Court","Hybrid","Gold Award","Shapeshifter"]},
@@ -1130,9 +942,6 @@ const PADDLES=[
 {id:944,brand:"Chorus",model:"Supercourt EX Elongated 16mm",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Value","All-Court","Balanced","Elongated","Supercourt"]},
 {id:945,brand:"Chorus",model:"Supercourt SX Standard 16mm",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Value","All-Court","Balanced","Supercourt"]},
 {id:946,brand:"Chorus",model:"Fire HX Hybrid 16mm",year:2023,surface:"CF+Fiberglass",shape:"Hybrid",tags:["Power","Pop","Hybrid","Fire"]},
-
-// ═══ STANDOUT PICKLEBALL ═══
-// Australian brand, aerospace engineers, Somer Dalla-Bona signature. Global distributors.
 {id:947,brand:"Standout",model:"CF3 Control 14mm Standard",year:2023,surface:"T700 Carbon",shape:"Standard",tags:["Control","T700","Spin","Australian","CF3"]},
 {id:948,brand:"Standout",model:"CF3 Control 16mm Standard",year:2023,surface:"T700 Carbon",shape:"Standard",tags:["Control","T700","Spin","Australian","CF3"]},
 {id:949,brand:"Standout",model:"CF3 Power 14mm Elongated",year:2023,surface:"T700 Carbon",shape:"Elongated",tags:["Power","T700","Australian","Elongated","CF3"]},
@@ -1140,9 +949,6 @@ const PADDLES=[
 {id:951,brand:"Standout",model:"CF4 Control Standard 16mm",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Control","Pulse Core","Foam","Australian","CF4"]},
 {id:952,brand:"Standout",model:"SDB CF4 Somer Dalla-Bona Signature",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Pro","Signature","Power","Foam","Australian","New","CF4","SDB"]},
 {id:953,brand:"Standout",model:"CF5 Power Elongated 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Power","Full Foam","Australian","New","CF5"]},
-
-// ═══ LI-NING ═══
-// Chinese sportswear giant (Olympics badminton/basketball). Four paddle series.
 {id:954,brand:"Li-Ning",model:"Drive 500 Graphite Standard",year:2022,surface:"Graphite",shape:"Standard",tags:["Mid-range","Drive Series","Competition","China","Graphite"]},
 {id:955,brand:"Li-Ning",model:"Drive 700 Carbon Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Drive Series","Competition","China"]},
 {id:956,brand:"Li-Ning",model:"Boost 400 Composite Standard",year:2022,surface:"Composite",shape:"Standard",tags:["Mid-range","Boost Series","China","Colorful"]},
@@ -1153,346 +959,236 @@ const PADDLES=[
 {id:961,brand:"Li-Ning",model:"Drive Graphite 600 Standard",year:2023,surface:"Graphite",shape:"Standard",tags:["Mid-range","Drive Series","China"]},
 {id:962,brand:"Li-Ning",model:"AERO-P Carbon Standard 14mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Power","Pro","China","New","AERO-P"]},
 {id:963,brand:"Li-Ning",model:"AERO-P Carbon Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Pro","China","New","Elongated","AERO-P"]},
-
-// ═══ PEAK SPORT ═══
-// Chinese sportswear brand (NBA footwear partner). Entering pickleball 2024.
 {id:964,brand:"PEAK",model:"Sport Pro Carbon 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","China","Power","New","PEAK"]},
 {id:965,brand:"PEAK",model:"Sport Control 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","China","New","PEAK"]},
 {id:966,brand:"PEAK",model:"Classic Composite Standard",year:2023,surface:"Composite",shape:"Standard",tags:["Beginner","China","Value","PEAK"]},
-
-// ═══ WIKA PICKLEBALL ═══
-// European brand (German-rooted), expanding globally 2024-2025
 {id:967,brand:"Wika",model:"Strike Pro 14mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro","European","Power","New","Strike"]},
 {id:968,brand:"Wika",model:"Strike Control 16mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Control","European","New","Strike"]},
 {id:969,brand:"Wika",model:"Force Elongated 14mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Power","European","New","Elongated","Force"]},
-
-// ═══ SYPIK ═══
-// Newer brand, UPA-A approvals, competitive pricing
 {id:970,brand:"Sypik",model:"S1 Pro 14mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Power","UPA-A","New","S1"]},
 {id:971,brand:"Sypik",model:"S1 Pro 16mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Control","UPA-A","New","S1"]},
 {id:972,brand:"Sypik",model:"S2 Elongated 14mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Power","UPA-A","New","Elongated","S2"]},
-
-// ═══ ACE PICKLEBALL ═══
-// Value-focused brand, USAP approved, popular on Amazon
 {id:973,brand:"Ace",model:"Pro Carbon 14mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Value","USAP","Power","Popular","Pro"]},
 {id:974,brand:"Ace",model:"Pro Carbon 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Value","USAP","Control","Pro"]},
 {id:975,brand:"Ace",model:"Kingpin Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Value","Power","Elongated","New","Kingpin"]},
 {id:976,brand:"Ace",model:"Kingpin 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Value","Control","New","Kingpin"]},
-
-// ═══ NETTIE PICKLEBALL ═══
-// Women-founded US brand. Approachable designs, beginner-intermediate focus.
 {id:977,brand:"Nettie",model:"Duchess Composite Standard",year:2022,surface:"Composite",shape:"Standard",tags:["Beginner","Women-Founded","USA","Popular","Duchess"]},
 {id:978,brand:"Nettie",model:"Duchess Graphite Standard",year:2022,surface:"Graphite",shape:"Standard",tags:["Beginner","Women-Founded","USA","Duchess"]},
 {id:979,brand:"Nettie",model:"Princess Carbon 14mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Women-Founded","USA","Carbon","Princess"]},
 {id:980,brand:"Nettie",model:"Queen Carbon 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Women-Founded","USA","Control","New","Carbon","Queen"]},
-
-// ═══ PCKL PICKLEBALL ═══
-// Entry-level brand, USAP approved, widely available
 {id:981,brand:"PCKL",model:"Launch Series Standard",year:2022,surface:"Fiberglass",shape:"Standard",tags:["Beginner","Value","USAP","Launch"]},
 {id:982,brand:"PCKL",model:"Pro Series Carbon 14mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Value","USAP","Carbon","Pro"]},
 {id:983,brand:"PCKL",model:"Speed Standard Graphite",year:2023,surface:"Graphite",shape:"Standard",tags:["Mid-range","Speed","USAP","Speed"]},
 {id:984,brand:"PCKL",model:"Eon Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","USAP","New","Eon"]},
-
-// ═══ KIWI LABS ═══
-// New Zealand / Pacific brand, foam core specialist
 {id:985,brand:"Kiwi Labs",model:"Pro Carbon 14mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Power","New Zealand","New"]},
 {id:986,brand:"Kiwi Labs",model:"Pro Carbon 16mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Control","New Zealand","New"]},
 {id:987,brand:"Kiwi Labs",model:"Foam Core 14mm Elongated",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Foam","Gen-4","New Zealand","New","Elongated"]},
-
-// ═══ RELOAD PICKLEBALL ═══
-// Canadian brand with focus on accessibility
 {id:988,brand:"Reload",model:"Standard 14mm Carbon",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Power","Canadian","Value","New"]},
 {id:989,brand:"Reload",model:"Control 16mm Carbon",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Control","Canadian","Value","New"]},
 {id:990,brand:"Reload",model:"Elongated 14mm Carbon",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Power","Canadian","New","Elongated"]},
-
-// ═══ OWL PICKLEBALL ═══
-// Niche US brand, quiet paddle technology focus
 {id:991,brand:"OWL",model:"Graphite Standard",year:2022,surface:"Graphite",shape:"Standard",tags:["Quiet","Mid-range","Noise Reduction"]},
 {id:992,brand:"OWL",model:"Carbon 14mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Quiet","Power","Noise Reduction","Carbon"]},
 {id:993,brand:"OWL",model:"Carbon Control 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Quiet","Control","Noise Reduction","New","Carbon"]},
-
-// ═══ CHORUS FIRE & SUPERCOURT (additional missing) ═══
 {id:994,brand:"Chorus",model:"Fire EX Elongated 16mm",year:2024,surface:"CF+Fiberglass",shape:"Elongated",tags:["Power","Pop","Elongated","New","Fire"]},
 {id:995,brand:"Chorus",model:"Fire SX Standard 16mm",year:2024,surface:"CF+Fiberglass",shape:"Standard",tags:["Power","Pop","New","Fire"]},
-
-// ═══ MISSING JOOLA MODELS ═══
-// JOOLA Mod TA stopgap 2024 (Gen 3 delisting workaround)
 {id:996,brand:"JOOLA",model:"Perseus Mod TA 15mm Elongated",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Pro","Mod TA","Stopgap","Tournament","Ben Johns"]},
 {id:997,brand:"JOOLA",model:"Hyperion Mod TA 15mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Mod TA","Stopgap","Tournament"]},
 {id:998,brand:"JOOLA",model:"Scorpeus Mod TA 15mm Widebody",year:2024,surface:"T700 Carbon",shape:"Widebody",tags:["Pro","Mod TA","Stopgap","Tournament","Collin Johns"]},
-// JOOLA C2 line missing models
 {id:999,brand:"JOOLA",model:"Hyperion C2 CFS 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["C2","Intermediate","Control","Carbon-Flex5","Reactive Core"]},
 {id:1000,brand:"JOOLA",model:"Hyperion C2 CFS 14mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["C2","Intermediate","Power","Carbon-Flex5"]},
-
-// ═══ MISSING SELKIRK MODELS ═══
 {id:1001,brand:"Selkirk",model:"AMPED S2 FiberFlex Widebody",year:2018,surface:"FiberFlex",shape:"Widebody",tags:["AMPED","Classic","Widebody","USA Made"]},
 {id:1002,brand:"Selkirk",model:"LABS Project 001",year:2021,surface:"InfiniGrit",shape:"Standard",tags:["LABS","First LABS","Collector","USA Made"]},
 {id:1003,brand:"Selkirk",model:"SLK Halo XL 14mm Elongated",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["SLK","Power","Value","Elongated","USA Made"]},
 {id:1004,brand:"Selkirk",model:"SLK Neo Carbon 16mm",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["SLK","Mid-range","New","USA Made"]},
-
-// ═══ MISSING ENGAGE MODELS ═══
 {id:1005,brand:"Engage",model:"Encore 16",year:2016,surface:"Textured",shape:"Standard",tags:["Classic","USA Made","16mm"]},
 {id:1006,brand:"Engage",model:"Elite Pro Elongated",year:2019,surface:"Textured",shape:"Elongated",tags:["Classic","Pro","Elongated","USA Made"]},
 {id:1007,brand:"Engage",model:"Poach Icon Standard",year:2022,surface:"Textured",shape:"Standard",tags:["Mid-range","USA Made","Poach"]},
 {id:1008,brand:"Engage",model:"Pursuit Pro 6.0 XS Standard",year:2023,surface:"Textured",shape:"Standard",tags:["Pro","Control","XS Handle","USA Made"]},
-
-// ═══ MISSING GEARBOX MODELS ═══
 {id:1009,brand:"Gearbox",model:"Pro4 Control Elongated",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Edgeless","Control","Elongated"]},
 {id:1010,brand:"Gearbox",model:"Pro4 Power Elongated",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Edgeless","Power","Elongated"]},
 {id:1011,brand:"Gearbox",model:"CX14H Control Standard",year:2021,surface:"3K Carbon",shape:"Standard",tags:["Control","Edgeless","SST","CX14"]},
-
-// ═══ MISSING PADDLETEK MODELS ═══
 {id:1012,brand:"Paddletek",model:"Bantam TS-5 Pro Graphite",year:2018,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made"]},
 {id:1013,brand:"Paddletek",model:"Bantam EX-L Sport",year:2019,surface:"Fiberglass",shape:"Standard",tags:["Classic","Beginner","USA Made"]},
 {id:1014,brand:"Paddletek",model:"Tempest Reach Elongated",year:2020,surface:"Graphite",shape:"Elongated",tags:["Classic","Elongated","USA Made"]},
 {id:1015,brand:"Paddletek",model:"Bantam TKO-CX 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Pro","Control","USA Made","TKO","New"]},
-
-// ═══ MISSING SIX ZERO MODELS ═══
 {id:1016,brand:"Six Zero",model:"Emerald 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Mid-range","Carbon"]},
 {id:1017,brand:"Six Zero",model:"Ruby Kevlar 16mm Standard",year:2024,surface:"Kevlar CF",shape:"Standard",tags:["Control","Kevlar","Mid-range","Ruby"]},
 {id:1018,brand:"Six Zero",model:"Coral Power 14mm Elongated",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Spin","New","Elongated","Raw Carbon","Coral"]},
-
-// ═══ MISSING PROLITE MODELS ═══
 {id:1019,brand:"PROLITE",model:"Rebel PowerSpin Elongated",year:2021,surface:"Carbon Fiber",shape:"Elongated",tags:["USA Made","Spin","Elongated","Rebel"]},
 {id:1020,brand:"PROLITE",model:"Titan Pro Widebody",year:2022,surface:"Carbon Fiber",shape:"Widebody",tags:["USA Made","Power","Widebody","Titan"]},
 {id:1021,brand:"PROLITE",model:"Recon Power Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["USA Made","Power","New","Elongated","Recon"]},
-
-// ═══ MISSING VATIC PRO MODELS ═══
 {id:1022,brand:"Vatic Pro",model:"PRISM Flash Elongated 14mm",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Value","Elongated","PRISM"]},
 {id:1023,brand:"Vatic Pro",model:"Saga V7 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Control","Value","New","Saga","V7"]},
 {id:1024,brand:"Vatic Pro",model:"Maximus Elongated 14mm",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Value","Gen 1.5","New","Elongated"]},
-
-// ═══ MISSING PROTON MODELS ═══
 {id:1025,brand:"Proton",model:"Series Two 12mm Standard",year:2024,surface:"Aerospace CF",shape:"Standard",tags:["Pro","Power","Thin Core","Thermoformed","Series-2"]},
 {id:1026,brand:"Proton",model:"ERA Elongated 14mm",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Pro","Power","New","Elongated","ERA"]},
-
-// ═══ MISSING HONOLULU MODELS ═══
 {id:1027,brand:"Honolulu",model:"J2K XL Elongated",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Elongated","All-Court","Carbon"]},
 {id:1028,brand:"Honolulu",model:"J5 Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","All-Court","J5"]},
-
-// ═══ MISSING HEAD MODELS ═══
 {id:1029,brand:"HEAD",model:"Gravity Speed 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Speed","Power","New","Carbon"]},
 {id:1030,brand:"HEAD",model:"Extreme Elite 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Mid-range","Control","Carbon"]},
 {id:1031,brand:"HEAD",model:"Radical XL Elongated",year:2022,surface:"Composite",shape:"Elongated",tags:["Mid-range","Elongated","Classic"]},
-
-// ═══ MISSING GAMMA MODELS ═══
 {id:1032,brand:"Gamma",model:"Airbender 2.0 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Control","USA Made","New","Airbender"]},
 {id:1033,brand:"Gamma",model:"Velocity 2.0 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Power","USA Made","New","Velocity"]},
-
-// ═══ MISSING FRANKLIN MODELS ═══
 {id:1034,brand:"Franklin",model:"FS Carbon Widebody",year:2023,surface:"Carbon Fiber",shape:"Widebody",tags:["Mid-range","Forgiveness","Carbon","Widebody"]},
 {id:1035,brand:"Franklin",model:"C45° Widebody 16mm",year:2025,surface:"T700 45° Carbon",shape:"Widebody",tags:["C45","Pro","Foam","Control","Forgiveness","New","USAP"]},
-
-// ═══ MISSING BABOLAT MODELS ═══
 {id:1036,brand:"Babolat",model:"Technical VIPER Widebody 14mm",year:2024,surface:"Carbon Fiber",shape:"Widebody",tags:["Pro","Thermoformed","Forgiveness","Widebody","VIPER"]},
 {id:1037,brand:"Babolat",model:"XCEL Elongated Carbon",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Elongated","Carbon","XCEL"]},
-
-// ═══ MISSING VULCAN MODELS ═══
 {id:1038,brand:"Vulcan",model:"V-Series Model 5 Elongated 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","New","UPA-A","Elongated"]},
 {id:1039,brand:"Vulcan",model:"V520 Elongated Carbon",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Control","Elongated","New","Carbon"]},
-
-// ═══ MISSING HOLBROOK MODELS ═══
 {id:1040,brand:"Holbrook",model:"ARMA Widebody 14mm",year:2025,surface:"Carbon Fiber",shape:"Widebody",tags:["Pro","Gen-3","Power","New","ARMA","Widebody"]},
 {id:1041,brand:"Holbrook",model:"Fuze Widebody 14mm",year:2025,surface:"Aramid+CF",shape:"Widebody",tags:["Foam","Widebody","New","Fuze"]},
-
-// ═══ MISSING BREAD & BUTTER MODELS ═══
 {id:1042,brand:"Bread & Butter",model:"Filth Widebody 16mm",year:2025,surface:"Carbon Fiber",shape:"Widebody",tags:["Control","Pro","Foam","New","Widebody","Filth"]},
 {id:1043,brand:"Bread & Butter",model:"Loco 2.0 14mm Elongated",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Updated","Foam","New","Elongated","Loco"]},
 {id:1044,brand:"Bread & Butter",model:"Shogun Elongated CF 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","New","Elongated","Shogun"]},
-
-// ═══ MISSING DIADEM MODELS ═══
 {id:1045,brand:"Diadem",model:"Warrior BluCore Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","EPP Foam Core","Elongated","Carbon"]},
 {id:1046,brand:"Diadem",model:"Warrior CFS 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Control","New","Carbon","CFS"]},
-
-// ═══ MISSING RONBUS MODELS ═══
 {id:1047,brand:"Ronbus",model:"Ripple Standard V2 16mm",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Control","New","Popular","Ripple"]},
 {id:1048,brand:"Ronbus",model:"Nova Elongated 14mm",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Elongated","Nova"]},
 {id:1049,brand:"Ronbus",model:"Quanta R6 Standard 16mm",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Foam","Gen-4","Value","New","Quanta"]},
-
-// ═══ MISSING ENHANCE MODELS ═══
 {id:1050,brand:"Enhance",model:"Gen 4.5 Hybrid 14mm",year:2025,surface:"Carbon Fiber",shape:"Hybrid",tags:["Foam","Gen-4.5","Hybrid","New","365-Day Warranty"]},
 {id:1051,brand:"Enhance",model:"Gen 4.5 Widebody 16mm",year:2025,surface:"Carbon Fiber",shape:"Widebody",tags:["Foam","Gen-4.5","Control","Widebody","New"]},
-
-// ═══ MISSING THRIVE MODELS ═══
 {id:1052,brand:"Thrive",model:"Project Fury Elongated 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Foam","New","Elongated","Fury"]},
 {id:1053,brand:"Thrive",model:"Azul Elongated 14mm Carbon-Kevlar",year:2025,surface:"Carbon Kevlar",shape:"Elongated",tags:["Power","Elongated","New","Unique","Kevlar"]},
-
-// ═══ MISSING GRUVN MODELS ═══
 {id:1054,brand:"Gruvn",model:"RAW-14S Standard",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Power","Raw Carbon"]},
 {id:1055,brand:"Gruvn",model:"LAZR Pro Full Foam Elongated",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Foam","Power","New","Elongated","Raw Carbon"]},
-
-// ═══ MISSING TMPR MODELS ═══
 {id:1056,brand:"TMPR",model:"Ascend Pro Max Elongated",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","New","Elongated"]},
 {id:1057,brand:"TMPR",model:"Quantum 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","New","Quantum"]},
-
-// ═══ MISSING LEGACY PRO MODELS ═══
 {id:1058,brand:"Legacy Pro",model:"Legacy Pro 3.0 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Control","New"]},
 {id:1059,brand:"Legacy Pro",model:"Legacy Pro Hybrid 14mm",year:2025,surface:"Raw Carbon",shape:"Hybrid",tags:["Power","Hybrid","New"]},
-
-// ═══ MISSING RPM MODELS ═══
 {id:1060,brand:"RPM",model:"Friction Pro Widebody 16mm",year:2025,surface:"Raw Carbon",shape:"Widebody",tags:["Spin","Control","Widebody","New","Raw Carbon"]},
 {id:1061,brand:"RPM",model:"RPM 135 14mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Power","New","Raw Carbon"]},
-
-// ═══ MISSING ADIDAS MODELS ═══
 {id:1062,brand:"adidas",model:"METALBONE Carbon ATTK Elongated",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","Foam","New","Elongated","METALBONE"]},
 {id:1063,brand:"adidas",model:"Drive Elongated",year:2022,surface:"Carbon 3K",shape:"Elongated",tags:["Beginner","Value","Elongated"]},
-
-// ═══ MISSING WILSON MODELS ═══
 {id:1064,brand:"Wilson",model:"Blade Pro Elongated 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","New","Elongated","Carbon"]},
 {id:1065,brand:"Wilson",model:"Ultra Tour Composite",year:2020,surface:"Composite",shape:"Standard",tags:["Mid-range","Classic"]},
-
-// ═══ MISSING ONIX MODELS ═══
 {id:1066,brand:"Onix",model:"Stryker 4 Composite Elongated",year:2021,surface:"Composite",shape:"Elongated",tags:["Beginner","Value","Elongated"]},
 {id:1067,brand:"Onix",model:"Recruit Nomex Elite",year:2017,surface:"Composite",shape:"Standard",tags:["Classic","Nomex Core","All-Court"]},
-
-// ═══ MISSING PICKLEBALL APES MODELS ═══
 {id:1068,brand:"Pickleball Apes",model:"Riptide 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Control","New"]},
 {id:1069,brand:"Pickleball Apes",model:"Pulse XL Elongated 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Control","Elongated","New","Pulse"]},
-
-// ═══ MISSING AIREO MODELS ═══
 {id:1070,brand:"Aireo",model:"Cyclone 14mm Standard",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Power","USAP","Cyclone"]},
 {id:1071,brand:"Aireo",model:"Falcon Pro O14 Standard",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Power","USAP","New","Falcon"]},
-
-// ═══ MISSING LUZZ MODELS ═══
 {id:1072,brand:"Luzz",model:"Pro 4 Inferno Elongated",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Foam","Gen-4","MPP Core","Power","New","Elongated","Inferno"]},
 {id:1073,brand:"Luzz",model:"Pro 5 Standard 14mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen-5","New","Power","Pro"]},
-
-// ═══ MISSING FLiK MODELS ═══
 {id:1074,brand:"FLiK",model:"F3 Widebody 14mm",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Triple Foam Core","Power","New","Widebody","F3"]},
 {id:1075,brand:"FLiK",model:"F2 Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Elongated","F2","New"]},
-
-// ═══ MISSING DYNASTY MODELS ═══
 {id:1076,brand:"Dynasty",model:"Legend Future Elongated 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen-4.5","Full Foam","4-Layer","New","Elongated","Legend"]},
 {id:1077,brand:"Dynasty",model:"Classic Standard 14mm",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Full Foam","Power","Lifetime Warranty","USAP","Classic"]},
-
-// ═══ MISSING VERSIX MODELS ═══
 {id:1078,brand:"Versix",model:"RAW Widebody 15mm",year:2024,surface:"Raw Carbon",shape:"Widebody",tags:["Control","Spin","Value","Widebody","RAW"]},
 {id:1079,brand:"Versix",model:"Vector Max Elongated 15mm",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Pro","Power","Foam","New","Elongated","Vector"]},
-
-// ═══ MISSING NEONIC MODELS ═══
 {id:1080,brand:"Neonic",model:"Force Elongated 16mm",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Power","Thermoformed","Elongated","Force"]},
 {id:1081,brand:"Neonic",model:"Flow Elongated 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Control","Foam Injected","Elongated","New","Flow"]},
-
-// ═══ MISSING PIKKL MODELS ═══
 {id:1082,brand:"PIKKL",model:"Hurricane Pro 14mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Power","Thermoformed","New","Hurricane"]},
 {id:1083,brand:"PIKKL",model:"Hurricane Pro XL Elongated 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Control","Spin","New","Elongated","Hurricane"]},
-
-// ═══ MISSING CPX MODELS ═══
 {id:1084,brand:"CPX",model:"CPX Air Elongated 14mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Pro","Power","Thermoformed","New","Elongated"]},
 {id:1085,brand:"CPX",model:"CPX Ultra 16mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Control","PBCoR43","New"]},
-
-
-// ═══ NEW 2026 PADDLES (from USAP/UPA-A approval lists + manufacturer research) ═══
-
-// ── HONOLULU 2026 ──────────────────────────────────────────────
-// J3CR: USAP approved 2/4/2026
 {id:1086,brand:"Honolulu",model:"J3CR 16mm Standard",year:2026,surface:"Full Foam CF",shape:"Standard",tags:["Pro","Gen-4.5","Core Reactor","PowerFlex","New 2026","USAP"]},
-// J2CR LH: Long Handle variant
 {id:1087,brand:"Honolulu",model:"J2CR 16mm Long Handle",year:2026,surface:"Carbon Fiber",shape:"Hybrid",tags:["Pro","New 2026","Long Handle","UPA-A","J2CR","Core Reactor"]},
-// J2CR Crystal Blue Endurance Surface
 {id:1088,brand:"Honolulu",model:"J2CR Crystal Blue 16mm",year:2026,surface:"Crystal Blue CF",shape:"Hybrid",tags:["Pro","New 2026","Crystal Blue","UPA-A","J2CR"]},
-// J6CR H (Hybrid variant)
 {id:1089,brand:"Honolulu",model:"J6CR Hybrid 16mm",year:2026,surface:"Full Foam CF",shape:"Hybrid",tags:["Foam Core","New 2026","Power","UPA-A","Hybrid","J6CR"]},
-
-// ── ENGAGE 2026 ────────────────────────────────────────────────
-// ProFoam X2: UPA-A approved Jan 2026
 {id:1090,brand:"Engage",model:"ProFoam X2 16mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","ProFoam Core","Gen-4","New 2026","UPA-A","USA Made","X2"]},
 {id:1091,brand:"Engage",model:"ProFoam 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","ProFoam Core","Gen-4","Foam","USA Made"]},
-
-// ── FRANKLIN 2026 ──────────────────────────────────────────────
-// C45 Aurelius: USAP approved 3/5/2026 in 12.7mm, 14mm, 16mm
 {id:1092,brand:"Franklin",model:"C45° Aurelius 12.7mm Standard",year:2026,surface:"T700 45° Carbon",shape:"Standard",tags:["C45","Pro","Foam","Power","New 2026","USAP","Aurelius"]},
 {id:1093,brand:"Franklin",model:"C45° Aurelius 14mm Standard",year:2026,surface:"T700 45° Carbon",shape:"Standard",tags:["C45","Pro","Foam","Power","New 2026","USAP","Aurelius"]},
 {id:1094,brand:"Franklin",model:"C45° Aurelius 16mm Standard",year:2026,surface:"T700 45° Carbon",shape:"Standard",tags:["C45","Pro","Foam","Control","New 2026","USAP","Aurelius"]},
-// C45 Dynasty Megan Fudge: USAP approved 2/10/2026
 {id:1095,brand:"Franklin",model:"C45° Dynasty Megan Fudge 14mm",year:2026,surface:"T700 45° Carbon",shape:"Standard",tags:["C45","Pro","Signature","Foam","New 2026","USAP","Megan Fudge","Dynasty"]},
-// Signature Carbon E 16mm: approved 2/10/2026
 {id:1096,brand:"Franklin",model:"Signature Carbon E 16mm",year:2026,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","New 2026","USAP","Elongated"]},
-
-// ── ENHANCE 2026 ───────────────────────────────────────────────
-// EPP Turbo Widebody: USAP approved 2/27/2026
 {id:1097,brand:"Enhance",model:"EPP Turbo Widebody",year:2026,surface:"Carbon Fiber",shape:"Widebody",tags:["EPP Foam","Gen-4","New 2026","USAP","Widebody","Turbo"]},
-// MPP Turbo Elongated: USAP approved 2/12/2026
 {id:1098,brand:"Enhance",model:"MPP Turbo Elongated",year:2026,surface:"Carbon Fiber",shape:"Elongated",tags:["MPP Foam","Gen-4","New 2026","USAP","Elongated","Turbo","Popular"]},
-
-// ── SRIKEL (new brand — 2026 USAP approvals March 19) ──────────
 {id:1099,brand:"Srikel",model:"Aura Pro 14mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","New 2026","USAP","Foam","Aura"]},
 {id:1100,brand:"Srikel",model:"Power X Hybrid 14mm",year:2026,surface:"Carbon Fiber",shape:"Hybrid",tags:["Power","New 2026","USAP","Hybrid","DuraFoam","Power X"]},
 {id:1101,brand:"Srikel",model:"DuraFoam Standard 16mm",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Foam","New 2026","USAP","Control","DuraFoam"]},
-
-// ── RIZEN PICKLEBALL (new brand — 2026) ────────────────────────
 {id:1102,brand:"Rizen",model:"Ascent Elongated 16mm",year:2026,surface:"Carbon Fiber",shape:"Elongated",tags:["New 2026","USAP","Pro","Elongated","Ascent"]},
-
-// ── DOTS PICKLEBALL (new brand — 2026) ─────────────────────────
 {id:1103,brand:"Dots",model:"FURIA T700 14mm Standard",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["New 2026","USAP","Power","Furia"]},
 {id:1104,brand:"Dots",model:"DIVINA T700 16mm Standard",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["New 2026","USAP","Control","Divina"]},
-
-// ── AIREO 2026 EXPANSION ──────────────────────────────────────
-// Cyclone 10 (new model): UPA-A approved Jan 2026
 {id:1105,brand:"Aireo",model:"Cyclone 10 16mm Standard",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Power","PulseFoam Core","New 2026","UPA-A","Cyclone 10"]},
-// Titan Hawk Gen 3 (titanium surface)
 {id:1106,brand:"Aireo",model:"Titan Hawk Gen 3 Standard",year:2026,surface:"Titanium CF",shape:"Standard",tags:["Pro","Titanium Surface","Power","New 2026","Titan Hawk"]},
-
-// ── CPX 2026 ──────────────────────────────────────────────────
-// CPX Hyper: USAP approved 2/27/2026
 {id:1107,brand:"CPX",model:"CPX Hyper Standard",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Power","New 2026","USAP","Hyper"]},
-
-// ── PADDLETEK 2026 ─────────────────────────────────────────────
-// Talon: USAP approved 3/17/2026
 {id:1108,brand:"Paddletek",model:"Bantam Talon 16mm Standard",year:2026,surface:"Raw Carbon",shape:"Standard",tags:["Pro","New 2026","USAP","USA Made","Talon"]},
-
-// ── LI-NING 2026 ──────────────────────────────────────────────
-// Hyperpower HP90S/HP90X: UPA-A approved Jan 2026
 {id:1109,brand:"Li-Ning",model:"Hyperpower HP90S 14mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","China","New 2026","UPA-A","Hyperpower"]},
 {id:1110,brand:"Li-Ning",model:"Hyperpower HP90X 16mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Control","China","New 2026","UPA-A","Hyperpower"]},
-
-// ── DIADEM 2026 ────────────────────────────────────────────────
-// Edge BluCore Hybrid & Pro variants: UPA-A Jan 2026
 {id:1111,brand:"Diadem",model:"Edge BluCore Hybrid 14mm",year:2026,surface:"Carbon Fiber",shape:"Hybrid",tags:["EPP Foam Core","Hybrid","New 2026","UPA-A"]},
 {id:1112,brand:"Diadem",model:"Edge BluCore Pro 14mm",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","EPP Foam Core","New 2026","UPA-A"]},
 {id:1113,brand:"Diadem",model:"Edge BluCore 16mm Pro",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","EPP Foam Core","Control","New 2026","UPA-A"]},
-
-// ── SPARTUS 2026 ──────────────────────────────────────────────
-// P1 Elongated: USAP approved 3/16/2026
 {id:1114,brand:"Spartus",model:"P1 Elongated 16mm",year:2026,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","New 2026","USAP","Elongated","P1"]},
-
-// ── RPM 2026 ──────────────────────────────────────────────────
-// RPM Jade Elongated: UPA-A Jan 2026
 {id:1115,brand:"RPM",model:"Jade Elongated 16mm",year:2026,surface:"Raw Carbon",shape:"Elongated",tags:["Spin","Power","New 2026","UPA-A","Elongated","Jade"]},
-
-// ── LUZZ 2026 ─────────────────────────────────────────────────
-// Pro Blade 2: UPA-A Jan 2026
 {id:1116,brand:"Luzz",model:"Pro Blade 2 14mm Standard",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Power","Aero Speed","New 2026","UPA-A","Blade"]},
-
-// ── SELKIRK BOOMSTIK XL/WB 2026 ──────────────────────────────
-// Selkirk Boomstik new variants: UPA-A Jan 2026
 {id:1117,brand:"Selkirk",model:"LABS Boomstik Elongated 14mm V2",year:2026,surface:"BoomCore CF",shape:"Elongated",tags:["LABS","Pro","Foam","Power","New 2026","UPA-A","USA Made"]},
 {id:1118,brand:"Selkirk",model:"LABS Boomstik Widebody 16mm",year:2026,surface:"BoomCore CF",shape:"Widebody",tags:["LABS","Pro","Foam","Power","New 2026","UPA-A","Widebody","USA Made"]},
-
-// ── GRUVN 2026 FULL FOAM LINE ─────────────────────────────────
-// Multiple full foam models: Q1 2026 per PickleTip radar
 {id:1119,brand:"Gruvn",model:"Full Foam Standard 16mm",year:2026,surface:"Raw Carbon",shape:"Standard",tags:["Full Foam","Gen-4","New 2026","Power"]},
 {id:1120,brand:"Gruvn",model:"Full Foam Elongated 14mm",year:2026,surface:"Raw Carbon",shape:"Elongated",tags:["Full Foam","Gen-4","New 2026","Power","Elongated"]},
 {id:1121,brand:"Gruvn",model:"Full Foam Widebody 16mm",year:2026,surface:"Raw Carbon",shape:"Widebody",tags:["Full Foam","Gen-4","New 2026","Control","Widebody"]},
-
-// ── PICKLEBALL APES 2026 ──────────────────────────────────────
-// Joy S: early-December 2025 approval, Q1 2026 availability
 {id:1122,brand:"Pickleball Apes",model:"Joy S 14mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Control","Plush","New 2026","Joy"]},
-
-// ── JUNE PICKLEBALL (new brand — 2026) ────────────────────────
 {id:1123,brand:"June Pickleball",model:"VX-1 Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["New 2026","USAP","Power"]},
-
-// ── VETRA PICKLEBALL (new brand — 2026) ───────────────────────
 {id:1124,brand:"Vetra",model:"Project Halo Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["New 2026","USAP","Pro","Halo"]},
-
-// ── ENFLEXY (new brand — 2026) ────────────────────────────────
 {id:1125,brand:"Enflexy",model:"Mjolnir Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["New 2026","USAP","Power","Mjolnir"]},
-
-// ── CORE PRO (new brand — 2026) ───────────────────────────────
 {id:1126,brand:"Core Pro",model:"4G 16mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["New 2026","UPA-A","Control","4G"]},
-
-// ── ARRONAX (new brand — 2026) ────────────────────────────────
 {id:1127,brand:"Arronax",model:"KVL 0044 16mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["New 2026","UPA-A","Pro","Control","Stability"]},
+{id:1128,brand:"JOOLA",model:"Magnus Alpha 14mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Signature","Power","Tyson McGuffin","Alpha","High Grit","New","UPA-A"]},
+{id:1129,brand:"JOOLA",model:"Magnus Alpha 16mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Pro","Signature","Control","Tyson McGuffin","Alpha","High Grit","New","UPA-A"]},
+{id:1130,brand:"JOOLA",model:"Magnus Pro IV 14mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro-IV","Pro","Power","Thermoformed"]},
+{id:1131,brand:"JOOLA",model:"Tyson McGuffin Magnus 3S 16mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["3S","Pro","Signature","New","UPA-A","Tyson McGuffin","Magnus"]},
+{id:1132,brand:"JOOLA",model:"Simone Jardim Hyperion 3S 16mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["3S","Pro","Signature","New","UPA-A","Simone Jardim"]},
+{id:1133,brand:"JOOLA",model:"Agassi Pro IV 14mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Pro-IV","Pro","Signature","Thermoformed","Andre Agassi"]},
+{id:1134,brand:"JOOLA",model:"Collin Johns Scorpeus C2 16mm",year:2023,surface:"Carbon Fiber",shape:"Widebody",tags:["C2","Pro","Intermediate","Widebody","Collin Johns","Reactive Core"]},
+{id:1135,brand:"Selkirk",model:"LABS Jack Sock Boomstik Elongated 14mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["LABS","Pro","Foam","Power","Signature","New","USA Made","Jack Sock"]},
+{id:1136,brand:"Selkirk",model:"LABS Jack Sock Boomstik Elongated 16mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["LABS","Pro","Foam","Control","Signature","New","USA Made","Jack Sock"]},
+{id:1137,brand:"Selkirk",model:"Catherine Parenteau Vanguard Power Air Invikta",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Vanguard","Pro","Power","Spin","Signature","USA Made","Catherine Parenteau"]},
+{id:1138,brand:"Selkirk",model:"AMPED Pro Air Epic",year:2021,surface:"FiberFlex",shape:"Standard",tags:["AMPED","Pro","Power","USA Made","Pro Air"]},
+{id:1139,brand:"Selkirk",model:"AMPED Pro Air Invikta",year:2021,surface:"FiberFlex",shape:"Elongated",tags:["AMPED","Pro","Power","USA Made","Elongated","Pro Air"]},
+{id:1140,brand:"Selkirk",model:"Vanguard Power Air S2 16mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Vanguard","Power","S2","USA Made"]},
+{id:1141,brand:"Selkirk",model:"LUXX Control Air S2 16mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["LUXX","Pro","Control","USA Made","S2"]},
+{id:1142,brand:"Selkirk",model:"Vanguard 2.0 S2 16mm",year:2022,surface:"FiberFlex",shape:"Standard",tags:["Vanguard","Mid-range","USA Made","S2"]},
+{id:1143,brand:"Paddletek",model:"Bantam TS-5 Pro Standard",year:2020,surface:"Fiberglass",shape:"Standard",tags:["Classic","Pro","USA Made","Anna Leigh Waters","Popular"]},
+{id:1144,brand:"Paddletek",model:"Tempest Reign Pro Standard",year:2021,surface:"Graphite",shape:"Standard",tags:["Pro","Control","USA Made","Catherine Parenteau","Reign"]},
+{id:1145,brand:"Paddletek",model:"Bantam ALW-C 12.7mm Standard",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Pro","Power","USA Made","Anna Leigh Waters","ALW-C","Fast","Popular"]},
+{id:1146,brand:"Paddletek",model:"Bantam GTO-CX Standard",year:2025,surface:"Raw Carbon",shape:"Hybrid",tags:["Hybrid","USA Made","New","GTO","Power","Aerodynamic"]},
+{id:1147,brand:"Engage",model:"Encore MX 6.0 XS Elongated",year:2021,surface:"Textured",shape:"Elongated",tags:["Mid-range","USA Made","Elongated","XS Handle"]},
+{id:1148,brand:"Engage",model:"Pursuit Pro 6.0 XS Elongated",year:2023,surface:"Textured",shape:"Elongated",tags:["Pro","Control","XS Handle","USA Made","Elongated"]},
+{id:1149,brand:"Vulcan",model:"V740 Max Elongated",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","Elongated","Jay Devilliers","Carbon","V740"]},
+{id:1150,brand:"Vulcan",model:"V730 Max Elongated",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","Elongated","Tyler Loong","Carbon","V730"]},
+{id:1151,brand:"Vulcan",model:"V730 Power Standard",year:2021,surface:"Fiberglass",shape:"Standard",tags:["Power","Mid-range"]},
+{id:1152,brand:"ProXR",model:"Zane Navratil Signature 14mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Signature","Ergonomic","Control","Spin","Zane Navratil","Popular","Carbon"]},
+{id:1153,brand:"ProXR",model:"Zane Navratil Signature 16mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Signature","Ergonomic","Control","Zane Navratil","Carbon"]},
+{id:1154,brand:"Takeya",model:"Pickleball Paddle 14mm Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Discontinued","Pro","Riley Newman","Brand Retired"]},
+{id:1155,brand:"Takeya",model:"Pickleball Paddle 16mm Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Discontinued","Control","Brand Retired"]},
+{id:1156,brand:"Carbon STK",model:"Carbon STK 16mm Standard",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","JW Johnson","Control","Carbon","Popular"]},
+{id:1157,brand:"Carbon STK",model:"Carbon STK Elongated 14mm",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","Elongated","Carbon"]},
+{id:1158,brand:"PROLITE",model:"Magnum Pro XL Graphite",year:2018,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made","Pro","Magnum"]},
+{id:1159,brand:"PROLITE",model:"Bolt Pro Graphite",year:2017,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made","Bolt"]},
+{id:1160,brand:"PROLITE",model:"Thrust Power Elongated 14mm",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["USA Made","Power","Elongated","Thrust"]},
+{id:1161,brand:"Onix",model:"Z3 Graphite Standard",year:2015,surface:"Graphite",shape:"Standard",tags:["Classic","Beginner","Pre-Z5","Z3"]},
+{id:1162,brand:"Onix",model:"Recruit Composite Standard",year:2015,surface:"Composite",shape:"Standard",tags:["Classic","Beginner","Nomex Core"]},
+{id:1163,brand:"Onix",model:"Malice Open Throat",year:2019,surface:"Composite",shape:"Standard",tags:["Unique","Open Throat","Classic","Malice"]},
+{id:1164,brand:"Onix",model:"Nexus Composite Standard",year:2020,surface:"Composite",shape:"Standard",tags:["Mid-range","Classic","Nexus"]},
+{id:1165,brand:"Gamma",model:"Compass 2 Standard",year:2018,surface:"Graphite",shape:"Standard",tags:["Classic","USA Made","Compass"]},
+{id:1166,brand:"Gamma",model:"Super Ballistic 2.0 16mm",year:2022,surface:"Textured",shape:"Standard",tags:["Power","USA Made","Super Ballistic"]},
+{id:1167,brand:"Gamma",model:"Hellbender 3 16mm",year:2022,surface:"Textured",shape:"Standard",tags:["Mid-range","USA Made","Hellbender"]},
+{id:1168,brand:"ProKennex",model:"Ovation Flight Pro Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","Elongated","Joint-Friendly","Carbon","Flight"]},
+{id:1169,brand:"ProKennex",model:"Kinetic Pro Flight 2.0 Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Spin","Joint-Friendly","Carbon","Updated"]},
+{id:1170,brand:"Electrum",model:"Model E Elite Pro 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Pro","Power","New","Carbon","Edgeless","Elite"]},
+{id:1171,brand:"Electrum",model:"Model E Air Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","Thermoformed","New","Elongated","Carbon"]},
+{id:1172,brand:"Six Zero",model:"Black Diamond Power 14mm",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Power","Popular","Raw Carbon","Best Spin"]},
+{id:1173,brand:"Six Zero",model:"Double Black Diamond Power Elongated 14mm",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Power","Thermoformed","Top Rated","Elongated","DBD"]},
+{id:1174,brand:"Diadem",model:"Warrior BluCore Elongated 16mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Control","EPP Foam Core","Elongated","Carbon"]},
+{id:1175,brand:"Diadem",model:"Warrior CFS Elongated 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Power","New","Carbon","CFS","Elongated"]},
+{id:1176,brand:"Babolat",model:"Technical VIPER 14mm Elongated",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Thermoformed","Elongated","VIPER"]},
+{id:1177,brand:"Babolat",model:"Air Viper 14mm Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Pro","Power","New","Elongated","VIPER"]},
+{id:1178,brand:"Franklin",model:"C45° JW Johnson 16mm Standard",year:2025,surface:"T700 45° Carbon",shape:"Standard",tags:["C45","Pro","Signature","Foam","Control","New","JW Johnson"]},
+{id:1179,brand:"Franklin",model:"C45° Dynasty 12mm Elongated",year:2025,surface:"T700 45° Carbon",shape:"Elongated",tags:["C45","Pro","Foam","Power","New","USAP","Dynasty","Elongated"]},
+{id:1180,brand:"Franklin",model:"C45° Dynasty 14mm Elongated",year:2025,surface:"T700 45° Carbon",shape:"Elongated",tags:["C45","Pro","Foam","Control","New","USAP","Hayden Patriquin","Dynasty","Elongated"]},
+{id:1181,brand:"Franklin",model:"C45° Dynasty 16mm Elongated",year:2025,surface:"T700 45° Carbon",shape:"Elongated",tags:["C45","Pro","Foam","Control","New","USAP","Hayden Patriquin","Dynasty","Elongated","Popular"]},
+{id:1182,brand:"Bread & Butter",model:"Loco 16mm Elongated",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Control","Popular","Elongated","Foam","Loco"]},
+{id:1183,brand:"Bread & Butter",model:"Filth Widebody 14mm",year:2025,surface:"Carbon Fiber",shape:"Widebody",tags:["Power","Pro","Foam","New","Widebody","Filth"]},
+{id:1184,brand:"Ronbus",model:"Pulsar Elongated 14mm",year:2023,surface:"Raw Carbon",shape:"Elongated",tags:["Spin","Thermoformed","Elongated","Pulsar"]},
+{id:1185,brand:"Ronbus",model:"Pulsar Elongated 16mm",year:2023,surface:"Raw Carbon",shape:"Elongated",tags:["Control","Thermoformed","Elongated","Pulsar"]},
+{id:1186,brand:"Ronbus",model:"Nova Widebody 14mm",year:2024,surface:"Raw Carbon",shape:"Widebody",tags:["Power","Widebody","Nova"]},
+{id:1187,brand:"Warping Point",model:"Neon Widebody 16mm",year:2024,surface:"Raw Carbon",shape:"Widebody",tags:["Value","Control","Widebody","Neon"]},
+{id:1188,brand:"Vatic Pro",model:"PRISM Flash Widebody 16mm",year:2024,surface:"Raw Carbon",shape:"Widebody",tags:["Control","Value","Widebody","PRISM"]},
+{id:1189,brand:"Vatic Pro",model:"V7 Widebody 16mm",year:2023,surface:"Raw Carbon",shape:"Widebody",tags:["Control","Value","Widebody","V7"]},
+{id:1190,brand:"Luzz",model:"Pro 4 Tornazo Elongated",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Foam","Gen-4","MPP Core","Control","New","Elongated","Tornazo"]},
+{id:1191,brand:"Proton",model:"Series One Elongated 14mm",year:2024,surface:"Aerospace CF",shape:"Elongated",tags:["Pro","Spin","Thermoformed","Elongated","Series-1"]},
+{id:1192,brand:"Proton",model:"Series Three Elongated 14mm",year:2024,surface:"Aerospace CF",shape:"Elongated",tags:["Pro","Spin","Top Rated","Popular","Elongated","Series-3"]},
+{id:1193,brand:"Proton",model:"Project Flamingo Elongated 16mm",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Pro","Velocity Core","Spin","Top Rated","New","Flamingo"]},
 
 ];
 
@@ -1513,7 +1209,6 @@ async function loadImg(k){if(!imageDB||!k)return null;return new Promise(r=>{con
 async function delImg(k){if(!imageDB||!k)return;return new Promise(r=>{const t=imageDB.transaction('photos','readwrite');t.objectStore('photos').delete(k);t.oncomplete=()=>r();});}
 function imgKey(id){return`pv_${currentUser?currentUser.uid:'guest'}_${id}`;}
 function compressImage(dataURL){return new Promise(res=>{const img=new Image();img.onload=()=>{const MAX=800;let w=img.width,h=img.height;if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',0.75));};img.src=dataURL;});}
-
 
 // ── AUTH ──────────────────────────────────────────────────────
 function swTab(t){
@@ -1561,12 +1256,19 @@ async function saveData(){
 async function init(){await openIDB();buildFilters();buildSelects();renderP();updateStats();}
 
 function buildFilters(){
-  const w=document.getElementById('brand-filters');w.innerHTML='';
-  const all=document.createElement('div');all.className='fc';all.textContent='All';all.onclick=()=>setBF('All',all);w.appendChild(all);
+  const sel=document.getElementById('brand-filters-sel');
+  sel.innerHTML='<option value="All">All Brands ('+allP().length+')</option>';
   [...new Set(PADDLES.map(p=>p.brand))].sort().forEach(b=>{
-    const c=document.createElement('div');c.className='fc'+(b==='CRBN'?' active':'');c.textContent=b;c.onclick=()=>setBF(b,c);w.appendChild(c);
-    if(b==='CRBN')setTimeout(()=>c.scrollIntoView({inline:'center',behavior:'smooth'}),300);
+    const count=allP().filter(x=>x.brand===b).length;
+    const o=document.createElement('option');
+    o.value=b;o.textContent=b+' ('+count+')';
+    if(b==='CRBN')o.selected=true;
+    sel.appendChild(o);
   });
+}
+function setBFSel(val){
+  activeBrandFilter=val;
+  renderP();
 }
 function buildSelects(){
   ['cb','rb'].forEach(id=>{const s=document.getElementById(id);s.innerHTML='<option value="">Select brand…</option>';BRANDS.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;s.appendChild(o);});});
@@ -1581,16 +1283,18 @@ function showView(n){
   ['browse','collection','add','report'].forEach((v,i)=>{if(v===n)document.querySelectorAll('.ntab')[i]?.classList.add('active');});
   if(n==='collection')renderColl();if(n==='report')renderRep();if(n==='browse')renderP();
 }
-function setBF(b,el){activeBrandFilter=b;document.querySelectorAll('.fc').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderP();}
-function filterP(q){searchQuery=q.toLowerCase();renderP();}
-function allP(){return[...PADDLES,...customPaddles.map((p,i)=>({...p,id:'c'+i,tags:['Custom']}))];}
+function setBF(b){activeBrandFilter=b;const sel=document.getElementById('brand-filters-sel');if(sel)sel.value=b;renderP();}
+let _fTimer;function filterP(q){clearTimeout(_fTimer);_fTimer=setTimeout(()=>{searchQuery=q.toLowerCase();renderP();},120);}
+let _allPCache=null;
+function allP(){if(_allPCache&&!customPaddles.length)return _allPCache;const r=[...PADDLES,...customPaddles.map((p,i)=>({...p,id:'c'+i,tags:['Custom']}))];if(!customPaddles.length)_allPCache=r;return r;}
+function invalidateCache(){_allPCache=null;}
 
 function renderP(){
   const l=document.getElementById('paddle-list');
   let p=allP();
   if(activeBrandFilter!=='All')p=p.filter(x=>x.brand===activeBrandFilter);
-  if(searchQuery)p=p.filter(x=>x.brand.toLowerCase().includes(searchQuery)||x.model.toLowerCase().includes(searchQuery)||(x.tags||[]).some(t=>t.toLowerCase().includes(searchQuery))||String(x.year).includes(searchQuery));
-  if(!p.length){l.innerHTML=`<div class="es"><div class="ei">🔍</div><div class="et">No paddles found</div></div>`;return;}
+  if(searchQuery){const q=searchQuery;p=p.filter(x=>x.brand.toLowerCase().includes(q)||x.model.toLowerCase().includes(q)||(x.tags||[]).some(t=>t.toLowerCase().includes(q))||String(x.year).includes(q));}
+  if(!p.length){l.innerHTML='<div class="es"><div class="ei">🔍</div><div class="et">No paddles found</div></div>';return;}
   l.innerHTML=p.map(x=>pCard(x)).join('');
   p.forEach(x=>{const d=collData[x.id];if(d?.photoKey)loadAndShow(x.id,d.photoKey);});
 }
@@ -1599,7 +1303,7 @@ function pCard(p){
   const ic=collection.includes(p.id),d=collData[p.id];
   return`<div class="pc" onclick="openD(${JSON.stringify(p.id)})"><div class="pch">
     <div class="pt">${d?.photoKey?`<img data-pt="${p.id}" style="display:none;width:100%;height:100%;object-fit:cover;" src="">`:
-      `<svg width="20" height="28" viewBox="0 0 44 44" fill="none"><path d="M17 2 C11.5 2 7 6.2 7 12 C7 18.5 10 24 17 26 C24 24 27 18.5 27 12 C27 6.2 22.5 2 17 2 Z" fill="white" opacity="0.65"/><path d="M13.5 26 Q13 28.5 14 29.5 L14 43 Q15.5 44.5 17 44.5 Q18.5 44.5 20 43 L20 29.5 Q21 28.5 20.5 26 Z" fill="rgba(196,220,251,0.75)"/></svg>`}</div>
+      `<svg width="20" height="28" viewBox="0 0 44 44" fill="none"><g transform="rotate(20,14,22)"><ellipse cx="14" cy="10" rx="8.5" ry="10.5" fill="white" opacity="0.55"/><path d="M8.5 19 Q8 21.5 10.2 22.5 L17.8 22.5 Q20 21.5 19.5 19 Q17 20.5 14 20.5 Q11 20.5 8.5 19Z" fill="#0d2954" opacity="0.75"/><rect x="10.2" y="22" width="7.6" height="16" rx="2" fill="#0d2954" opacity="0.75"/></g></svg>`}</div>
     <div class="pi"><div class="pb2">${p.brand}</div><div class="pn">${p.model}</div>
       <div class="py">${p.year}${p.surface?' · '+p.surface:''}${p.shape?' · '+p.shape:''}</div>
       <div class="pst">${stars(d?.rating||0)}</div></div>
@@ -1693,11 +1397,11 @@ function showStatView(type){
 }
 
 function setBFByName(b){
-  document.querySelectorAll('#brand-filters .fc').forEach(c=>{
-    if(c.textContent===b)c.click();
-  });
+  activeBrandFilter=b;
+  const sel=document.getElementById('brand-filters-sel');
+  if(sel)sel.value=b;
+  renderP();
 }
-
 
 function updateStats(){
   document.getElementById('sc0').textContent=collection.length;
@@ -1712,7 +1416,7 @@ async function openD(pid){
   const ic=collection.includes(pid),d=collData[pid]||{rating:0,notes:'',photoKey:null};
   window._mR=d.rating;window._mPK=d.photoKey||null;window._mNP=null;
   let src=null;if(d.photoKey)src=await loadImg(d.photoKey);
-  const th=src?`<img src="${src}" style="width:100%;height:100%;object-fit:cover;">`:`<svg width="28" height="40" viewBox="0 0 44 44" fill="none"><path d="M17 2 C11.5 2 7 6.2 7 12 C7 18.5 10 24 17 26 C24 24 27 18.5 27 12 C27 6.2 22.5 2 17 2 Z" fill="white" opacity="0.75"/><path d="M13.5 26 Q13 28.5 14 29.5 L14 43 Q15.5 44.5 17 44.5 Q18.5 44.5 20 43 L20 29.5 Q21 28.5 20.5 26 Z" fill="rgba(116,176,245,0.8)"/></svg>`;
+  const th=src?`<img src="${src}" style="width:100%;height:100%;object-fit:cover;">`:`<svg width="28" height="40" viewBox="0 0 44 44" fill="none"><g transform="rotate(20,14,22)"><ellipse cx="14" cy="10" rx="8.5" ry="10.5" fill="white" opacity="0.65"/><path d="M8.5 19 Q8 21.5 10.2 22.5 L17.8 22.5 Q20 21.5 19.5 19 Q17 20.5 14 20.5 Q11 20.5 8.5 19Z" fill="#0d2954" opacity="0.8"/><rect x="10.2" y="22" width="7.6" height="16" rx="2" fill="#0d2954" opacity="0.8"/><line x1="11" y1="26.5" x2="17" y2="26.5" stroke="#74b0f5" stroke-width="1.1" stroke-linecap="round" opacity="0.6"/><line x1="11" y1="30.5" x2="17" y2="30.5" stroke="#74b0f5" stroke-width="1.1" stroke-linecap="round" opacity="0.6"/></g></svg>`;
   document.getElementById('mc').innerHTML=`
     <div class="mt">${p.model}</div>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
@@ -1766,7 +1470,7 @@ async function saveCustom(){
   const notes=document.getElementById('cn').value.trim();
   const fb=brand==='Other'?ob.trim():brand;
   if(!fb||!model){showT('⚠️ Brand and model required');return;}
-  customPaddles.push({brand:fb,model,year:parseInt(year)||2024,surface:'Custom',notes,rating:customRating});
+  customPaddles.push({brand:fb,model,year:parseInt(year)||2024,surface:'Custom',notes,rating:customRating});invalidateCache();
   const pid='c'+(customPaddles.length-1);collection.push(pid);
   let k=null;if(customPhotoData){k=imgKey(pid);await saveImg(k,customPhotoData);}
   collData[pid]={rating:customRating,notes,photoKey:k};
