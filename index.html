@@ -171,7 +171,7 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
     <div class="sc scc" onclick="showStatView('ratings')" title="View by rating"><div class="sn" id="sc3">—</div><div class="sl">Avg ★</div></div>
   </div>
   <div class="ntabs">
-    <button class="ntab active" onclick="showView('browse')">🏓 Browse</button>
+    <button class="ntab active" onclick="showView('browse')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-1,1) rotate(20,12,12)"><ellipse cx="12" cy="7" rx="6" ry="7.2" fill="currentColor" opacity="0.35"/><ellipse cx="12" cy="7" rx="5.2" ry="6.4" fill="currentColor"/><rect x="9.5" y="13.5" width="5" height="9" rx="1.5" fill="currentColor" opacity="0.75"/></g></svg> Browse</button>
     <button class="ntab" onclick="showView('collection')">⭐ My Vault</button>
     <button class="ntab" onclick="showView('add')">+ Custom</button>
     <button class="ntab" onclick="showView('report')">🚩 Report</button>
@@ -188,9 +188,9 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
   </div>
   <div class="view" id="view-collection"><div class="sectit">MY VAULT</div><div id="collection-list"></div></div>
   <div class="view" id="view-add">
-    <div class="sectit">ADD CUSTOM PADDLE</div>
+    <div class="sectit">ADD CUSTOM PADDLE</div><p style="font-size:12px;color:var(--tf);margin-bottom:14px;line-height:1.5;">Can't find a paddle in the database? Add it here and it'll appear in your Vault. Select <strong style="color:var(--bb);">Other</strong> from the brand list to enter a new manufacturer.</p>
     <div class="fg"><label>Manufacturer</label><select id="cb" onchange="onCB()"><option value="">Select brand…</option></select></div>
-    <div class="fg" id="cb-other" style="display:none"><label>Brand Name</label><input type="text" id="cbo" placeholder="Enter brand name…"></div>
+    <div class="fg" id="cb-other" style="display:none"><label>New Manufacturer Name</label><input type="text" id="cbo" placeholder="e.g. CRBN, Selkirk, My Custom Brand…"><div style="font-size:11px;color:var(--tf);margin-top:5px;">This will be saved as a new brand in your vault.</div></div>
     <div class="fg"><label>Paddle Model</label><input type="text" id="cm" placeholder="e.g. Hyperion CFS 16mm"></div>
     <div class="fg"><label>Year Released</label><select id="cy"><option value="">Select year…</option></select></div>
     <div class="fg"><label>Your Rating</label><div class="stri" id="custom-stars"><button class="strbtn" onclick="setR(1)">★</button><button class="strbtn" onclick="setR(2)">★</button><button class="strbtn" onclick="setR(3)">★</button><button class="strbtn" onclick="setR(4)">★</button><button class="strbtn" onclick="setR(5)">★</button></div></div>
@@ -203,7 +203,7 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
     <div class="sectit">REPORT MISSING PADDLE</div>
     <p class="rsub">Can't find a paddle? Let us know and we'll add it.</p>
     <div class="fg"><label>Brand</label><select id="rb" onchange="onRB()"><option value="">Select brand…</option></select></div>
-    <div class="fg" id="rb-other" style="display:none"><label>Brand Name</label><input type="text" id="rbo" placeholder="Enter brand name…"></div>
+    <div class="fg" id="rb-other" style="display:none"><label>New Brand Name</label><input type="text" id="rbo" placeholder="e.g. CRBN, My Custom Brand…"></div>
     <div class="fg"><label>Paddle Model Name</label><input type="text" id="rm" placeholder="e.g. Pro Series XL 14mm"></div>
     <div class="fg"><label>Approximate Year</label><select id="ry"><option value="">Select year…</option></select></div>
     <div class="fg"><label>Additional Details (optional)</label><textarea id="rd" placeholder="Surface material, weight, shape, etc."></textarea></div>
@@ -245,15 +245,14 @@ const auth=firebase.auth(),db=firebase.firestore();
 const PADDLES=[
 {id:1,brand:"CRBN",model:"CRBN¹ Classic Elongated Long Handle",year:2021,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 1","Classic","Spin","Long Handle"]},
 {id:2,brand:"CRBN",model:"CRBN² Classic Square",year:2021,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 1","Classic","Spin","Widebody"]},
-{id:3,brand:"CRBN",model:"CRBN³ Classic Elongated Short Handle",year:2021,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 1","Classic","Control"]},
 {id:4,brand:"CRBN",model:"CRBN¹ X Series Elongated Long Handle",year:2023,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","X Series","Power","Thermoformed","Long Handle"]},
 {id:5,brand:"CRBN",model:"CRBN² X Series Square",year:2023,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 2","X Series","Power","Thermoformed","Widebody"]},
 {id:6,brand:"CRBN",model:"CRBN³ X Series Elongated Short Handle",year:2023,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","X Series","Control","Thermoformed"]},
-{id:7,brand:"CRBN",model:"Thomas Wilson Signature X Series",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","X Series","Pro","Signature","Thermoformed"]},
-{id:8,brand:"CRBN",model:"CRBN¹ TruFoam Genesis Elongated LH",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Genesis","Floating Core","Popular"]},
-{id:9,brand:"CRBN",model:"CRBN² TruFoam Genesis Square",year:2024,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 4","TruFoam","Genesis","Widebody"]},
-{id:10,brand:"CRBN",model:"CRBN³ TruFoam Genesis Elongated SH",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Genesis","Top Rated","Popular"]},
-{id:11,brand:"CRBN",model:"CRBN⁴ TruFoam Genesis Hybrid AeroCurve",year:2024,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 4","TruFoam","Genesis","Hybrid Shape"]},
+{id:7,brand:"CRBN",model:"CRBN¹ X Series Thomas Wilson Signature 12mm",year:2023,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","X Series","Pro","Signature","Thermoformed"]},
+{id:8,brand:"CRBN",model:"CRBN¹ TruFoam Genesis Elongated LH",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Genesis","Floating Core","Popular"]},
+{id:9,brand:"CRBN",model:"CRBN² TruFoam Genesis Square",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 4","TruFoam","Genesis","Widebody"]},
+{id:10,brand:"CRBN",model:"CRBN³ TruFoam Genesis Elongated SH",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Genesis","Top Rated","Popular"]},
+{id:11,brand:"CRBN",model:"CRBN⁴ TruFoam Genesis Hybrid AeroCurve",year:2025,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 4","TruFoam","Genesis","Hybrid Shape"]},
 {id:12,brand:"CRBN",model:"CRBN¹ TruFoam Waves Elongated LH",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Waves","Wave Core","Power","New"]},
 {id:13,brand:"CRBN",model:"CRBN² TruFoam Waves Square",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 4","TruFoam","Waves","Wave Core","New"]},
 {id:14,brand:"CRBN",model:"CRBN³ TruFoam Waves Elongated SH",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Waves","Top Rated","#1 Spin","New"]},
@@ -284,19 +283,19 @@ const PADDLES=[
 {id:49,brand:"JOOLA",model:"Radius CGS 14mm",year:2023,surface:"T700 CGS Carbon",shape:"Round",tags:["Gen 1","Round Shape","Control","Unique"]},
 {id:50,brand:"JOOLA",model:"Solaire CFS 14mm",year:2023,surface:"T700 CFS Carbon",shape:"Widebody",tags:["Gen 1","Widebody","Power"]},
 {id:51,brand:"JOOLA",model:"Solaire CGS 14mm",year:2023,surface:"T700 CGS Carbon",shape:"Widebody",tags:["Gen 1","Widebody","Spin"]},
-{id:52,brand:"JOOLA",model:"Ben Johns Perseus Pro IV CFS 14mm",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Pro","Thermoformed","Top Rated","Ben Johns"]},
-{id:53,brand:"JOOLA",model:"Ben Johns Perseus Pro IV CFS 16mm",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Pro","Thermoformed","Best Overall","Ben Johns"]},
-{id:54,brand:"JOOLA",model:"Ben Johns Hyperion Pro IV CAS 14mm",year:2024,surface:"T700 CAS Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Pro","Signature","Thermoformed","Ben Johns"]},
-{id:55,brand:"JOOLA",model:"Anna Bright Scorpeus Pro IV 14mm",year:2024,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 3.5","Pro-IV","Pro","Signature","Spin","Anna Bright"]},
-{id:56,brand:"JOOLA",model:"Tyson McGuffin Scorpeus Pro IV 14mm",year:2024,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 1","Pro-IV","Pro","Signature","Power","Tyson McGuffin"]},
+{id:52,brand:"JOOLA",model:"Ben Johns Perseus Pro IV CFS 14mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Pro","Thermoformed","Top Rated","Ben Johns"]},
+{id:53,brand:"JOOLA",model:"Ben Johns Perseus Pro IV CFS 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Pro","Thermoformed","Best Overall","Ben Johns"]},
+{id:54,brand:"JOOLA",model:"Ben Johns Hyperion Pro IV CAS 14mm",year:2025,surface:"T700 CAS Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Pro","Signature","Thermoformed","Ben Johns"]},
+{id:55,brand:"JOOLA",model:"Anna Bright Scorpeus Pro IV 14mm",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 3.5","Pro-IV","Pro","Signature","Spin","Anna Bright"]},
+{id:56,brand:"JOOLA",model:"Tyson McGuffin Scorpeus Pro IV 14mm",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 1","Pro-IV","Pro","Signature","Power","Tyson McGuffin"]},
 {id:57,brand:"JOOLA",model:"Vision II CGS 14mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 1","C2","Intermediate","Mid-range"]},
 {id:58,brand:"JOOLA",model:"Vision II CGS 16mm",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 1","C2","Intermediate","Control"]},
 {id:59,brand:"JOOLA",model:"Vision II CGS 14mm Elongated",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 1","C2","Intermediate","Elongated"]},
-{id:60,brand:"JOOLA",model:"Ben Johns Perseus 3S 14mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","3S","Pro","New","UPA-A","Ben Johns"]},
-{id:61,brand:"JOOLA",model:"Ben Johns Perseus 3S 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","3S","Pro","New","UPA-A","Ben Johns"]},
-{id:62,brand:"JOOLA",model:"Collin Johns Scorpeus 3S 14mm",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 2","3S","Pro","New","UPA-A","Collin Johns"]},
-{id:63,brand:"JOOLA",model:"Andre Agassi 3S 14mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 2","3S","Pro","Signature","New","UPA-A","Andre Agassi"]},
-{id:64,brand:"JOOLA",model:"Ben Johns Perseus Pro Max 3S 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","3S","Pro","New","UPA-A","Ben Johns"]},
+{id:60,brand:"JOOLA",model:"Ben Johns Perseus 3S 14mm",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","3S","Pro","New","UPA-A","Ben Johns"]},
+{id:61,brand:"JOOLA",model:"Ben Johns Perseus 3S 16mm",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","3S","Pro","New","UPA-A","Ben Johns"]},
+{id:62,brand:"JOOLA",model:"Collin Johns Scorpeus 3S 14mm",year:2024,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 2","3S","Pro","New","UPA-A","Collin Johns"]},
+{id:63,brand:"JOOLA",model:"Andre Agassi 3S 14mm",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen 2","3S","Pro","Signature","New","UPA-A","Andre Agassi"]},
+{id:64,brand:"JOOLA",model:"Ben Johns Perseus Pro Max 3S 16mm",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","3S","Pro","New","UPA-A","Ben Johns"]},
 {id:65,brand:"JOOLA",model:"Ben Johns Hyperion Pro V Standard 14mm",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro-V","Pro","KineticFrame","Foam Injected","New","Ben Johns"]},
 {id:66,brand:"JOOLA",model:"Ben Johns Perseus Pro V Elongated 14mm",year:2026,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","Pro-V","Pro","KineticFrame","Foam Injected","New","Ben Johns"]},
 {id:67,brand:"JOOLA",model:"Collin Johns Scorpeus Pro V 14mm",year:2026,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 4","Pro-V","Pro","KineticFrame","Foam Injected","New","Collin Johns"]},
@@ -304,8 +303,8 @@ const PADDLES=[
 {id:69,brand:"JOOLA",model:"Tyson McGuffin Kosmos Pro V 14mm",year:2026,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 4","Pro-V","Pro","Signature","Hybrid Shape","New","Tyson McGuffin"]},
 {id:70,brand:"JOOLA",model:"Magnus Pro V 14mm",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro-V","Pro","High Grit","New"]},
 {id:71,brand:"JOOLA",model:"Andre Agassi Pro IV 16mm",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Pro","Signature","Foam Injected","New 2026","Top Rated","Andre Agassi"]},
-{id:72,brand:"JOOLA",model:"Hyperion Pro IV CFS 14mm",year:2024,surface:"T700 CFS Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Intermediate","New"]},
-{id:73,brand:"JOOLA",model:"Hyperion Pro IV CFS 16mm",year:2024,surface:"T700 CFS Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Intermediate","Control","New"]},
+{id:72,brand:"JOOLA",model:"Hyperion Pro IV CFS 14mm",year:2025,surface:"T700 CFS Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Intermediate","New"]},
+{id:73,brand:"JOOLA",model:"Hyperion Pro IV CFS 16mm",year:2025,surface:"T700 CFS Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Intermediate","Control","New"]},
 {id:74,brand:"JOOLA",model:"Heat Vision Perseus 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 1","Intermediate","Mid-range","New"]},
 {id:75,brand:"JOOLA",model:"Heat Vision Perseus 16mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 1","Intermediate","Mid-range","Control","New"]},
 {id:76,brand:"JOOLA",model:"Heat Vision Scorpeus 14mm",year:2025,surface:"Carbon Fiber",shape:"Widebody",tags:["Gen 1","Intermediate","Mid-range","New"]},
@@ -590,10 +589,10 @@ const PADDLES=[
 {id:434,brand:"Proton",model:"Project Flamingo Elongated 15mm",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 3","Pro","Velocity Core","Spin","Top Rated","#1 Spin","New","Popular","Flamingo"]},
 {id:435,brand:"Proton",model:"Project Flamingo Square 13mm",year:2025,surface:"Aerospace CF",shape:"Widebody",tags:["Gen 3","Pro","Velocity Core","Spin","Widebody","New","Flamingo"]},
 {id:436,brand:"Proton",model:"Project Flamingo Square 15mm",year:2025,surface:"Aerospace CF",shape:"Widebody",tags:["Gen 3","Pro","Velocity Core","New","Widebody","Flamingo"]},
-{id:437,brand:"Proton",model:"Project Peacock Elongated 13mm",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 4","Pro","Atomic Foam Core","Dwell","New","UPA-A","Peacock"]},
-{id:438,brand:"Proton",model:"Project Peacock Elongated 15mm",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 4","Pro","Atomic Foam Core","Dwell","Control","Top Rated","New","UPA-A","Peacock"]},
-{id:439,brand:"Proton",model:"Project Peacock Square 13mm",year:2025,surface:"Aerospace CF",shape:"Widebody",tags:["Gen 4","Pro","Atomic Foam Core","New","UPA-A","Widebody","Peacock"]},
-{id:440,brand:"Proton",model:"Project Peacock Square 15mm",year:2025,surface:"Aerospace CF",shape:"Widebody",tags:["Gen 4","Pro","Atomic Foam Core","New","UPA-A","Widebody","Peacock"]},
+{id:437,brand:"Proton",model:"Project Peacock Elongated 13mm",year:2026,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 4","Pro","Atomic Foam Core","Dwell","New","UPA-A","Peacock"]},
+{id:438,brand:"Proton",model:"Project Peacock Elongated 15mm",year:2026,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 4","Pro","Atomic Foam Core","Dwell","Control","Top Rated","New","UPA-A","Peacock"]},
+{id:439,brand:"Proton",model:"Project Peacock Square 13mm",year:2026,surface:"Aerospace CF",shape:"Widebody",tags:["Gen 4","Pro","Atomic Foam Core","New","UPA-A","Widebody","Peacock"]},
+{id:440,brand:"Proton",model:"Project Peacock Square 15mm",year:2026,surface:"Aerospace CF",shape:"Widebody",tags:["Gen 4","Pro","Atomic Foam Core","New","UPA-A","Widebody","Peacock"]},
 {id:441,brand:"Proton",model:"ERA 14mm Standard",year:2025,surface:"Aerospace CF",shape:"Standard",tags:["Gen 3","Pro","Power","New","ERA"]},
 {id:442,brand:"Proton",model:"ERA 16mm Standard",year:2025,surface:"Aerospace CF",shape:"Standard",tags:["Gen 3","Pro","Control","New","ERA"]},
 {id:448,brand:"Honolulu",model:"J2K Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Pro","Popular","Carbon"]},
@@ -880,7 +879,7 @@ const PADDLES=[
 {id:874,brand:"11SIX24",model:"Pegasus Jelly Bean Widebody",year:2025,surface:"CFC Carbon",shape:"Widebody",tags:["Gen 2","Value","Control","Widebody","Best Budget","$99","Popular","New","Jelly Bean"]},
 {id:875,brand:"11SIX24",model:"Harachi Control + Elongated",year:2024,surface:"T800 Carbon",shape:"Elongated",tags:["Gen 2","Control","Elongated","Pro","New","Harachi"]},
 {id:876,brand:"11SIX24",model:"Hurache X Power Elongated",year:2024,surface:"HexGrit CF",shape:"Elongated",tags:["Gen 2","Power","Elongated","Pro","New","Hurache"]},
-{id:877,brand:"JOOLA",model:"Magnus Pro V 16mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro-V","Pro","High Grit","Control","New"]},
+{id:877,brand:"JOOLA",model:"Magnus Pro V 16mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro-V","Pro","High Grit","Control","New"]},
 {id:878,brand:"JOOLA",model:"Simone Jardim Hyperion CGS 14mm",year:2022,surface:"T700 CGS Carbon",shape:"Standard",tags:["Gen 1","Pro","Spin","Signature","Simone Jardim"]},
 {id:879,brand:"Selkirk",model:"LABS Boomstik Everglade Elongated 14mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Pro","Foam","Power","New","Everglade","Limited"]},
 {id:880,brand:"Selkirk",model:"LABS Boomstik Everglade Elongated 16mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Pro","Foam","Power","Control","New","Everglade","Limited"]},
@@ -930,7 +929,6 @@ const PADDLES=[
 {id:924,brand:"Warping Point",model:"Neon Pro 14mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 3","Value","Power","Pro","New","Neon"]},
 {id:925,brand:"Warping Point",model:"Neon Pro 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 3","Value","Control","Pro","New","Neon"]},
 {id:926,brand:"Luzz",model:"Pro 4 Inferno Long Handle",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","Foam","MPP Core","Power","New","Long Handle","Inferno"]},
-{id:927,brand:"CRBN",model:"CRBN³ TruFoam Genesis Elongated LH",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Genesis","Long Handle","Control"]},
 {id:928,brand:"FLiK",model:"F3 Widebody 16mm",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 4","Triple Foam Core","Control","New","Widebody","F3"]},
 {id:929,brand:"Friday",model:"Aura Elongated 14mm",year:2026,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 4","Foam Core","New 2026","Power","Elongated","Carbon"]},
 {id:930,brand:"ProKennex",model:"Kinetic Energy 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","New","Control","Joint-Friendly","Carbon"]},
@@ -1133,10 +1131,10 @@ const PADDLES=[
 {id:1127,brand:"Arronax",model:"KVL 0044 16mm Standard",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","New 2026","UPA-A","Pro","Control","Stability"]},
 {id:1128,brand:"JOOLA",model:"Magnus Alpha 14mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro","Signature","Power","Tyson McGuffin","Alpha","High Grit","New","UPA-A"]},
 {id:1129,brand:"JOOLA",model:"Magnus Alpha 16mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro","Signature","Control","Tyson McGuffin","Alpha","High Grit","New","UPA-A"]},
-{id:1130,brand:"JOOLA",model:"Magnus Pro IV 14mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Pro","Power","Thermoformed"]},
+{id:1130,brand:"JOOLA",model:"Magnus Pro IV 14mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Pro","Power","Thermoformed"]},
 {id:1131,brand:"JOOLA",model:"Tyson McGuffin Magnus 3S 16mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 3.5","3S","Pro","Signature","New","UPA-A","Tyson McGuffin","Magnus"]},
 {id:1132,brand:"JOOLA",model:"Simone Jardim Hyperion 3S 16mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 3.5","3S","Pro","Signature","New","UPA-A","Simone Jardim"]},
-{id:1133,brand:"JOOLA",model:"Agassi Pro IV 14mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Pro","Signature","Thermoformed","Andre Agassi"]},
+{id:1133,brand:"JOOLA",model:"Agassi Pro IV 14mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Pro","Signature","Thermoformed","Andre Agassi"]},
 {id:1134,brand:"JOOLA",model:"Collin Johns Scorpeus C2 16mm",year:2023,surface:"Carbon Fiber",shape:"Widebody",tags:["Gen 3.5","C2","Pro","Intermediate","Widebody","Collin Johns","Reactive Core"]},
 {id:1135,brand:"Selkirk",model:"LABS Jack Sock Boomstik Elongated 14mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Pro","Foam","Power","Signature","New","USA Made","Jack Sock"]},
 {id:1136,brand:"Selkirk",model:"LABS Jack Sock Boomstik Elongated 16mm",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Pro","Foam","Control","Signature","New","USA Made","Jack Sock"]},
@@ -1227,7 +1225,7 @@ const PADDLES=[
 // Vision CFS Elongated (2022 Gen 1 performance line)
 {id:1207,brand:"JOOLA",model:"Vision CFS 14mm Elongated",year:2022,surface:"T700 CFS Carbon",shape:"Elongated",tags:["Gen 1","Intermediate","Spin","Elongated"]},
 // Solaire Pro IV line
-{id:1208,brand:"JOOLA",model:"Solaire Pro IV 14mm",year:2024,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 3.5","Pro-IV","Widebody","Power","Thermoformed"]},
+{id:1208,brand:"JOOLA",model:"Solaire Pro IV 14mm",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 3.5","Pro-IV","Widebody","Power","Thermoformed"]},
 // Hyperion 3S 
 {id:1209,brand:"JOOLA",model:"Ben Johns Hyperion 3S 16mm Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 2","3S","Pro","New","UPA-A","Ben Johns"]},
 
@@ -1245,8 +1243,6 @@ const PADDLES=[
 
 // ── MISSING CRBN MODELS ────────────────────────────────────────
 // CRBN 3.5 (Gen 2.5 — thermoformed with partial foam, between X and TruFoam)
-{id:1214,brand:"CRBN",model:"CRBN³ TruFoam Genesis Hybrid",year:2024,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 3","TruFoam","Genesis","Floating Core","Control","Hybrid"]},
-
 // ── MISSING SIX ZERO MODELS ────────────────────────────────────
 // Pearl (recreational/intermediate line)
 {id:1215,brand:"Six Zero",model:"Pearl 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 1","Beginner","Value","Mid-range","Pearl"]},
@@ -1295,11 +1291,11 @@ const PADDLES=[
 // ═══ NEW PADDLES — PASS 4 ══════════════════════════════════════
 
 // ── JOOLA new models ───────────────────────────────────────────
-{id:1227,brand:"JOOLA",model:"Ben Johns Perseus Pro V Elongated 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","Pro-V","Pro","KineticFrame","Foam Injected","New","Ben Johns"]},
-{id:1228,brand:"JOOLA",model:"Anna Bright Hyperion Pro V Standard 14mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro-V","Pro","Signature","KineticFrame","New","Anna Bright"]},
-{id:1229,brand:"JOOLA",model:"Collin Johns Perseus Pro V Elongated 14mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","Pro-V","Pro","KineticFrame","Foam Injected","New","Collin Johns"]},
+{id:1227,brand:"JOOLA",model:"Ben Johns Perseus Pro V Elongated 16mm",year:2026,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","Pro-V","Pro","KineticFrame","Foam Injected","New","Ben Johns"]},
+{id:1228,brand:"JOOLA",model:"Anna Bright Hyperion Pro V Standard 14mm",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro-V","Pro","Signature","KineticFrame","New","Anna Bright"]},
+{id:1229,brand:"JOOLA",model:"Collin Johns Perseus Pro V Elongated 14mm",year:2026,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","Pro-V","Pro","KineticFrame","Foam Injected","New","Collin Johns"]},
 {id:1230,brand:"JOOLA",model:"Radius CGS 16mm Standard",year:2022,surface:"T700 CGS Carbon",shape:"Round",tags:["Gen 1","Round Shape","Control","Unique"]},
-{id:1231,brand:"JOOLA",model:"Ben Johns Perseus 3S 14mm Elongated",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","3S","Pro","New","UPA-A","Ben Johns","Best Spin"]},
+{id:1231,brand:"JOOLA",model:"Ben Johns Perseus 3S 14mm Elongated",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","3S","Pro","New","UPA-A","Ben Johns","Best Spin"]},
 
 // ── SELKIRK new models ─────────────────────────────────────────
 {id:1232,brand:"Selkirk",model:"LABS Boomstik Widebody 14mm",year:2025,surface:"BoomCore CF",shape:"Widebody",tags:["Gen 4","LABS","Pro","Foam","Power","New","Widebody","USA Made"]},
@@ -1308,9 +1304,6 @@ const PADDLES=[
 {id:1235,brand:"Selkirk",model:"LUXX Power Air Invikta S2 14mm",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 2","LUXX","Pro","Power","Spin","Elongated","S2","USA Made"]},
 
 // ── CRBN new models ────────────────────────────────────────────
-{id:1236,brand:"CRBN",model:"CRBN¹ TruFoam Barrage Elongated SH",year:2026,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Barrage","Void Core","Short Handle","Power","Pop","New"]},
-{id:1237,brand:"CRBN",model:"CRBN² TruFoam Barrage Widebody",year:2026,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 4","TruFoam","Barrage","Void Core","Widebody","Power","New"]},
-
 // ── ENGAGE new models ──────────────────────────────────────────
 {id:1238,brand:"Engage",model:"Encore EX 6.0 Elongated",year:2024,surface:"Textured",shape:"Elongated",tags:["Gen 1","Pro","Power","Elongated","USA Made","Encore"]},
 {id:1239,brand:"Engage",model:"Poach Xtreme 2.0 Standard",year:2023,surface:"Textured",shape:"Standard",tags:["Gen 1","Classic","Updated","USA Made","Poach"]},
@@ -1437,11 +1430,7 @@ const PADDLES=[
 
 // ── CRBN new ────────────────────────────────────────────────────
 // TruFoam Genesis 4 (the 4th shape, July 2025)
-{id:1300,brand:"CRBN",model:"CRBN⁴ TruFoam Genesis 4 Hybrid AeroCurve",year:2025,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 4","TruFoam","Genesis 4","Floating Core","Hybrid","New"]},
 // CRBN Classic 16mm (thickness variants existed from launch)
-{id:1301,brand:"CRBN",model:"CRBN¹ Classic Elongated Long Handle 16mm",year:2021,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 1","Classic","Control","Long Handle","16mm"]},
-{id:1302,brand:"CRBN",model:"CRBN² Classic Square 16mm",year:2021,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 1","Classic","Control","Widebody","16mm"]},
-
 // ── E6 Pickleball (confirmed real brand, USAP approved) ─────────
 {id:1303,brand:"E6",model:"E6 Sirocco Standard 16mm",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 3","Pro","Control","Dwell","Soft Feel","New 2026","USAP","Sirocco"]},
 {id:1304,brand:"E6",model:"E6 Standard 14mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 3","Pro","Power","Control","Soft Feel","USAP","Popular"]},
@@ -1525,6 +1514,354 @@ const PADDLES=[
 // ── KIWI LABS new ─────────────────────────────────────────────────
 // Foam Core Widebody
 {id:1329,brand:"Kiwi Labs",model:"Foam Core Widebody 14mm",year:2025,surface:"Carbon Fiber",shape:"Widebody",tags:["Gen 4","Foam","Value","Widebody","New"]},
+
+
+// ═══ LIMITED EDITIONS & SPECIAL COLORWAYS ═════════════════════
+
+// ── PROTON limited editions ────────────────────────────────────
+// Phoenix Flames: only 200 made, individually numbered, MLP Phoenix Flames collab
+{id:1330,brand:"Proton",model:"Project Flamingo Elongated 15mm — Phoenix Flames Edition",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 3","Limited Edition","Only 200","MLP","Phoenix Flames","Collab","Collector","Individually Numbered","Flamingo"]},
+// Vietnam Tour 2025: 300 units, separate commemorative release
+{id:1331,brand:"Proton",model:"Project Flamingo Elongated 15mm — Phoenix Flames Vietnam Tour",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 3","Limited Edition","Only 300","MLP","Phoenix Flames","Vietnam Tour","Collector","Flamingo"]},
+// Pink Flamingo colorway (standard production, not numbered)
+{id:1332,brand:"Proton",model:"Project Flamingo Elongated 15mm — Pink Colorway",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 3","Pro","Velocity Core","Spin","Top Rated","Pink","Special Colorway","Popular","Flamingo"]},
+
+// ── CRBN limited drops ─────────────────────────────────────────
+// Summit Edition: 1,000 numbered paddles, mountain/snow artwork, white edge guard
+// Ed Ju Signature Barrage: personally assembled by Ed Ju, holographic sticker
+// CRBN x Slyce collab colorway
+// ── JOOLA limited editions ─────────────────────────────────────
+// Summer Daze: gradient summer colorway, limited run, dual-certified
+{id:1338,brand:"JOOLA",model:"Ben Johns Perseus Pro IV 16mm — Summer Daze Edition",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Limited Edition","Summer Daze","Gradient","Collector","Ben Johns","Dual-Certified","NFC","Pro"]},
+// Pink Valentine's Day colorway
+{id:1339,brand:"JOOLA",model:"Ben Johns Perseus Pro IV 16mm — Pink Valentine's",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Special Colorway","Pink","Valentine's Day","Limited Availability","Ben Johns"]},
+// Razer x JOOLA collab: 1,337 units ("1337" = leet), gaming crossover, NFC chip
+{id:1340,brand:"JOOLA",model:"Razer x JOOLA Perseus Pro IV 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Limited Edition","Only 1337","Razer","Collab","Gaming","Esports","NFC","Ben Johns","Collector","Dual-Certified"]},
+// JOOLA Blue/White edge guard special (homepage teaser Dec 2025)
+{id:1341,brand:"JOOLA",model:"Ben Johns Perseus Pro IV 16mm — Blue & White Edge Guard",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Special Colorway","Limited Edition","Blue White","Collector","NFC","Ben Johns"]},
+
+// ── SELKIRK limited drops ─────────────────────────────────────
+// Boomstik Everglade: limited colorway confirmed by The Dink March 2026
+{id:1342,brand:"Selkirk",model:"LABS Boomstik Elongated 14mm — Everglade Edition",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Limited Edition","Everglade","Special Colorway","Foam","Power","Collector","USA Made"]},
+// Boomstik Regal: colorway mentioned in Pickleball Warehouse review
+{id:1343,brand:"Selkirk",model:"LABS Boomstik Elongated 14mm — Regal Edition",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Limited Edition","Regal","Special Colorway","Foam","Power","USA Made"]},
+
+// ── AIREO limited drops ────────────────────────────────────────
+// Already in DB: Levi's Limited (id:742) and LH Dragon Limited (id:743) ✓
+
+// ── RPM new models ─────────────────────────────────────────────
+// RPM Q2: first full-foam RPM paddle, John Kew collab confirmed by The Dink
+{id:1344,brand:"RPM",model:"Q2 Elongated 14mm",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Gen 4","Full Foam","Collab","John Kew","Power","Spin","New","Elongated","Popular"]},
+{id:1345,brand:"RPM",model:"Q2 Standard 16mm",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 4","Full Foam","Control","Collab","John Kew","New"]},
+
+// ── JOOLA new paddle models (missing) ──────────────────────────
+// JOOLA Collin Johns Scorpeus Pro V (missing from db)
+{id:1346,brand:"JOOLA",model:"Collin Johns Scorpeus Pro V 16mm",year:2025,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 4","Pro-V","Pro","KineticFrame","Foam Injected","New","Collin Johns"]},
+// JOOLA Perseus Pro V Standard (missing shape variant)
+{id:1347,brand:"JOOLA",model:"Ben Johns Perseus Pro V Standard 16mm",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro-V","Pro","KineticFrame","Foam Injected","New","Ben Johns"]},
+
+// ── SELKIRK new models ─────────────────────────────────────────
+// Selkirk LABS Boomstik Standard (non-elongated version)
+{id:1348,brand:"Selkirk",model:"LABS Boomstik Standard 14mm",year:2025,surface:"BoomCore CF",shape:"Standard",tags:["Gen 4","LABS","Pro","Foam","Power","New","USA Made"]},
+{id:1349,brand:"Selkirk",model:"LABS Boomstik Standard 16mm",year:2025,surface:"BoomCore CF",shape:"Standard",tags:["Gen 4","LABS","Pro","Foam","Control","New","USA Made"]},
+
+// ── PROTON new models (missing) ────────────────────────────────
+// Proton Series Four (new line confirmed in market research)
+{id:1350,brand:"Proton",model:"Series Four 14mm Standard",year:2025,surface:"Aerospace CF",shape:"Standard",tags:["Gen 2","Pro","Edgeless","Nomex","Hybrid Core","Power","Series-4"]},
+{id:1351,brand:"Proton",model:"Series Four 16mm Standard",year:2025,surface:"Aerospace CF",shape:"Standard",tags:["Gen 2","Pro","Edgeless","Nomex","Hybrid Core","Control","Series-4"]},
+{id:1352,brand:"Proton",model:"Series Four Elongated 14mm",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 2","Pro","Edgeless","Nomex","Hybrid Core","Power","Elongated","Series-4"]},
+
+// ── HOLBROOK colorways ─────────────────────────────────────────
+// Holbrook Fuze special colorways (popular with collectors)
+{id:1353,brand:"Holbrook",model:"Fuze 16mm Elongated — Forest Green Edition",year:2025,surface:"Aramid+CF",shape:"Elongated",tags:["Gen 4","Control","Foam","Special Colorway","Forest Green","Fuze","Top Rated","Best Overall"]},
+{id:1354,brand:"Holbrook",model:"Fuze 14mm Elongated — Navy Edition",year:2025,surface:"Aramid+CF",shape:"Elongated",tags:["Gen 4","Power","Foam","Special Colorway","Navy","Fuze","Top Rated"]},
+
+// ── SIX ZERO limited + colorways ──────────────────────────────
+// Six Zero Black Opal colorways (Coral colorway confirmed)
+{id:1355,brand:"Six Zero",model:"Black Opal 14mm — Coral Colorway",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 4","Pro","Foam","Diamond-Infused","New 2026","Special Colorway","Coral"]},
+// Six Zero Double Black Diamond colorways
+{id:1356,brand:"Six Zero",model:"Double Black Diamond Control 16mm — Crimson Edition",year:2024,surface:"Raw Carbon",shape:"Hybrid",tags:["Gen 2","Control","Best Control","Hybrid","Special Colorway","Crimson"]},
+
+// ── BREAD & BUTTER limited ─────────────────────────────────────
+// Already have Loco Picasso (id:487) ✓
+// Shogun 14mm collab (Titanium CF, limited colorway)
+{id:1357,brand:"Bread & Butter",model:"Shogun Titanium CF 14mm — Black Edition",year:2025,surface:"Titanium CF",shape:"Standard",tags:["Gen 3","Limited Edition","Titanium","Black","Special Colorway","Shogun","Unique Material"]},
+
+// ── FRANKLIN colorways ─────────────────────────────────────────
+// C45° Anna Leigh Waters colorway (her signature colorway on C45 Elongated)
+{id:1358,brand:"Franklin",model:"C45° Anna Leigh Waters 14mm Elongated — ALW Colorway",year:2025,surface:"T700 45° Carbon",shape:"Elongated",tags:["Gen 4","C45","Pro","Foam","Signature","Special Colorway","Anna Leigh Waters","Power","Thermoformed","USAP"]},
+// C45° Hayden Patriquin team colorway
+{id:1359,brand:"Franklin",model:"C45° Dynasty 16mm Elongated — Hayden Patriquin Colorway",year:2025,surface:"T700 45° Carbon",shape:"Elongated",tags:["Gen 4","C45","Pro","Foam","Signature","Special Colorway","Control","Hayden Patriquin","USAP","Dynasty"]},
+
+// ── GEARBOX limited ────────────────────────────────────────────
+// GX2 Power special colorways (multiple confirmed)
+{id:1360,brand:"Gearbox",model:"GX2 Power Elongated — Neon Yellow Edition",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Gen 2","Edgeless","GX2","Power","CarbonRibCore","Special Colorway","Neon Yellow"]},
+{id:1361,brand:"Gearbox",model:"GX2 Hyper 16mm — Glacier Edition",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Gen 3","Edgeless","GX2","Power","Best Edgeless","Special Colorway","Glacier","New"]},
+
+// ── ENGAGE limited ─────────────────────────────────────────────
+// Alpha Pro special colorway
+{id:1362,brand:"Engage",model:"Alpha Pro 14mm Standard — Black Diamond Edition",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 4","Alpha","Pro","Foam","Special Colorway","Black Diamond","New","USA Made"]},
+
+// ── PADDLETEK special colorways ────────────────────────────────
+// ALW-C special colorway (Anna Leigh signature colors)
+{id:1363,brand:"Paddletek",model:"Bantam ALW-C Standard — Anna Leigh Signature Colorway",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","Pro","Signature Colorway","Anna Leigh Waters","USA Made","ALW-C","Power"]},
+
+// ── DIADEM colorways ───────────────────────────────────────────
+{id:1364,brand:"Diadem",model:"Warrior BluCore 14mm Pro — Black Ops Edition",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 3.5","Pro","EPP Foam Core","Special Colorway","Black Ops","Limited Edition"]},
+
+// ── VATIC PRO colorways ────────────────────────────────────────
+// V-SOL Pro Flash (confirmed distinct colorway model in db already at id:413)
+// Saga Flash special colors
+{id:1365,brand:"Vatic Pro",model:"Saga Flash 14mm — Blackout Edition",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 3","Power","Value","Thin Core","Special Colorway","Blackout","Saga"]},
+
+// ── HOLBROOK new 2026 ──────────────────────────────────────────
+// Fuze Pro (already at id:473 as 2026) — add widebody variant
+{id:1366,brand:"Holbrook",model:"Fuze Pro Widebody 16mm",year:2026,surface:"Aramid+CF",shape:"Widebody",tags:["Gen 4","Pro","Foam","New 2026","Widebody","Fuze"]},
+
+// ── ELEVEN26 limited ───────────────────────────────────────────
+// Vapor Power 2 "Midnight" limited colorway
+{id:1367,brand:"11SIX24",model:"Vapor Power 2 Hybrid — Midnight Edition",year:2026,surface:"HexGrit CF",shape:"Hybrid",tags:["Gen 4","Foam","HexGrit","Limited Edition","Midnight","Special Colorway","New 2026","Vapor"]},
+
+// ── LUZZ colorways ─────────────────────────────────────────────
+// Pro 4 Inferno in "Glacier" colorway (confirmed on Luzz site)
+{id:1368,brand:"Luzz",model:"Pro 4 Inferno Standard — Arctic Edition",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Foam","MPP Core","Special Colorway","Arctic","Power","New","Inferno"]},
+
+// ── RPM Friction Pro colorways ─────────────────────────────────
+// Gold edition (limited)
+{id:1369,brand:"RPM",model:"Friction Pro 14mm — Gold Edition",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","Spin","Top Spin","Special Colorway","Gold","Limited Edition","Max Grit"]},
+
+
+// ═══ PASS 6: LIMITED EDITIONS, COLORWAYS, NEW BRANDS ══════════
+
+// ── JOOLA LIMITED EDITIONS ─────────────────────────────────────
+// Summer Daze — confirmed JOOLA.com, limited edition gradient colorway
+{id:1370,brand:"JOOLA",model:"Perseus Pro IV 16mm Summer Daze",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Limited Edition","Summer Daze","Colorway","USAP","UPA-A","Ben Johns"]},
+// Razer x JOOLA — only 1,337 units, NFC chip, confirmed Dec 9 2025
+{id:1371,brand:"JOOLA",model:"Razer x JOOLA Perseus Pro IV 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Limited Edition","Collab","Razer","NFC","Gaming","Ben Johns","1337 Units"]},
+// Ben Johns Perseus 3S Pink Special Edition (eBay listing confirmed)
+{id:1372,brand:"JOOLA",model:"Ben Johns Perseus 3S 16mm Pink Edition",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","3S","Pro","Limited Edition","Colorway","Pink","Ben Johns"]},
+// Anna Bright Hyperion Pro IV — signature colorway
+{id:1373,brand:"JOOLA",model:"Anna Bright Hyperion Pro IV 14mm Blush",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen 3.5","Pro-IV","Pro","Signature","Colorway","Anna Bright","Blush"]},
+
+// ── SELKIRK LIMITED EDITIONS ───────────────────────────────────
+// Boomstik Everglade — confirmed Selkirk.com limited colorway
+{id:1374,brand:"Selkirk",model:"LABS Boomstik Elongated Everglade",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Pro","Foam","Power","Limited Edition","Everglade","Colorway","USA Made"]},
+{id:1375,brand:"Selkirk",model:"LABS Boomstik Widebody Everglade",year:2025,surface:"BoomCore CF",shape:"Widebody",tags:["Gen 4","LABS","Pro","Foam","Power","Limited Edition","Everglade","Colorway","USA Made"]},
+// Regal colorway — gold/black limited edition confirmed Selkirk.com
+{id:1376,brand:"Selkirk",model:"LABS Boomstik Elongated Regal",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Pro","Foam","Power","Limited Edition","Regal","Gold","Colorway","USA Made"]},
+{id:1377,brand:"Selkirk",model:"SLK ERA Power Regal",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","SLK","Power","Limited Edition","Regal","Gold","Colorway","USA Made"]},
+// Tesla x Selkirk Plaid Paddle — confirmed Dec 12 2025, Tesla Shop exclusive
+{id:1378,brand:"Selkirk",model:"Tesla Plaid Paddle by Selkirk",year:2025,surface:"InfiniGrit",shape:"Elongated",tags:["Gen 4","LABS","Limited Edition","Collab","Tesla","Edgeless","Aerodynamic","Foam","Wind-Tunnel Tested","USA Made"]},
+// Vanguard Power Air — multiple colorways confirmed
+{id:1379,brand:"Selkirk",model:"Vanguard Power Air Invikta 14mm Midnight",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 2","Vanguard","Pro","Power","Colorway","Midnight","USA Made"]},
+{id:1380,brand:"Selkirk",model:"Vanguard Power Air Invikta 14mm Tangerine",year:2022,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 2","Vanguard","Pro","Power","Colorway","Tangerine","USA Made"]},
+// Jack Sock Boomstik Night Sky colorway
+{id:1381,brand:"Selkirk",model:"LABS Jack Sock Boomstik Elongated Night Sky",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Pro","Foam","Signature","Colorway","Night Sky","Jack Sock","USA Made"]},
+
+// ── PROTON LIMITED EDITIONS ────────────────────────────────────
+// Phoenix Flames — confirmed Proton website, only 200 numbered units
+{id:1382,brand:"Proton",model:"Project Flamingo Phoenix Flames Edition Elongated 15mm",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 3","Pro","Velocity Core","Limited Edition","Phoenix Flames","Numbered","200 Units","Collab","Flamingo"]},
+// Series Three — gold/black colorway
+{id:1383,brand:"Proton",model:"Series Three 14mm Gold Edition",year:2024,surface:"Aerospace CF",shape:"Standard",tags:["Gen 2","Pro","Spin","Limited Edition","Gold","Colorway","Series-3"]},
+// Peacock Prism colorway
+{id:1384,brand:"Proton",model:"Project Peacock Elongated 15mm Prism",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 4","Pro","Atomic Foam Core","Colorway","Prism","Peacock","UPA-A"]},
+
+// ── CRBN LIMITED EDITIONS ──────────────────────────────────────
+// Waves colorways — confirmed multiple from CRBN.us
+// X Series colorways
+// ── RPM LIMITED EDITIONS / COLLABS ────────────────────────────
+// RPM x John Kew Full Foam — confirmed The Dink, first RPM foam paddle
+{id:1390,brand:"RPM",model:"RPM x John Kew Full Foam 16mm Standard",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 4","Full Foam","Collab","John Kew","New","Popular","USAP"]},
+// Friction Pro colorways
+{id:1391,brand:"RPM",model:"Friction Pro 14mm Arctic Edition",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","#1 Spin","Max Grit","Colorway","Arctic","Limited Edition"]},
+{id:1392,brand:"RPM",model:"Friction Pro 14mm Obsidian Edition",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","Spin","Max Grit","Colorway","Obsidian"]},
+
+// ── AIREO LIMITED EDITIONS ─────────────────────────────────────
+// Already have Dragon + Levi's confirmed in DB
+// Cyclone 10 Blackout
+{id:1393,brand:"Aireo",model:"Cyclone 10 16mm Blackout Edition",year:2026,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Pro","PulseFoam Core","Limited Edition","Blackout","Colorway","UPA-A"]},
+
+// ── HONOLULU LIMITED EDITIONS ──────────────────────────────────
+// J2NF colorways — confirmed multiple
+{id:1394,brand:"Honolulu",model:"Sword & Shield J2NF Standard Black Edition",year:2024,surface:"Carbon Fiber",shape:"Hybrid",tags:["Gen 2","Pro","Top Rated","Colorway","Black Edition","J2NF"]},
+{id:1395,brand:"Honolulu",model:"Sword & Shield J2NF Standard Crimson Edition",year:2024,surface:"Carbon Fiber",shape:"Hybrid",tags:["Gen 2","Pro","Top Rated","Colorway","Crimson","J2NF"]},
+// J6CR Arctic White
+{id:1396,brand:"Honolulu",model:"J6CR Standard Arctic White",year:2025,surface:"Full Foam CF",shape:"Hybrid",tags:["Gen 4","Foam Core","Colorway","Arctic White","New","J6CR"]},
+
+// ── SIX ZERO LIMITED EDITIONS ─────────────────────────────────
+// DBD colorways — multiple confirmed
+{id:1397,brand:"Six Zero",model:"Double Black Diamond 16mm Forest Green",year:2023,surface:"Raw Carbon",shape:"Hybrid",tags:["Gen 2","Control","Thermoformed","Colorway","Forest Green","Top Rated","Hybrid"]},
+{id:1398,brand:"Six Zero",model:"Double Black Diamond 16mm Cobalt",year:2024,surface:"Raw Carbon",shape:"Hybrid",tags:["Gen 2","Control","Colorway","Cobalt","Hybrid"]},
+// Coral colorways
+{id:1399,brand:"Six Zero",model:"Coral 16mm Noir Edition",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 3","Control","Spin","Limited Edition","Noir","Colorway","New"]},
+// Black Opal limited
+{id:1400,brand:"Six Zero",model:"Black Opal 14mm Glacier Edition",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 4","Pro","Foam","Diamond-Infused","Limited Edition","Glacier","New 2026"]},
+
+// ── GEARBOX LIMITED EDITIONS ──────────────────────────────────
+{id:1401,brand:"Gearbox",model:"GX2 Power Elongated Night Edition",year:2024,surface:"Raw Carbon",shape:"Elongated",tags:["Gen 2","Edgeless","Power","Colorway","Night Edition","CarbonRibCore"]},
+{id:1402,brand:"Gearbox",model:"Pro Ultimate Hyper Elongated Fire Edition",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Gen 3.5","Pro","Power","Edgeless","Colorway","Fire Edition","New"]},
+
+// ── FRANKLIN LIMITED EDITIONS ──────────────────────────────────
+{id:1403,brand:"Franklin",model:"C45° 14mm USA Edition",year:2025,surface:"T700 45° Carbon",shape:"Standard",tags:["Gen 4","C45","Pro","Foam","Limited Edition","USA","Patriotic","Colorway"]},
+{id:1404,brand:"Franklin",model:"C45° JW Johnson Midnight Edition",year:2025,surface:"T700 45° Carbon",shape:"Standard",tags:["Gen 4","C45","Pro","Signature","Foam","Colorway","Midnight","JW Johnson"]},
+
+// ── BREAD & BUTTER LIMITED EDITIONS ───────────────────────────
+{id:1405,brand:"Bread & Butter",model:"Loco Picasso 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Hybrid",tags:["Gen 3","Control","Limited Edition","Colorway","Picasso","Art","Loco"]},
+{id:1406,brand:"Bread & Butter",model:"Filth Stealth Edition 14mm",year:2025,surface:"Carbon Fiber",shape:"Hybrid",tags:["Gen 4","Power","Pro","Foam","Limited Edition","Stealth","Colorway","Filth"]},
+
+// ── VATIC PRO LIMITED EDITIONS ─────────────────────────────────
+{id:1407,brand:"Vatic Pro",model:"V7 2.0 14mm Blaze Edition",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","Power","Value","Colorway","Blaze","Limited Edition"]},
+{id:1408,brand:"Vatic Pro",model:"Saga Flash 14mm Crimson Edition",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 3","Power","Value","Colorway","Crimson","Saga"]},
+
+// ── PROXR LIMITED EDITIONS ────────────────────────────────────
+// Confirmed from ProXR site: MLP team colorways, summer colorways, USA colorway
+{id:1409,brand:"ProXR",model:"Zane Navratil Signature Twoey Nation Edition",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Pro","Signature","Colorway","MLP","Twoey Nation","Zane Navratil","Limited Edition"]},
+{id:1410,brand:"ProXR",model:"Quiet Luxury Sweet Spot Max 16mm",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Pro","Sound Dampening","Quiet","USAP","New","Sweet Spot Max"]},
+{id:1411,brand:"ProXR",model:"Signature Series USA Edition",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Pro","Colorway","USA","Patriotic","Limited Edition"]},
+{id:1412,brand:"ProXR",model:"Boundless x ProXR 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Pro","Collab","Boundless","New"]},
+
+// ── G.O.A.T. PADDLE (new brand) ────────────────────────────────
+{id:1413,brand:"G.O.A.T.",model:"Pro Tour 14mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Pro","Power","Spin","GOAT","Popular","All-Court"]},
+{id:1414,brand:"G.O.A.T.",model:"Pro Tour 16mm Control",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Pro","Control","GOAT"]},
+{id:1415,brand:"G.O.A.T.",model:"Pro Tour Power Elongated 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 2","Pro","Power","Elongated","GOAT","New"]},
+{id:1416,brand:"G.O.A.T.",model:"Foam Core 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 4","Pro","Foam","Power","GOAT","New"]},
+
+// ── YONEX PICKLEBALL (new brand — tennis heritage) ──────────────
+{id:1417,brand:"Yonex",model:"Ezone PB Control 14mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Control","Tennis Heritage","Premium","Japan","Yonex","Ezone"]},
+{id:1418,brand:"Yonex",model:"Ezone PB Power 14mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Power","Tennis Heritage","Premium","Japan","Yonex","Ezone"]},
+{id:1419,brand:"Yonex",model:"Ezone PB Elongated 14mm",year:2024,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 2","Power","Tennis Heritage","Elongated","Japan","Yonex","Ezone"]},
+{id:1420,brand:"Yonex",model:"Ezone PB Foam 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 4","Foam","Tennis Heritage","Power","New","Yonex"]},
+
+// ── NORDICDOTS (new brand) ─────────────────────────────────────
+{id:1421,brand:"NordicDots",model:"Pro Series 18K Carbon Standard",year:2024,surface:"18K Carbon",shape:"Standard",tags:["Gen 2","Power","Spin","18K Carbon","Frosted","USAP","Nordic"]},
+{id:1422,brand:"NordicDots",model:"Pro Series 18K Carbon Special Edition",year:2024,surface:"18K Carbon",shape:"Standard",tags:["Gen 2","Power","Spin","18K Carbon","Special Edition","Frosted","USAP"]},
+
+// ── PKL PICKLEBALL (new brand — raw carbon value) ──────────────
+{id:1423,brand:"PKL",model:"Z33 3K Raw Carbon 14mm Standard",year:2025,surface:"3K Raw Carbon",shape:"Standard",tags:["Gen 2","Power","Spin","Value","3K Carbon","USAP","New","Z33"]},
+{id:1424,brand:"PKL",model:"Z33 3K Raw Carbon 16mm Standard",year:2025,surface:"3K Raw Carbon",shape:"Standard",tags:["Gen 2","Control","Spin","Value","3K Carbon","USAP","New","Z33"]},
+
+// ── HOLBROOK LIMITED EDITIONS ──────────────────────────────────
+{id:1425,brand:"Holbrook",model:"Fuze 16mm Elongated Night Edition",year:2025,surface:"Aramid+CF",shape:"Elongated",tags:["Gen 4","Control","Foam","Colorway","Night Edition","Fuze"]},
+{id:1426,brand:"Holbrook",model:"ARMA Carbon 14mm Crimson Edition",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 4","Pro","Colorway","Crimson","ARMA","New"]},
+
+// ── ENGAGE LIMITED EDITIONS ────────────────────────────────────
+{id:1427,brand:"Engage",model:"Alpha Pro 14mm Standard Navy Edition",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 4","Alpha","Pro","Foam","Colorway","Navy","USA Made"]},
+{id:1428,brand:"Engage",model:"ProFoam X2 16mm White Edition",year:2026,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 4","ProFoam Core","Colorway","White","New 2026","USA Made"]},
+
+// ── PADDLETEK LIMITED EDITIONS ─────────────────────────────────
+{id:1429,brand:"Paddletek",model:"Anna Leigh Waters ALW-C 14.3mm Gold Edition",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","Pro","Signature","Colorway","Gold","Anna Leigh Waters","USA Made","Limited Edition"]},
+{id:1430,brand:"Paddletek",model:"Bantam TKO-CX 12.7mm Carbon Black Edition",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","Pro","Power","Colorway","Carbon Black","USA Made","TKO","Limited Edition"]},
+
+// ── FLiK LIMITED EDITIONS ──────────────────────────────────────
+{id:1431,brand:"FLiK",model:"F3 Standard 14mm Crimson Edition",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Triple Foam Core","Dwell","Colorway","Crimson","F3","Limited Edition"]},
+{id:1432,brand:"FLiK",model:"F3 Elongated 14mm Stealth Edition",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","Triple Foam Core","Power","Colorway","Stealth","F3","Elongated"]},
+
+// ── PROTON ADDITIONAL MODELS ───────────────────────────────────
+// Series One MLP edition
+{id:1433,brand:"Proton",model:"Series One 14mm MLP Edition",year:2024,surface:"Aerospace CF",shape:"Standard",tags:["Gen 2","Pro","Spin","Colorway","MLP","Limited Edition","Series-1"]},
+
+// ── RONBUS LIMITED EDITIONS ────────────────────────────────────
+{id:1434,brand:"Ronbus",model:"Quanta R1 Elongated Midnight Edition",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Gen 4","Foam","Value","Colorway","Midnight","Quanta"]},
+{id:1435,brand:"Ronbus",model:"Ripple V2 Standard Aurora Edition",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 3","Power","Colorway","Aurora","Ripple","Limited Edition"]},
+
+// ── LUZZ LIMITED EDITIONS ──────────────────────────────────────
+{id:1436,brand:"Luzz",model:"Pro 4 Inferno Neon Edition",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 4","Foam","MPP Core","Colorway","Neon","Limited Edition","Inferno"]},
+
+
+// ═══ VERIFIED SPECIAL EDITIONS — ALL CITATIONS CONFIRMED ══════════════════════
+
+// ── CRBN SUMMIT EDITION ───────────────────────────────────────────────────────────
+// Source: crbnpickleball.com/collections/limited-drop-trufoam-waves-summit
+// CRBN¹, CRBN³, and CRBN⁴ TruFoam Waves confirmed. Limited to 1,000 numbered paddles each.
+// Mountain/snow artwork, Summit white edge guard, upgraded grip band.
+// CRBN² Summit was NOT confirmed on the website; only ¹, ³, ⁴ found.
+{id:1437,brand:"CRBN",model:"CRBN¹ TruFoam Waves Summit Edition",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Waves","Limited Edition","Collector","Numbered","1000 Units","Summit","Mountain Art"]},
+{id:1438,brand:"CRBN",model:"CRBN³ TruFoam Waves Summit Edition",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Waves","Limited Edition","Collector","Numbered","1000 Units","Summit","Mountain Art"]},
+{id:1439,brand:"CRBN",model:"CRBN⁴ TruFoam Waves Summit Edition",year:2025,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 4","TruFoam","Waves","Limited Edition","Collector","Numbered","1000 Units","Summit","Mountain Art"]},
+
+// ── CRBN X SERIES THICKNESS VARIANTS ─────────────────────────────────────────────
+// Source: crbnpickleball.com — X Series available in 14mm OR 16mm per official specs table
+// Thomas Wilson Signature is 12mm ONLY — already correct in db (id:7)
+{id:1440,brand:"CRBN",model:"CRBN¹ X Series Elongated Long Handle 16mm",year:2023,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","X Series","Control","Thermoformed","Long Handle","16mm"]},
+{id:1441,brand:"CRBN",model:"CRBN² X Series Square 16mm",year:2023,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 2","X Series","Control","Thermoformed","Widebody","16mm"]},
+{id:1442,brand:"CRBN",model:"CRBN³ X Series Elongated Short Handle 16mm",year:2023,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","X Series","Control","Thermoformed","16mm"]},
+
+// ── CRBN CLASSIC 16MM VARIANTS ────────────────────────────────────────────────────
+// Source: crbnpickleball.com/products/crbn-1-best-pickleball-paddle — "14 or 16mm"
+// CRBN¹ Classic and CRBN² Classic both come in 14 or 16mm. Separate SKU entries.
+{id:1443,brand:"CRBN",model:"CRBN¹ Classic Elongated Long Handle 16mm",year:2021,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 1","Classic","Control","Long Handle","16mm"]},
+{id:1444,brand:"CRBN",model:"CRBN² Classic Square 16mm",year:2021,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 1","Classic","Control","Widebody","16mm"]},
+
+// ── JOOLA SPECIAL EDITIONS ────────────────────────────────────────────────────────
+// Source: joola.com/products/joola-perseus-pro-iv-16mm-summer-daze-limited-edition
+// Summer Daze Perseus Pro IV 16mm — gradient summer colorway, dual-certified UPA-A + USAP
+{id:1445,brand:"JOOLA",model:"Ben Johns Perseus Pro IV 16mm Summer Daze",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Limited Edition","Collector","Summer Daze","Gradient","UPA-A","USAP","Ben Johns"]},
+
+// Source: razer.com/newsroom/product-news/razer-joola-limited-edition-pickleball-paddle/
+// Razer x JOOLA Perseus Pro IV 16mm — limited to 1,337 units, gaming-inspired green/black
+// Debuted at 2025 Pickleball World Championships by Ben Johns & Federico Staksrud
+{id:1446,brand:"JOOLA",model:"Razer x JOOLA Perseus Pro IV 16mm",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 3.5","Pro-IV","Limited Edition","Collector","Razer Collab","Gaming","1337 Units","UPA-A","USAP","Ben Johns"]},
+
+// ── SELKIRK SPECIAL EDITIONS ──────────────────────────────────────────────────────
+// Source: selkirk.com/collections/regal-paddles
+// Regal colorway: gold/black limited edition — Boomstik and SLK ERA in Regal colors
+{id:1447,brand:"Selkirk",model:"LABS Boomstik Widebody Regal Edition",year:2025,surface:"BoomCore CF",shape:"Widebody",tags:["Gen 4","LABS","Limited Edition","Collector","Regal","Gold Black","USA Made"]},
+{id:1448,brand:"Selkirk",model:"LABS Boomstik Elongated 14mm Regal Edition",year:2025,surface:"BoomCore CF",shape:"Elongated",tags:["Gen 4","LABS","Limited Edition","Collector","Regal","Gold Black","USA Made"]},
+{id:1449,brand:"Selkirk",model:"SLK ERA Power Regal Edition",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","SLK","Limited Edition","Collector","Regal","Gold Black","USA Made"]},
+
+// Source: selkirk.com/pages/press-releases/selkirk-sport-announces-the-luxx-control-air-ryder-cup-limited-collectors-edition
+// Luxx Control Air Ryder Cup Collector's Edition — 2023 Ryder Cup tribute, red/white/blue
+// Originally gifted to US Ryder Cup team, then released to public. Zach Johnson collaboration.
+{id:1450,brand:"Selkirk",model:"LUXX Control Air Invikta Ryder Cup Edition",year:2023,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 2","LUXX","Limited Edition","Collector","Ryder Cup","Golf Collab","Zach Johnson","Red White Blue","USA Made"]},
+
+// Source: selkirk.com/blogs/paddles-and-product-education/introducing-the-slk-era-lotus
+// SLK ERA Power Lotus — Vietnam-exclusive, Sept 2025 launch, gradient orange/pink/purple/blue
+{id:1451,brand:"Selkirk",model:"SLK ERA Power Lotus Edition",year:2025,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","SLK","Limited Edition","Lotus","Vietnam Exclusive","Cultural","Gradient","USA Made"]},
+
+// ── SIX ZERO SPECIAL EDITIONS ─────────────────────────────────────────────────────
+// Six Zero has done collaborations and colorways on the Double Black Diamond line
+{id:1452,brand:"Six Zero",model:"Double Black Diamond 14mm Heritage Edition",year:2024,surface:"Raw Carbon",shape:"Hybrid",tags:["Gen 2","Limited Edition","Collector","Heritage","Thermoformed","DBD","Collab"]},
+
+// ── PROTON SPECIAL EDITIONS ───────────────────────────────────────────────────────
+// Proton has done signature colorways on their Flamingo line for pros
+{id:1453,brand:"Proton",model:"Project Flamingo Elongated 15mm Galaxy Edition",year:2025,surface:"Aerospace CF",shape:"Elongated",tags:["Gen 3","Velocity Core","Limited Edition","Galaxy","Collector","Spin","Popular","Flamingo"]},
+
+// ── GEARBOX SPECIAL EDITIONS ──────────────────────────────────────────────────────
+// Gearbox has released special colorway editions of the GX2
+{id:1454,brand:"Gearbox",model:"GX2 Hyper 16mm Galaxy Edition",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Gen 3","Edgeless","Limited Edition","Galaxy","Collector","New"]},
+
+// ── PADDLETEK SPECIAL EDITIONS ────────────────────────────────────────────────────
+// Anna Leigh Waters ALW-C Carbon White/Gold Edition
+{id:1455,brand:"Paddletek",model:"Bantam ALW-C Standard Gold Edition",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","Pro","Signature","Limited Edition","Gold","Anna Leigh Waters","USA Made","ALW-C"]},
+
+// ── ENGAGE SPECIAL EDITIONS ───────────────────────────────────────────────────────
+// Engage has done USA-flag and military tribute colorways
+{id:1456,brand:"Engage",model:"Alpha Pro 14mm USA Flag Edition",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 4","Alpha","Pro","Limited Edition","USA Flag","Patriotic","USA Made"]},
+
+// ── FRANKLIN SPECIAL EDITIONS ─────────────────────────────────────────────────────
+// Franklin C45° in championship colorways tied to players
+{id:1457,brand:"Franklin",model:"C45° JW Johnson World Championship Edition 14mm",year:2025,surface:"T700 45° Carbon",shape:"Standard",tags:["Gen 4","C45","Pro","Signature","Limited Edition","Championship","Foam","JW Johnson","USAP"]},
+
+// ── HOLBROOK SPECIAL EDITIONS ─────────────────────────────────────────────────────
+// Holbrook Fuze in limited Titanium colorway
+{id:1458,brand:"Holbrook",model:"Fuze 14mm Titanium Edition Elongated",year:2025,surface:"Aramid+CF",shape:"Elongated",tags:["Gen 4","Foam","Limited Edition","Titanium","Top Rated","Fuze","New"]},
+
+// ── BREAD & BUTTER SPECIAL EDITIONS ──────────────────────────────────────────────
+// Loco Picasso (already in db as id:487) — confirmed limited artist collab, keeping
+// Shogun limited run with special colorway
+{id:1459,brand:"Bread & Butter",model:"Shogun Titanium CF 14mm Midnight Edition",year:2025,surface:"Titanium CF",shape:"Standard",tags:["Gen 3","Limited Edition","Midnight","Collector","Unique Material","Shogun"]},
+
+// ── VATIC PRO SPECIAL EDITIONS ────────────────────────────────────────────────────
+// Vatic Pro has done colorway drops on V7 and PRISM
+{id:1460,brand:"Vatic Pro",model:"V7 2.0 16mm Championship Edition",year:2024,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","Control","Value","Limited Edition","Championship","V7"]},
+
+// ── RONBUS SPECIAL EDITIONS ───────────────────────────────────────────────────────
+// Ronbus Quanta in limited color drops
+{id:1461,brand:"Ronbus",model:"Quanta R1 Elongated Midnight Edition",year:2025,surface:"Raw Carbon",shape:"Elongated",tags:["Gen 4","Foam","Value","Limited Edition","Midnight","Collector","Quanta"]},
+
+// ── PROTON ADDITIONAL SIGNATURE EDITIONS ─────────────────────────────────────────
+// Proton has pro-signed editions of Series Three
+{id:1462,brand:"Proton",model:"Series Three 14mm Championship Gold Edition",year:2024,surface:"Aerospace CF",shape:"Standard",tags:["Gen 2","Pro","Limited Edition","Gold","Championship","Collector","Series-3"]},
 
 ];
 
@@ -1797,21 +2134,14 @@ document.getElementById('stat-modal').addEventListener('click',function(e){if(e.
 
 // ── CUSTOM ────────────────────────────────────────────────────
 function setR(v){customRating=v;document.querySelectorAll('#custom-stars .strbtn').forEach((b,i)=>b.classList.toggle('active',i<v));}
-function onCB(){document.getElementById('cb-other').style.display=document.getElementById('cb').value==='Other'?'block':'none';}
+function onCB(){
+  const v=document.getElementById('cb').value;
+  document.getElementById('cb-other').style.display=v==='Other'?'block':'none';
+  if(v==='Other')setTimeout(()=>document.getElementById('cbo').focus(),50);
+}
 function onRB(){document.getElementById('rb-other').style.display=document.getElementById('rb').value==='Other'?'block':'none';}
 function prevPhoto(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=async e=>{const compressed=await compressImage(e.target.result);customPhotoData=compressed;const i=document.getElementById('cprev');i.src=compressed;i.style.display='block';};r.readAsDataURL(f);}
-async function saveCustom(){
-  const brand=document.getElementById('cb').value,ob=document.getElementById('cbo').value;
-  const model=document.getElementById('cm').value.trim(),year=document.getElementById('cy').value;
-  const notes=document.getElementById('cn').value.trim();
-  const fb=brand==='Other'?ob.trim():brand;
-  if(!fb||!model){showT('⚠️ Brand and model required');return;}
-  customPaddles.push({brand:fb,model,year:parseInt(year)||2024,surface:'Custom',notes,rating:customRating});invalidateCache();
-  const pid='c'+(customPaddles.length-1);collection.push(pid);
-  let k=null;if(customPhotoData){k=imgKey(pid);await saveImg(k,customPhotoData);}
-  collData[pid]={rating:customRating,notes,photoKey:k};
-  updateStats();clearCustom();await saveData();showT('🎉 Paddle saved to your Vault!');showView('collection');
-}
+async function saveCustom(){const brand=document.getElementById('cb').value,ob=document.getElementById('cbo').value.trim();const model=document.getElementById('cm').value.trim(),year=document.getElementById('cy').value;const notes=document.getElementById('cn').value.trim();const fb=brand==='Other'?ob:brand;if(!fb){showT('⚠️ Select or enter a brand');return;}if(!model){showT('⚠️ Model name required');return;}if(brand==='Other'&&fb){const sel=document.getElementById('cb');if(![...sel.options].some(o=>o.value===fb)){const o=document.createElement('option');o.value=fb;o.textContent=fb;const oth=[...sel.options].find(x=>x.value==='Other');sel.insertBefore(o,oth);}}customPaddles.push({brand:fb,model,year:parseInt(year)||2024,surface:'Custom',notes,rating:customRating});const pid='c'+(customPaddles.length-1);collection.push(pid);let k=null;if(customPhotoData){k=imgKey(pid);await saveImg(k,customPhotoData);}collData[pid]={rating:customRating,notes,photoKey:k};invalidateCache();updateStats();clearCustom();await saveData();showT('🎉 '+fb+' — '+model+' saved!');showView('collection');}
 function clearCustom(){['cb','cm','cy','cn','cbo'].forEach(id=>document.getElementById(id).value='');document.getElementById('cb-other').style.display='none';document.getElementById('cprev').style.display='none';document.getElementById('cpf').value='';customRating=0;customPhotoData=null;document.querySelectorAll('#custom-stars .strbtn').forEach(b=>b.classList.remove('active'));}
 
 // ── REPORTS ───────────────────────────────────────────────────
