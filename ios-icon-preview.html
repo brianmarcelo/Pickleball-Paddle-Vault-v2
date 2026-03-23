@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iOS Icon Preview — Paddle Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #1c1c1e;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    padding: 40px 24px;
+  }
+
+  h1 {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* ── PHONE FRAME ──────────────────────────────────── */
+  .phone {
+    width: 320px;
+    background: #000;
+    border-radius: 52px;
+    padding: 12px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.12),
+      0 40px 120px rgba(0,0,0,0.8),
+      inset 0 0 0 1px rgba(255,255,255,0.05);
+    position: relative;
+  }
+
+  /* notch / dynamic island */
+  .island {
+    width: 96px;
+    height: 30px;
+    background: #000;
+    border-radius: 20px;
+    margin: 0 auto 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .screen {
+    background: #000;
+    border-radius: 42px;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 390/844;
+  }
+
+  /* wallpaper */
+  .wallpaper {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 120% 80% at 20% -10%, #1a3a6e 0%, transparent 60%),
+      radial-gradient(ellipse 100% 70% at 80% 110%, #0a1628 0%, transparent 60%),
+      linear-gradient(160deg, #0d1b3e 0%, #061022 50%, #020b1c 100%);
+  }
+
+  /* status bar */
+  .status-bar {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 24px 0;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .status-time { font-size: 15px; font-weight: 700; }
+  .status-icons { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+
+  /* home screen grid */
+  .home-grid {
+    position: relative;
+    z-index: 5;
+    padding: 20px 16px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px 10px;
+  }
+
+  /* generic app icon */
+  .app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .app-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 13.5px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+
+  .app-label {
+    font-size: 10px;
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    max-width: 62px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Our icon — highlighted with a subtle glow */
+  .app.featured .app-icon {
+    box-shadow:
+      0 0 0 2px rgba(45,114,210,0.8),
+      0 0 20px rgba(45,114,210,0.6),
+      0 4px 16px rgba(0,0,0,0.5);
+  }
+
+  /* generic placeholder icons */
+  .icon-gray   { background: linear-gradient(145deg, #636366, #3a3a3c); }
+  .icon-blue   { background: linear-gradient(145deg, #0a84ff, #0055c4); }
+  .icon-green  { background: linear-gradient(145deg, #30d158, #1a8f38); }
+  .icon-orange { background: linear-gradient(145deg, #ff9f0a, #c85000); }
+  .icon-red    { background: linear-gradient(145deg, #ff453a, #bf1a12); }
+  .icon-purple { background: linear-gradient(145deg, #bf5af2, #8a3bc1); }
+  .icon-teal   { background: linear-gradient(145deg, #5ac8fa, #0077a8); }
+  .icon-pink   { background: linear-gradient(145deg, #ff375f, #bf1945); }
+  .icon-indigo { background: linear-gradient(145deg, #5e5ce6, #3634a3); }
+  .icon-yellow { background: linear-gradient(145deg, #ffd60a, #c4a000); }
+
+  /* dock */
+  .dock {
+    position: relative;
+    z-index: 5;
+    margin: 22px 12px 10px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .dock .app-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+  }
+
+  /* side buttons */
+  .btn-side {
+    position: absolute;
+    background: #1a1a1a;
+    border-radius: 3px;
+  }
+  .btn-power { right: -11px; top: 90px; width: 4px; height: 66px; }
+  .btn-vol-up { left: -11px; top: 80px; width: 4px; height: 38px; }
+  .btn-vol-dn { left: -11px; top: 126px; width: 4px; height: 38px; }
+  .btn-silent { left: -11px; top: 56px; width: 4px; height: 22px; border-radius: 3px; }
+
+  /* home indicator */
+  .home-indicator {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .home-bar {
+    width: 120px;
+    height: 4px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 2px;
+  }
+
+  /* ── ICON CLOSE-UP ────────────────────────────────── */
+  .closeup-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .closeup-label {
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .closeup-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+  }
+
+  .closeup-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .closeup-size {
+    color: rgba(255,255,255,0.3);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .icon-lg {
+    border-radius: 22.5%;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(255,255,255,0.1);
+  }
+
+  .icon-app-label-lg {
+    font-size: 13px;
+    color: white;
+    font-weight: 500;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>iOS Home Screen Preview</h1>
+
+<!-- ── PHONE MOCKUP ── -->
+<div class="phone">
+  <div class="btn-power"></div>
+  <div class="btn-silent"></div>
+  <div class="btn-vol-up"></div>
+  <div class="btn-vol-dn"></div>
+
+  <div class="island"></div>
+
+  <div class="screen">
+    <div class="wallpaper"></div>
+
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white">
+          <rect x="0" y="4" width="3" height="8" rx="1" opacity="0.4"/>
+          <rect x="4.5" y="2.5" width="3" height="9.5" rx="1" opacity="0.6"/>
+          <rect x="9" y="0.5" width="3" height="11.5" rx="1"/>
+          <rect x="13.5" y="3" width="2" height="7" rx="0.5" opacity="0.35"/>
+        </svg>
+        <svg width="15" height="12" viewBox="0 0 15 12" fill="white">
+          <path d="M7.5 2.5C9.8 2.5 11.8 3.5 13.2 5.1L14.5 3.8C12.7 1.8 10.2 0.5 7.5 0.5C4.8 0.5 2.3 1.8 0.5 3.8L1.8 5.1C3.2 3.5 5.2 2.5 7.5 2.5Z" opacity="0.4"/>
+          <path d="M7.5 5C9 5 10.4 5.6 11.4 6.6L12.7 5.3C11.3 3.9 9.5 3 7.5 3C5.5 3 3.7 3.9 2.3 5.3L3.6 6.6C4.6 5.6 6 5 7.5 5Z" opacity="0.7"/>
+          <circle cx="7.5" cy="9.5" r="2"/>
+        </svg>
+        <svg width="25" height="12" viewBox="0 0 25 12" fill="white">
+          <rect x="0" y="0.5" width="21" height="11" rx="3" stroke="white" stroke-width="1" fill="none" opacity="0.35"/>
+          <rect x="22" y="3.5" width="2" height="5" rx="1" opacity="0.35"/>
+          <rect x="1.5" y="2" width="16" height="8" rx="1.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- app grid -->
+    <div class="home-grid">
+      <!-- row 1 -->
+      <div class="app">
+        <div class="app-icon icon-blue">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#b)"/><defs><linearGradient id="b" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#0a84ff"/><stop offset="1" stop-color="#0055c4"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">✉</text></svg>
+        </div>
+        <span class="app-label">Mail</span>
+      </div>
+      <div class="app">
+        <div class="app-icon icon-green">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#30d158"/><stop offset="1" stop-color="#1a8f38"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">💬</text></svg>
+        </div>
+        <span class="app-label">Messages</span>
+      </div>
+      <div class="app">
+        <div class="app-icon icon-teal">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#t)"/><defs><linearGradient id="t" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#5ac8fa"/><stop offset="1" stop-color="#0077a8"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">🌤</text></svg>
+        </div>
+        <span class="app-label">Weather</span>
+      </div>
+      <div class="app">
+        <div class="app-icon icon-orange">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#o)"/><defs><linearGradient id="o" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#ff9f0a"/><stop offset="1" stop-color="#c85000"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">📷</text></svg>
+        </div>
+        <span class="app-label">Camera</span>
+      </div>
+
+      <!-- row 2 -->
+      <div class="app">
+        <div class="app-icon icon-red">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#r)"/><defs><linearGradient id="r" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#ff453a"/><stop offset="1" stop-color="#bf1a12"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">▶</text></svg>
+        </div>
+        <span class="app-label">Videos</span>
+      </div>
+      <div class="app">
+        <div class="app-icon icon-purple">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#p)"/><defs><linearGradient id="p" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#bf5af2"/><stop offset="1" stop-color="#8a3bc1"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">🎵</text></svg>
+        </div>
+        <span class="app-label">Music</span>
+      </div>
+
+      <!-- PADDLE VAULT — highlighted -->
+      <div class="app featured">
+        <div class="app-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="60" height="60">
+            <rect width="180" height="180" rx="36" fill="#1a4b8c"/>
+            <g transform='translate(-12,14.6) rotate(15,49,98)'><ellipse cx='49' cy='37' rx='44' ry='54' fill='#0d2954'/><ellipse cx='49' cy='37' rx='39' ry='49' fill='#111111'/><path d='M22 82 Q21 94 34 96 L65 96 Q78 94 77 82 Q63 88 49 88 Q35 88 22 82Z' fill='#0d2954'/><rect x='34' y='95' width='31' height='70' rx='9' fill='#0d2954'/></g>
+            <circle cx="140" cy="42" r="28" fill="#fbbf24"/>
+            <circle cx="131" cy="33" r="7" fill="rgba(255,255,255,.22)"/>
+            <circle cx="140" cy="17" r="3.8" fill="rgba(120,60,0,.55)"/>
+            <circle cx="153" cy="22" r="3.8" fill="rgba(120,60,0,.55)"/>
+            <circle cx="159" cy="35" r="3.8" fill="rgba(120,60,0,.55)"/>
+            <circle cx="153" cy="49" r="3.8" fill="rgba(120,60,0,.55)"/>
+            <circle cx="140" cy="55" r="3.8" fill="rgba(120,60,0,.55)"/>
+            <circle cx="127" cy="49" r="3.8" fill="rgba(120,60,0,.55)"/>
+            <circle cx="121" cy="35" r="3.8" fill="rgba(120,60,0,.55)"/>
+            <circle cx="127" cy="22" r="3.8" fill="rgba(120,60,0,.55)"/>
+            <circle cx="140" cy="42" r="3.2" fill="rgba(120,60,0,.48)"/>
+          </svg>
+        </div>
+        <span class="app-label" style="color:#74b0f5;font-weight:700;">Paddle Vault</span>
+      </div>
+
+      <div class="app">
+        <div class="app-icon icon-indigo">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#i)"/><defs><linearGradient id="i" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#5e5ce6"/><stop offset="1" stop-color="#3634a3"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">📅</text></svg>
+        </div>
+        <span class="app-label">Calendar</span>
+      </div>
+
+      <!-- row 3 -->
+      <div class="app">
+        <div class="app-icon icon-yellow">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#y)"/><defs><linearGradient id="y" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#ffd60a"/><stop offset="1" stop-color="#c4a000"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">⭐</text></svg>
+        </div>
+        <span class="app-label">Notes</span>
+      </div>
+      <div class="app">
+        <div class="app-icon icon-gray">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#gr)"/><defs><linearGradient id="gr" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#636366"/><stop offset="1" stop-color="#3a3a3c"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">⚙️</text></svg>
+        </div>
+        <span class="app-label">Settings</span>
+      </div>
+      <div class="app">
+        <div class="app-icon icon-pink">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="url(#pk)"/><defs><linearGradient id="pk" x1="0" y1="0" x2="60" y2="60"><stop offset="0" stop-color="#ff375f"/><stop offset="1" stop-color="#bf1945"/></linearGradient></defs><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">❤️</text></svg>
+        </div>
+        <span class="app-label">Health</span>
+      </div>
+      <div class="app">
+        <div class="app-icon icon-blue" style="background:linear-gradient(145deg,#32ade6,#0a5fa0)">
+          <svg viewBox="0 0 60 60" width="60" height="60"><rect width="60" height="60" fill="none"/><text x="30" y="40" text-anchor="middle" font-size="26" fill="white" font-family="Arial">🗺</text></svg>
+        </div>
+        <span class="app-label">Maps</span>
+      </div>
+    </div>
+
+    <!-- dock -->
+    <div class="dock">
+      <div class="app-icon icon-green" style="width:55px;height:55px;border-radius:12px;">
+        <svg viewBox="0 0 55 55" width="55" height="55"><rect width="55" height="55" fill="none"/><text x="27" y="37" text-anchor="middle" font-size="26" fill="white" font-family="Arial">📞</text></svg>
+      </div>
+      <div class="app-icon icon-blue" style="width:55px;height:55px;border-radius:12px;">
+        <svg viewBox="0 0 55 55" width="55" height="55"><rect width="55" height="55" fill="none"/><text x="27" y="37" text-anchor="middle" font-size="26" fill="white" font-family="Arial">🧭</text></svg>
+      </div>
+      <div class="app-icon icon-gray" style="width:55px;height:55px;border-radius:12px;background:linear-gradient(145deg,#1c3459,#0a1628);">
+        <!-- App Store blue gradient -->
+        <svg viewBox="0 0 55 55" width="55" height="55"><rect width="55" height="55" fill="none"/><text x="27" y="37" text-anchor="middle" font-size="26" fill="white" font-family="Arial">🔍</text></svg>
+      </div>
+      <div class="app-icon" style="width:55px;height:55px;border-radius:12px;background:linear-gradient(145deg,#0a84ff,#0055c4);">
+        <svg viewBox="0 0 55 55" width="55" height="55"><rect width="55" height="55" fill="none"/><text x="27" y="37" text-anchor="middle" font-size="26" fill="white" font-family="Arial">🌐</text></svg>
+      </div>
+    </div>
+
+    <div class="home-indicator">
+      <div class="home-bar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ICON CLOSE-UP ── -->
+<div class="closeup-section">
+  <div class="closeup-label">Icon close-up</div>
+  <div class="closeup-row">
+
+    <!-- 60×60 (home screen actual size) -->
+    <div class="closeup-item">
+      <div class="icon-lg" style="width:60px;height:60px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="60" height="60">
+          <rect width="180" height="180" rx="36" fill="#1a4b8c"/>
+          <g transform='translate(-12,14.6) rotate(15,49,98)'><ellipse cx='49' cy='37' rx='44' ry='54' fill='#0d2954'/><ellipse cx='49' cy='37' rx='39' ry='49' fill='#111111'/><path d='M22 82 Q21 94 34 96 L65 96 Q78 94 77 82 Q63 88 49 88 Q35 88 22 82Z' fill='#0d2954'/><rect x='34' y='95' width='31' height='70' rx='9' fill='#0d2954'/></g>
+          <circle cx="140" cy="42" r="28" fill="#fbbf24"/>
+          <circle cx="131" cy="33" r="7" fill="rgba(255,255,255,.22)"/>
+          <circle cx="140" cy="17" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="153" cy="22" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="159" cy="35" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="153" cy="49" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="140" cy="55" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="127" cy="49" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="121" cy="35" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="127" cy="22" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="140" cy="42" r="3.2" fill="rgba(120,60,0,.48)"/>
+        </svg>
+      </div>
+      <span class="icon-app-label-lg">Paddle Vault</span>
+      <span class="closeup-size">60pt (home screen)</span>
+    </div>
+
+    <!-- 120×120 (2× retina) -->
+    <div class="closeup-item">
+      <div class="icon-lg" style="width:120px;height:120px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="120" height="120">
+          <rect width="180" height="180" rx="36" fill="#1a4b8c"/>
+          <g transform='translate(-12,14.6) rotate(15,49,98)'><ellipse cx='49' cy='37' rx='44' ry='54' fill='#0d2954'/><ellipse cx='49' cy='37' rx='39' ry='49' fill='#111111'/><path d='M22 82 Q21 94 34 96 L65 96 Q78 94 77 82 Q63 88 49 88 Q35 88 22 82Z' fill='#0d2954'/><rect x='34' y='95' width='31' height='70' rx='9' fill='#0d2954'/></g>
+          <circle cx="140" cy="42" r="28" fill="#fbbf24"/>
+          <circle cx="131" cy="33" r="7" fill="rgba(255,255,255,.22)"/>
+          <circle cx="140" cy="17" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="153" cy="22" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="159" cy="35" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="153" cy="49" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="140" cy="55" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="127" cy="49" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="121" cy="35" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="127" cy="22" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="140" cy="42" r="3.2" fill="rgba(120,60,0,.48)"/>
+        </svg>
+      </div>
+      <span class="icon-app-label-lg" style="font-size:14px;">Paddle Vault</span>
+      <span class="closeup-size">120pt (2× retina)</span>
+    </div>
+
+    <!-- 180×180 (3× retina, iPad-ish) -->
+    <div class="closeup-item">
+      <div class="icon-lg" style="width:180px;height:180px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+          <rect width="180" height="180" rx="36" fill="#1a4b8c"/>
+          <!-- subtle inner highlight on background -->
+          <radialGradient id="bg-hl" cx="30%" cy="20%" r="70%">
+            <stop offset="0%" stop-color="#2d72d2" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#0d2954" stop-opacity="0"/>
+          </radialGradient>
+          <rect width="180" height="180" rx="36" fill="url(#bg-hl)"/>
+          <g transform='translate(-12,14.6) rotate(15,49,98)'><ellipse cx='49' cy='37' rx='44' ry='54' fill='#0d2954'/><ellipse cx='49' cy='37' rx='39' ry='49' fill='#111111'/><path d='M22 82 Q21 94 34 96 L65 96 Q78 94 77 82 Q63 88 49 88 Q35 88 22 82Z' fill='#0d2954'/><rect x='34' y='95' width='31' height='70' rx='9' fill='#0d2954'/></g>
+          <circle cx="140" cy="42" r="28" fill="#fbbf24"/>
+          <circle cx="131" cy="33" r="7" fill="rgba(255,255,255,.22)"/>
+          <circle cx="140" cy="17" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="153" cy="22" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="159" cy="35" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="153" cy="49" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="140" cy="55" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="127" cy="49" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="121" cy="35" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="127" cy="22" r="3.8" fill="rgba(120,60,0,.55)"/>
+          <circle cx="140" cy="42" r="3.2" fill="rgba(120,60,0,.48)"/>
+        </svg>
+      </div>
+      <span class="icon-app-label-lg" style="font-size:15px;">Paddle Vault</span>
+      <span class="closeup-size">180pt (3× retina)</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- note -->
+<p style="color:rgba(255,255,255,0.25);font-size:11px;text-align:center;max-width:340px;line-height:1.6;">
+  iOS applies rounded corners automatically. The icon uses your existing <code style="color:rgba(255,255,255,0.4)">apple-touch-icon</code> tag — no changes needed to the app.
+</p>
+
+</body>
+</html>
