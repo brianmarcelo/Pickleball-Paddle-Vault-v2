@@ -113,6 +113,11 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 .mo.open{display:flex;}
 .md{width:100%;max-width:480px;margin:0 auto;background:#d8eafd;border-radius:24px 24px 0 0;padding:22px 20px 40px;max-height:86vh;overflow-y:auto;border-top:1.5px solid rgba(45,114,210,0.2);box-shadow:0 -8px 40px rgba(13,41,84,0.18);}
 .mh{width:40px;height:4px;background:rgba(45,114,210,0.25);border-radius:2px;margin:0 auto 18px;}
+/* Full-size Photo Expanded View */
+#photo-exp{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
+#photo-exp.open{display:flex;}
+#photo-exp img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;box-shadow:0 0 40px rgba(0,0,0,0.5);}
+.close-exp{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.2);color:white;border:none;border-radius:50%;width:40px;height:40px;font-size:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .mt{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:var(--bd);margin-bottom:16px;}
 .bn{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(228,241,252,0.97);backdrop-filter:blur(20px);border-top:1.5px solid rgba(45,114,210,0.14);display:flex;padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px));max-width:480px;margin:0 auto;}
 .bb2{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px;background:none;border:none;color:var(--tf);cursor:pointer;transition:color 0.2s;font-family:'DM Sans',sans-serif;}
@@ -193,9 +198,10 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
     <div class="fg" id="cb-other" style="display:none"><label>New Manufacturer Name</label><input type="text" id="cbo" placeholder="e.g. CRBN, Selkirk, My Custom Brand…"><div style="font-size:11px;color:var(--tf);margin-top:5px;">This will be saved as a new brand in your vault.</div></div>
     <div class="fg"><label>Paddle Model</label><input type="text" id="cm" placeholder="e.g. Hyperion CFS 16mm"></div>
     <div class="fg"><label>Year Released</label><select id="cy"><option value="">Select year…</option></select></div>
+    <div class="fg"><label>Additional Tags</label><input type="text" id="ct" placeholder="e.g. Gen 3, Carbon Fiber, Power (comma separated)"></div>
     <div class="fg"><label>Your Rating</label><div class="stri" id="custom-stars"><button class="strbtn" onclick="setR(1)">★</button><button class="strbtn" onclick="setR(2)">★</button><button class="strbtn" onclick="setR(3)">★</button><button class="strbtn" onclick="setR(4)">★</button><button class="strbtn" onclick="setR(5)">★</button></div></div>
     <div class="fg"><label>Notes</label><textarea id="cn" placeholder="How does it play?"></textarea></div>
-    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(synced to cloud)</span></label><label class="pu" for="cpf"><input type="file" id="cpf" accept="image/*" onchange="prevPhoto(this)"><div class="puico">📷</div><div class="putxt">Tap to upload your paddle photo</div><img id="cprev" class="pprev" style="display:none"></label></div>
+    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(local-only; no cloud sync)</span></label><label class="pu" for="cpf"><input type="file" id="cpf" accept="image/*" onchange="prevPhoto(this)"><div class="puico">📷</div><div class="putxt">Tap to upload your paddle photo</div><img id="cprev" class="pprev" style="display:none"></label></div>
     <button class="pbtn" onclick="saveCustom()">Save to My Vault</button>
     <button class="sbtn" onclick="clearCustom()">Clear Form</button>
   </div>
@@ -214,6 +220,7 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 </div>
 
 <div class="mo" id="modal"><div class="md"><div class="mh"></div><div id="mc"></div><button class="sbtn" onclick="closeM()">Close</button></div></div>
+<div id="photo-exp" onclick="closeExp()"><button class="close-exp">&times;</button><img id="exp-img" src=""></div>
 <div class="mo" id="stat-modal"><div class="md"><div class="mh"></div><div id="smc"></div><button class="sbtn" onclick="closeStatM()">Close</button></div></div>
 <div class="toast" id="toast"></div>
 <div class="bn">
@@ -2419,7 +2426,7 @@ async function openD(pid){
   const ic=collection.includes(pid),d=collData[pid]||{rating:0,notes:'',photoKey:null};
   window._mR=d.rating;window._mPK=d.photoKey||null;window._mNP=null;
   let src=null;if(d.photoKey)src=await loadImg(d.photoKey);
-  const th=src?`<img src="${src}" style="width:100%;height:100%;object-fit:cover;">`:`<svg width="100%" height="100%" viewBox="0 0 24 44" fill="none" preserveAspectRatio="xMidYMid meet"><g transform="translate(-2.95,3.58) rotate(15,12,24)"><ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="#0d2954" opacity="0.65"/><ellipse cx="12" cy="9" rx="9.5" ry="12" fill="#111111" opacity="0.65"/><rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="#0d2954" opacity="0.7"/></g></svg>`;
+  const th=src?`<img src="${src}" onclick="expandPhoto('${src}')" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;" title="Tap to expand">`:`<svg width="100%" height="100%" viewBox="0 0 24 44" fill="none" preserveAspectRatio="xMidYMid meet"><g transform="translate(-2.95,3.58) rotate(15,12,24)"><ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="#0d2954" opacity="0.65"/><ellipse cx="12" cy="9" rx="9.5" ry="12" fill="#111111" opacity="0.65"/><rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="#0d2954" opacity="0.7"/></g></svg>`;
   document.getElementById('mc').innerHTML=`
     <div class="mt">${p.model}</div>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
@@ -2432,10 +2439,10 @@ async function openD(pid){
     <div class="fg"><label>Your Rating</label><div class="stri" id="mstars">
       ${[1,2,3,4,5].map(i=>`<button class="strbtn ${i<=d.rating?'active':''}" onclick="setMR(${JSON.stringify(pid)},${i})">★</button>`).join('')}</div></div>
     <div class="fg"><label>Notes</label><textarea id="mnotes" placeholder="Your thoughts…">${d.notes||''}</textarea></div>
-    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(synced to cloud)</span></label>
+    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(device-only; won't sync)</span></label>
       <label class="pu" for="mpf"><input type="file" id="mpf" accept="image/*" onchange="prevMP(this)">
       <div class="puico">📷</div><div class="putxt">Upload your own photo</div>
-      ${src?`<img src="${src}" class="pprev" id="mpprev">`:'<img class="pprev" id="mpprev" style="display:none">'}</label></div>
+      ${src?`<img src="${src}" class="pprev" id="mpprev" onclick="expandPhoto('${src}')" style="cursor:zoom-in;">`:'<img class="pprev" id="mpprev" style="display:none;cursor:zoom-in;" onclick="expandPhoto(this.src)">'}</label></div>
     <button class="pbtn" onclick="saveMD(${JSON.stringify(pid)},${ic})">${ic?'💾 Save Changes':'+ Add to My Vault'}</button>
     ${ic?`<button class="sbtn" style="color:#dc2626;border-color:#fca5a5;" onclick="remV(${JSON.stringify(pid)})">Remove from Vault</button>`:''}
   `;
@@ -2459,6 +2466,8 @@ async function remV(pid){
   if(currentView==='collection')renderColl();if(currentView==='browse')renderP();
 }
 function closeM(){document.getElementById('modal').classList.remove('open');}
+function expandPhoto(src){if(!src)return;const exp=document.getElementById('photo-exp');document.getElementById('exp-img').src=src;exp.classList.add('open');}
+function closeExp(){document.getElementById('photo-exp').classList.remove('open');}
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeM();});
 document.getElementById('stat-modal').addEventListener('click',function(e){if(e.target===this)closeStatM();});
 
@@ -2471,8 +2480,8 @@ function onCB(){
 }
 function onRB(){document.getElementById('rb-other').style.display=document.getElementById('rb').value==='Other'?'block':'none';}
 function prevPhoto(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=async e=>{const compressed=await compressImage(e.target.result);customPhotoData=compressed;const i=document.getElementById('cprev');i.src=compressed;i.style.display='block';};r.readAsDataURL(f);}
-async function saveCustom(){const brand=document.getElementById('cb').value,ob=document.getElementById('cbo').value.trim();const model=document.getElementById('cm').value.trim(),year=document.getElementById('cy').value;const notes=document.getElementById('cn').value.trim();const fb=brand==='Other'?ob:brand;if(!fb){showT('⚠️ Select or enter a brand');return;}if(!model){showT('⚠️ Model name required');return;}if(brand==='Other'&&fb){const sel=document.getElementById('cb');if(![...sel.options].some(o=>o.value===fb)){const o=document.createElement('option');o.value=fb;o.textContent=fb;const oth=[...sel.options].find(x=>x.value==='Other');sel.insertBefore(o,oth);}}customPaddles.push({brand:fb,model,year:parseInt(year)||2024,surface:'Custom',notes,rating:customRating});const pid='c'+(customPaddles.length-1);collection.push(pid);let k=null;if(customPhotoData){k=imgKey(pid);await saveImg(k,customPhotoData);}collData[pid]={rating:customRating,notes,photoKey:k};invalidateCache();updateStats();clearCustom();await saveData();showT('🎉 '+fb+' — '+model+' saved!');showView('collection');}
-function clearCustom(){['cb','cm','cy','cn','cbo'].forEach(id=>document.getElementById(id).value='');document.getElementById('cb-other').style.display='none';document.getElementById('cprev').style.display='none';document.getElementById('cpf').value='';customRating=0;customPhotoData=null;document.querySelectorAll('#custom-stars .strbtn').forEach(b=>b.classList.remove('active'));}
+async function saveCustom(){const brand=document.getElementById('cb').value,ob=document.getElementById('cbo').value.trim();const model=document.getElementById('cm').value.trim(),year=document.getElementById('cy').value;const notes=document.getElementById('cn').value.trim(),tagsRaw=document.getElementById('ct').value.trim();const fb=brand==='Other'?ob:brand;if(!fb){showT('⚠️ Select or enter a brand');return;}if(!model){showT('⚠️ Model name required');return;}if(brand==='Other'&&fb){const sel=document.getElementById('cb');if(![...sel.options].some(o=>o.value===fb)){const o=document.createElement('option');o.value=fb;o.textContent=fb;const oth=[...sel.options].find(x=>x.value==='Other');sel.insertBefore(o,oth);}}const tags=tagsRaw?tagsRaw.split(',').map(t=>t.trim()).filter(Boolean):['Custom'];customPaddles.push({brand:fb,model,year:parseInt(year)||2024,surface:'Custom',notes,rating:customRating,tags});const pid='c'+(customPaddles.length-1);collection.push(pid);let k=null;if(customPhotoData){k=imgKey(pid);await saveImg(k,customPhotoData);}collData[pid]={rating:customRating,notes,photoKey:k};invalidateCache();updateStats();clearCustom();await saveData();showT('🎉 '+fb+' — '+model+' saved!');showView('collection');}
+function clearCustom(){['cb','cm','cy','cn','cbo','ct'].forEach(id=>document.getElementById(id).value='');document.getElementById('cb-other').style.display='none';document.getElementById('cprev').style.display='none';document.getElementById('cpf').value='';customRating=0;customPhotoData=null;document.querySelectorAll('#custom-stars .strbtn').forEach(b=>b.classList.remove('active'));}
 
 // ── REPORTS ───────────────────────────────────────────────────
 async function submitReport(){
