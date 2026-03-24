@@ -104,6 +104,9 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 .pbtn:active{opacity:0.9;transform:scale(0.99);}
 .sbtn{width:100%;padding:12px;background:transparent;border:1.5px solid var(--cbr);border-radius:var(--r);color:var(--tf);font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:8px;transition:background 0.2s;}
 .sbtn:active{background:rgba(45,114,210,0.07);}
+.f-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.f-sel{width:100%;height:38px;padding:0 10px;font-size:12px !important;border-radius:10px !important;font-weight:500 !important;}
+@media (max-width:400px){.f-bar{grid-template-columns:1fr;}}
 .es{text-align:center;padding:56px 20px;color:var(--tf);}
 .ei{font-size:46px;margin-bottom:12px;}.et{font-size:15px;line-height:1.6;}
 .rsub{font-size:13px;color:var(--tf);margin-bottom:18px;line-height:1.6;}
@@ -182,16 +185,26 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
     <button class="ntab" onclick="showView('report')">🚩 Report</button>
   </div>
   <div class="view active" id="view-browse">
-    <div class="sw"><svg class="sico" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#2d72d2"><circle cx="11" cy="11" r="7" stroke-width="2"/><path d="M21 21l-4-4" stroke-width="2" stroke-linecap="round"/></svg><input class="si" type="text" placeholder="Search paddles, brands, tags…" oninput="filterP(this.value)" id="search-input"></div>
-    <div class="bsel-wrap">
-      <select class="bsel" id="brand-filters-sel" onchange="setBFSel(this.value)">
-        <option value="All">All Brands</option>
-      </select>
-      <svg class="bsel-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    <div class="sw"><input class="si" type="text" placeholder="Search paddles, brands, tags…" oninput="filterP(this.value)" id="search-input"></div>
+    <div class="f-bar">
+      <div class="bsel-wrap"><select class="bsel f-sel" id="brand-filters-sel" onchange="setBFSel(this.value)"><option value="All">All Brands</option></select></div>
+      <div class="bsel-wrap"><select class="bsel f-sel" id="filter-year" onchange="setFilter('year',this.value)"><option value="All">All Years</option></select></div>
+      <div class="bsel-wrap"><select class="bsel f-sel" id="filter-gen" onchange="setFilter('gen',this.value)"><option value="All">All Gens</option><option value="Gen 1">Gen 1</option><option value="Gen 2">Gen 2</option><option value="Gen 3">Gen 3</option><option value="Gen 4">Gen 4</option></select></div>
+      <div class="bsel-wrap"><select class="bsel f-sel" id="filter-shape" onchange="setFilter('shape',this.value)"><option value="All">All Shapes</option><option value="Elongated">Elongated</option><option value="Standard">Standard</option><option value="Hybrid">Hybrid</option><option value="Widebody">Widebody</option></select></div>
     </div>
+    <div class="fg" style="margin-bottom:12px;"><label style="font-size:10px;margin-bottom:4px;">Sort By</label><select class="bsel f-sel" id="filter-sort" onchange="setFilter('sort',this.value)"><option value="Newest">Newest First (Default)</option><option value="Oldest">Oldest First</option><option value="Brand">By Brand A-Z</option><option value="Rating">Highest Rated</option></select></div>
     <div id="paddle-list"></div>
   </div>
-  <div class="view" id="view-collection"><div class="sectit">MY VAULT</div><div id="collection-list"></div></div>
+  <div class="view" id="view-collection">
+    <div class="sectit">MY VAULT</div>
+    <div class="f-bar" style="margin-bottom:14px;">
+      <div class="bsel-wrap"><select class="bsel f-sel" id="v-filter-year" onchange="setFilter('year',this.value,'v')"><option value="All">All Years</option></select></div>
+      <div class="bsel-wrap"><select class="bsel f-sel" id="v-filter-gen" onchange="setFilter('gen',this.value,'v')"><option value="All">All Gens</option><option value="Gen 1">Gen 1</option><option value="Gen 2">Gen 2</option><option value="Gen 3">Gen 3</option><option value="Gen 4">Gen 4</option></select></div>
+      <div class="bsel-wrap"><select class="bsel f-sel" id="v-filter-shape" onchange="setFilter('shape',this.value,'v')"><option value="All">All Shapes</option><option value="Elongated">Elongated</option><option value="Standard">Standard</option><option value="Hybrid">Hybrid</option><option value="Widebody">Widebody</option></select></div>
+      <div class="bsel-wrap"><select class="bsel f-sel" id="v-filter-sort" onchange="setFilter('sort',this.value,'v')"><option value="Newest">Newest First</option><option value="Rating">Highest Rated</option><option value="Brand">By Brand A-Z</option></select></div>
+    </div>
+    <div id="collection-list"></div>
+  </div>
   <div class="view" id="view-add">
     <div class="sectit">ADD CUSTOM PADDLE</div><p style="font-size:12px;color:var(--tf);margin-bottom:14px;line-height:1.5;">Can't find a paddle in the database? Add it here and it'll appear in your Vault. Select <strong style="color:var(--bb);">Other</strong> from the brand list to enter a new manufacturer.</p>
     <div class="fg"><label>Manufacturer</label><select id="cb" onchange="onCB()"><option value="">Select brand…</option></select></div>
@@ -1934,7 +1947,7 @@ const PADDLES=[
 {id:1517,brand:"Selkirk",model:"SLK Halo Control XL 16mm (Mint Green)",year:2023,surface:"Raw Carbon",shape:"Elongated",tags:["Gen 2","Value","Mint Green"]},
 
 // ── CRBN SPECIAL EDITIONS ──────────────────────────────────────────
-{id:1518,brand:"CRBN",model:"CRBN¹ TruFoam Waves (Summit Edition)",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","Wave Core","Limited Edition","Ice White","Summit"]},
+{id:1518,brand:"CRBN",model:"CRBN¹ TruFoam Waves (Summit Edition)",year:2025,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 4","Wave Core","Limited Edition","Ice White","Summit"]},
 
 // ── VATIC PRO TOP TIERS & VARIANTS ─────────────────────────────────
 {id:1523,brand:"Vatic Pro",model:"PRISM Flash 16mm (Purple Edge Guard)",year:2023,surface:"Raw Carbon",shape:"Standard",tags:["Gen 2","Control","Value","Purple"]},
@@ -2208,6 +2221,8 @@ const BRANDS=[...new Set(PADDLES.map(p=>p.brand)),"ACE","Chorus","DROP SHOT","Em
 let collection=[],collData={},reports=[],customPaddles=[];
 let customRating=0,customPhotoData=null;
 let activeBrandFilter='All',searchQuery='',currentView='browse';
+let f_y='All',f_g='All',f_s='All',f_sort='Newest';
+let v_y='All',v_g='All',v_s='All',v_sort='Newest';
 let saveTimer=null,currentUser=null,isGuest=false;
 
 // ── IMAGE DB (IndexedDB + compression) ───────────────────────
@@ -2275,28 +2290,63 @@ function buildFilters(){
     sel.appendChild(o);
   });
 }
-function setBFSel(val){
-  activeBrandFilter=val;
-  clearTimeout(_fTimer);
-  renderP();
-}
 function buildSelects(){
-  ['cb','rb'].forEach(id=>{const s=document.getElementById(id);s.innerHTML='<option value="">Select brand…</option>';BRANDS.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;s.appendChild(o);});});
-  ['cy','ry'].forEach(id=>{const s=document.getElementById(id);s.innerHTML='<option value="">Select year…</option>';for(let y=2026;y>=2014;y--){const o=document.createElement('option');o.value=y;o.textContent=y;s.appendChild(o);}});
+  ['cb','rb'].forEach(id=>{const s=document.getElementById(id);if(!s)return;s.innerHTML='<option value="">Select brand…</option>';BRANDS.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;s.appendChild(o);});});
+  ['cy','ry'].forEach(id=>{const s=document.getElementById(id);if(!s)return;s.innerHTML='<option value="">Select year…</option>';for(let y=2026;y>=2014;y--){const o=document.createElement('option');o.value=y;o.textContent=y;s.appendChild(o);}});
+  ['filter-year','v-filter-year'].forEach(id=>{const s=document.getElementById(id);if(!s)return;s.innerHTML='<option value="All">All Years</option>';const years=new Set(allP().map(x=>x.year));[...years].sort((a,b)=>b-a).forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;s.appendChild(o);});});
 }
 function showView(n){
   currentView=n;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.bb2').forEach(b=>b.classList.remove('active'));
-  document.getElementById('view-'+n).classList.add('active');document.getElementById('nav-'+n).classList.add('active');
+  const target = document.getElementById('view-'+n);
+  if(target) target.classList.add('active');
+  const nav = document.getElementById('nav-'+n);
+  if(nav) nav.classList.add('active');
   ['browse','collection','add','report'].forEach((v,i)=>{if(v===n)document.querySelectorAll('.ntab')[i]?.classList.add('active');});
   if(n==='collection')renderColl();if(n==='report')renderRep();if(n==='browse'){clearTimeout(_fTimer);renderP();}
 }
-function setBF(b){activeBrandFilter=b;const sel=document.getElementById('brand-filters-sel');if(sel)sel.value=b;renderP();}
+function setBFSel(val){activeBrandFilter=val;renderP();}
+function setFilter(type,val,ctx='b'){
+  if(ctx==='b'){
+    if(type==='year')f_y=val;if(type==='gen')f_g=val;if(type==='shape')f_s=val;if(type==='sort')f_sort=val;
+    renderP();
+  } else {
+    if(type==='year')v_y=val;if(type==='gen')v_g=val;if(type==='shape')v_s=val;if(type==='sort')v_sort=val;
+    renderColl();
+  }
+}
 let _fTimer;function filterP(q){searchQuery=q.toLowerCase();clearTimeout(_fTimer);_fTimer=setTimeout(renderP,150);}
 let _allPCache=null;
-function allP(){if(_allPCache&&!customPaddles.length)return _allPCache;const r=[...PADDLES,...customPaddles.map((p,i)=>({...p,id:'c'+i,tags:['Custom']}))];r.sort((a,b)=>a.brand==='CRBN'?-1:b.brand==='CRBN'?1:a.brand.localeCompare(b.brand));if(!customPaddles.length)_allPCache=r;return r;}
+function allP(){
+  if(_allPCache&&!customPaddles.length)return _allPCache;
+  const raw=[...PADDLES,...customPaddles.map((p,i)=>({...p,id:'c'+i,tags:[...(p.tags||[]),'Custom']}))];
+  // Grouping similar within brand, desc years first
+  raw.sort((a,b)=>{
+    if(a.brand!==b.brand) return a.brand==='CRBN'?-1:b.brand==='CRBN'?1:a.brand.localeCompare(b.brand);
+    if(a.year!==b.year) return b.year-a.year;
+    return a.model.localeCompare(b.model);
+  });
+  if(!customPaddles.length)_allPCache=raw;
+  return raw;
+}
+function getFiltered(list,y,g,s,srt){
+  let r=[...list];
+  if(y!=='All') r=r.filter(x=>String(x.year)===y);
+  if(g!=='All') r=r.filter(x=>(x.tags||[]).includes(g));
+  if(s!=='All') r=r.filter(x=>x.shape===s);
+  
+  if(srt==='Newest') r.sort((a,b)=>{
+    if(b.year!==a.year) return b.year-a.year;
+    if(a.brand!==b.brand) return a.brand.localeCompare(b.brand);
+    return a.model.localeCompare(b.model);
+  });
+  else if(srt==='Oldest') r.sort((a,b)=>a.year-b.year||a.brand.localeCompare(b.brand));
+  else if(srt==='Brand') r.sort((a,b)=>a.brand.localeCompare(b.brand)||b.year-a.year);
+  else if(srt==='Rating') r.sort((a,b)=>(collData[b.id]?.rating||0)-(collData[a.id]?.rating||0)||b.year-a.year);
+  return r;
+}
 function invalidateCache(){_allPCache=null;}
 
 function renderP(){
@@ -2304,7 +2354,8 @@ function renderP(){
   let p=allP();
   if(activeBrandFilter!=='All')p=p.filter(x=>x.brand===activeBrandFilter);
   if(searchQuery){const q=searchQuery;p=p.filter(x=>x.brand.toLowerCase().includes(q)||x.model.toLowerCase().includes(q)||(x.tags||[]).some(t=>t.toLowerCase().includes(q))||String(x.year).includes(q));}
-  if(!p.length){l.innerHTML='<div class="es"><div class="ei">🔍</div><div class="et">No paddles found</div></div>';return;}
+  p=getFiltered(p,f_y,f_g,f_s,f_sort);
+  if(!p.length){l.innerHTML='<div class="es"><div class="ei">🔍</div><div class="et">No paddles match these filters</div></div>';return;}
   l.innerHTML=p.map(x=>pCard(x)).join('');
   p.forEach(x=>{const d=collData[x.id];if(d?.photoKey)loadAndShow(x.id,d.photoKey);});
 }
@@ -2325,8 +2376,12 @@ function stars(r){let h='';for(let i=1;i<=5;i++)h+=`<span class="star ${i<=r?'fi
 async function renderColl(){
   const l=document.getElementById('collection-list');
   if(!collection.length){l.innerHTML=`<div class="es"><div class="ei"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><g transform="translate(-2.95,3.58) rotate(15,12,24)"><ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="#0d2954"/><ellipse cx="12" cy="9" rx="9.5" ry="12" fill="#111111"/><rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="#0d2954"/></g><circle cx="35" cy="9" r="7" fill="#fbbf24"/><circle cx="32.8" cy="6.8" r="1.7" fill="rgba(255,255,255,0.22)"/><circle cx="35" cy="3.2" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="38.4" cy="4.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="40.1" cy="8.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="38.4" cy="12.9" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="14.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="31.6" cy="12.9" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="29.9" cy="8.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="31.6" cy="4.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="9" r="0.85" fill="rgba(120,60,0,0.48)"/></svg></div><div class="et">Your vault is empty.<br>Browse paddles and add them!</div></div>`;return;}
-  const all=allP();l.innerHTML=collection.map(id=>{const p=all.find(x=>x.id==id);return p?pCard(p):'';}).join('');
-  collection.forEach(id=>{const d=collData[id];if(d?.photoKey)loadAndShow(id,d.photoKey);});
+  const all=allP();
+  let list=collection.map(id=>all.find(x=>x.id==id)).filter(Boolean);
+  list=getFiltered(list,v_y,v_g,v_s,v_sort);
+  if(!list.length){l.innerHTML='<div class="es"><div class="ei">🔍</div><div class="et">No paddles in your vault match these filters</div></div>';return;}
+  l.innerHTML=list.map(p=>pCard(p)).join('');
+  list.forEach(p=>{if(collData[p.id]?.photoKey)loadAndShow(p.id,collData[p.id].photoKey);});
 }
 function closeStatM(){document.getElementById('stat-modal').classList.remove('open');}
 
