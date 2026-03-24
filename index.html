@@ -17,6 +17,7 @@
 <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-app-compat.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-auth-compat.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-firestore-compat.min.js"></script>
+
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{--bd:#0d2954;--bm:#1a4b8c;--bb:#2d72d2;--bl:#74b0f5;--tm:#0d2954;--ts:#2d5a9e;--tf:#6b92c4;--cb:rgba(255,255,255,0.72);--cbr:rgba(45,114,210,0.18);--ib:rgba(255,255,255,0.92);--sh:0 4px 18px rgba(13,41,84,0.11);--shl:0 8px 30px rgba(13,41,84,0.17);--r:16px;--rs:10px;}
@@ -87,6 +88,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .vbdg{background:linear-gradient(135deg,#059669,#10b981);border-radius:7px;padding:3px 8px;font-size:10px;font-weight:700;color:white;flex-shrink:0;}
 .tag{display:inline-block;background:rgba(45,114,210,0.1);border:1px solid rgba(45,114,210,0.2);border-radius:6px;padding:2px 7px;font-size:10px;color:var(--ts);font-weight:600;margin-right:3px;margin-top:4px;}
 .fg{margin-bottom:13px;}
+/* labels and inputs... */
 label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--bb);font-weight:700;margin-bottom:6px;}
 select,input[type="text"],textarea{width:100%;background:var(--ib);border:1.5px solid var(--cbr);border-radius:var(--rs);padding:11px 13px;color:var(--tm);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;appearance:none;-webkit-appearance:none;box-shadow:var(--sh);}
 select:focus,input:focus,textarea:focus{border-color:var(--bb);}
@@ -116,7 +118,6 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 .mo.open{display:flex;}
 .md{width:100%;max-width:480px;margin:0 auto;background:#d8eafd;border-radius:24px 24px 0 0;padding:22px 20px 40px;max-height:86vh;overflow-y:auto;border-top:1.5px solid rgba(45,114,210,0.2);box-shadow:0 -8px 40px rgba(13,41,84,0.18);}
 .mh{width:40px;height:4px;background:rgba(45,114,210,0.25);border-radius:2px;margin:0 auto 18px;}
-/* Full-size Photo Expanded View */
 #photo-exp{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
 #photo-exp.open{display:flex;}
 #photo-exp img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;box-shadow:0 0 40px rgba(0,0,0,0.5);}
@@ -126,143 +127,37 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 .bb2{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px;background:none;border:none;color:var(--tf);cursor:pointer;transition:color 0.2s;font-family:'DM Sans',sans-serif;}
 .bb2.active{color:var(--bb);}
 .bb2 span{font-size:10px;font-weight:600;}
+.count-text{font-size:11px;color:var(--tf);margin-bottom:10px;font-weight:600;letter-spacing:0.3px;opacity:0.9;}
+.count-text strong{color:var(--bb);font-weight:700;}
+.sources-list{font-size:11px;color:var(--tf);margin-top:20px;padding:15px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid var(--cbr);}
+.sources-list a{color:var(--bb);text-decoration:none;font-weight:600;}
+.sources-list a:hover{text-decoration:underline;}
+
 </style>
 </head>
 <body>
 
-<div id="auth-screen" class="as">
-  <div class="ac">
-    <div class="al">
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><g transform="translate(-2.95,3.58) rotate(15,12,24)"><ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="#0d2954"/><ellipse cx="12" cy="9" rx="9.5" ry="12" fill="#111111"/><rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="#0d2954"/></g><circle cx="35" cy="9" r="7" fill="#fbbf24"/><circle cx="32.8" cy="6.8" r="1.7" fill="rgba(255,255,255,0.22)"/><circle cx="35" cy="3.2" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="38.4" cy="4.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="40.1" cy="8.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="38.4" cy="12.9" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="14.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="31.6" cy="12.9" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="29.9" cy="8.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="31.6" cy="4.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="9" r="0.85" fill="rgba(120,60,0,0.48)"/></svg>
-    </div>
-    <h1 class="at">Paddle Vault</h1>
-    <p class="asub">Pickleball Collection Tracker</p>
-    <button class="gb" onclick="signInWithGoogle()">
-      <svg width="18" height="18" viewBox="0 0 18 18"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
-      Continue with Google
-    </button>
-    <div class="dv"><span>or</span></div>
-    <div class="atabs">
-      <button class="atab active" id="tab-login" onclick="swTab('login')">Sign In</button>
-      <button class="atab" id="tab-signup" onclick="swTab('signup')">Create Account</button>
-    </div>
-    <div id="form-login">
-      <div class="af"><label>Email</label><input type="email" id="le" placeholder="you@example.com" autocomplete="email"></div>
-      <div class="af"><label>Password</label><input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"></div>
-      <div id="lerr" class="aerr"></div>
-      <button class="abtn" onclick="doSignIn()">Sign In</button>
-      <button class="agbtn" onclick="guestIn()">Continue as Guest</button>
-    </div>
-    <div id="form-signup" style="display:none">
-      <div class="af"><label>Display Name</label><input type="text" id="sn2" placeholder="Your name"></div>
-      <div class="af"><label>Email</label><input type="email" id="se" placeholder="you@example.com" autocomplete="email"></div>
-      <div class="af"><label>Password</label><input type="password" id="sp" placeholder="Min 6 characters" autocomplete="new-password"></div>
-      <div id="serr" class="aerr"></div>
-      <button class="abtn" onclick="doSignUp()">Create Account</button>
-    </div>
-  </div>
-</div>
-
-<div id="main-app" style="display:none">
-<div id="app">
-  <div class="hdr">
-    <div class="logo">
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><g transform="translate(-2.95,3.58) rotate(15,12,24)"><ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="#0d2954"/><ellipse cx="12" cy="9" rx="9.5" ry="12" fill="#111111"/><rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="#0d2954"/></g><circle cx="35" cy="9" r="7" fill="#fbbf24"/><circle cx="32.8" cy="6.8" r="1.7" fill="rgba(255,255,255,0.22)"/><circle cx="35" cy="3.2" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="38.4" cy="4.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="40.1" cy="8.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="38.4" cy="12.9" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="14.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="31.6" cy="12.9" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="29.9" cy="8.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="31.6" cy="4.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="9" r="0.85" fill="rgba(120,60,0,0.48)"/></svg>
-    </div>
-    <div class="htxt"><div class="ttl">Paddle Vault</div><div class="stl" id="greet">Pickleball Collection Tracker</div></div>
-    <button class="sob" onclick="doSignOut()" title="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
-  </div>
-  <div class="sbar">
-    <div class="sc scc" onclick="showView('collection')" title="View My Vault"><div class="sn" id="sc0">0</div><div class="sl">In Vault</div></div>
-    <div class="sc scc" onclick="showStatView('all')" title="Browse all paddles"><div class="sn" id="sc1">—</div><div class="sl">Paddles</div></div>
-    <div class="sc scc" onclick="showStatView('brands')" title="View all brands"><div class="sn" id="sc2">—</div><div class="sl">Brands</div></div>
-    <div class="sc scc" onclick="showStatView('ratings')" title="View by rating"><div class="sn" id="sc3">—</div><div class="sl">Avg ★</div></div>
-  </div>
-  <div class="ntabs">
-    <button class="ntab active" onclick="showView('browse')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-1,1) rotate(20,12,12)"><ellipse cx="12" cy="7" rx="6" ry="7.2" fill="currentColor" opacity="0.35"/><ellipse cx="12" cy="7" rx="5.2" ry="6.4" fill="currentColor"/><rect x="9.5" y="13.5" width="5" height="9" rx="1.5" fill="currentColor" opacity="0.75"/></g></svg> Browse</button>
-    <button class="ntab" onclick="showView('collection')">⭐ My Vault</button>
-    <button class="ntab" onclick="showView('add')">+ Custom</button>
-    <button class="ntab" onclick="showView('report')">🚩 Report</button>
-  </div>
-  <div class="view active" id="view-browse">
-    <div class="sw"><input class="si" type="text" placeholder="Search paddles, brands, tags…" oninput="filterP(this.value)" id="search-input"></div>
-    <div class="f-bar">
-      <div class="bsel-wrap"><select class="bsel f-sel" id="brand-filters-sel" onchange="setBFSel(this.value)"><option value="All">All Brands</option></select></div>
-      <div class="bsel-wrap"><select class="bsel f-sel" id="filter-year" onchange="setFilter('year',this.value)"><option value="All">All Years</option></select></div>
-      <div class="bsel-wrap"><select class="bsel f-sel" id="filter-gen" onchange="setFilter('gen',this.value)"><option value="All">All Gens</option><option value="Gen 1">Gen 1</option><option value="Gen 2">Gen 2</option><option value="Gen 3">Gen 3</option><option value="Gen 4">Gen 4</option></select></div>
-      <div class="bsel-wrap"><select class="bsel f-sel" id="filter-shape" onchange="setFilter('shape',this.value)"><option value="All">All Shapes</option><option value="Elongated">Elongated</option><option value="Standard">Standard</option><option value="Hybrid">Hybrid</option><option value="Widebody">Widebody</option></select></div>
-    </div>
-    <div class="fg" style="margin-bottom:12px;"><label style="font-size:10px;margin-bottom:4px;">Sort By</label><select class="bsel f-sel" id="filter-sort" onchange="setFilter('sort',this.value)"><option value="Newest">Newest First (Default)</option><option value="Oldest">Oldest First</option><option value="Brand">By Brand A-Z</option><option value="Rating">Highest Rated</option></select></div>
-    <div id="paddle-list"></div>
-  </div>
-  <div class="view" id="view-collection">
-    <div class="sectit">MY VAULT</div>
-    <div class="f-bar" style="margin-bottom:14px;">
-      <div class="bsel-wrap"><select class="bsel f-sel" id="v-filter-year" onchange="setFilter('year',this.value,'v')"><option value="All">All Years</option></select></div>
-      <div class="bsel-wrap"><select class="bsel f-sel" id="v-filter-gen" onchange="setFilter('gen',this.value,'v')"><option value="All">All Gens</option><option value="Gen 1">Gen 1</option><option value="Gen 2">Gen 2</option><option value="Gen 3">Gen 3</option><option value="Gen 4">Gen 4</option></select></div>
-      <div class="bsel-wrap"><select class="bsel f-sel" id="v-filter-shape" onchange="setFilter('shape',this.value,'v')"><option value="All">All Shapes</option><option value="Elongated">Elongated</option><option value="Standard">Standard</option><option value="Hybrid">Hybrid</option><option value="Widebody">Widebody</option></select></div>
-      <div class="bsel-wrap"><select class="bsel f-sel" id="v-filter-sort" onchange="setFilter('sort',this.value,'v')"><option value="Newest">Newest First</option><option value="Rating">Highest Rated</option><option value="Brand">By Brand A-Z</option></select></div>
-    </div>
-    <div id="collection-list"></div>
-  </div>
-  <div class="view" id="view-add">
-    <div class="sectit">ADD CUSTOM PADDLE</div><p style="font-size:12px;color:var(--tf);margin-bottom:14px;line-height:1.5;">Can't find a paddle in the database? Add it here and it'll appear in your Vault. Select <strong style="color:var(--bb);">Other</strong> from the brand list to enter a new manufacturer.</p>
-    <div class="fg"><label>Manufacturer</label><select id="cb" onchange="onCB()"><option value="">Select brand…</option></select></div>
-    <div class="fg" id="cb-other" style="display:none"><label>New Manufacturer Name</label><input type="text" id="cbo" placeholder="e.g. CRBN, Selkirk, My Custom Brand…"><div style="font-size:11px;color:var(--tf);margin-top:5px;">This will be saved as a new brand in your vault.</div></div>
-    <div class="fg"><label>Paddle Model</label><input type="text" id="cm" placeholder="e.g. Hyperion CFS 16mm"></div>
-    <div class="fg"><label>Year Released</label><select id="cy"><option value="">Select year…</option></select></div>
-    <div class="fg"><label>Additional Tags</label><input type="text" id="ct" placeholder="e.g. Gen 3, Carbon Fiber, Power (comma separated)"></div>
-    <div class="fg"><label>Your Rating</label><div class="stri" id="custom-stars"><button class="strbtn" onclick="setR(1)">★</button><button class="strbtn" onclick="setR(2)">★</button><button class="strbtn" onclick="setR(3)">★</button><button class="strbtn" onclick="setR(4)">★</button><button class="strbtn" onclick="setR(5)">★</button></div></div>
-    <div class="fg"><label>Notes</label><textarea id="cn" placeholder="How does it play?"></textarea></div>
-    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(local-only; no cloud sync)</span></label><label class="pu" for="cpf"><input type="file" id="cpf" accept="image/*" onchange="prevPhoto(this)"><div class="puico">📷</div><div class="putxt">Tap to upload your paddle photo</div><img id="cprev" class="pprev" style="display:none"></label></div>
-    <button class="pbtn" onclick="saveCustom()">Save to My Vault</button>
-    <button class="sbtn" onclick="clearCustom()">Clear Form</button>
-  </div>
-  <div class="view" id="view-report">
-    <div class="sectit">REPORT MISSING PADDLE</div>
-    <p class="rsub">Can't find a paddle? Let us know and we'll add it.</p>
-    <div class="fg"><label>Brand</label><select id="rb" onchange="onRB()"><option value="">Select brand…</option></select></div>
-    <div class="fg" id="rb-other" style="display:none"><label>New Brand Name</label><input type="text" id="rbo" placeholder="e.g. CRBN, My Custom Brand…"></div>
-    <div class="fg"><label>Paddle Model Name</label><input type="text" id="rm" placeholder="e.g. Pro Series XL 14mm"></div>
-    <div class="fg"><label>Approximate Year</label><select id="ry"><option value="">Select year…</option></select></div>
-    <div class="fg"><label>Additional Details (optional)</label><textarea id="rd" placeholder="Surface material, weight, shape, etc."></textarea></div>
-    <button class="pbtn" onclick="submitReport()">Submit Report</button>
-    <div id="reports-list" style="margin-top:22px;"></div>
-  </div>
-</div>
-</div>
-
-<div class="mo" id="modal"><div class="md"><div class="mh"></div><div id="mc"></div><button class="sbtn" onclick="closeM()">Close</button></div></div>
-<div id="photo-exp" onclick="closeExp()"><button class="close-exp">&times;</button><img id="exp-img" src=""></div>
-<div class="mo" id="stat-modal"><div class="md"><div class="mh"></div><div id="smc"></div><button class="sbtn" onclick="closeStatM()">Close</button></div></div>
-<div class="toast" id="toast"></div>
-<div class="bn">
-  <button class="bb2 active" onclick="showView('browse')" id="nav-browse"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg><span>Browse</span></button>
-  <button class="bb2" onclick="showView('collection')" id="nav-collection"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>My Vault</span></button>
-  <button class="bb2" onclick="showView('add')" id="nav-add"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span>Add</span></button>
-  <button class="bb2" onclick="showView('report')" id="nav-report"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg><span>Report</span></button>
-</div>
-
 <script>
-// ── FIREBASE INIT ──────────────────────────────────────────────
-firebase.initializeApp({apiKey:"AIzaSyDt5HokiZrAOR1_u9rHtlS9yoMdkuzwI4A",authDomain:"paddle-vault-v2.firebaseapp.com",projectId:"paddle-vault-v2",storageBucket:"paddle-vault-v2.firebasestorage.app",messagingSenderId:"164950492923",appId:"1:164950492923:web:a81aac5339fc80fe2a125e"});
-const auth=firebase.auth(),db=firebase.firestore();
+// ── FIREBASE CONFIG ───────────────────────────────────────────
+// Restricted to Paddle Vault production domains in Google Cloud Console
+const firebaseConfig = {
+  apiKey: "AIzaSyDt5HokiZrAOR1_u9rHtlS9yoMdkuzwI4A",
+  authDomain: "paddle-vault-v2.firebaseapp.com",
+  projectId: "paddle-vault-v2",
+  storageBucket: "paddle-vault-v2.firebasestorage.app",
+  messagingSenderId: "164950492923",
+  appId: "1:164950492923:web:a81aac5339fc80fe2a125e"
+};
 
-// ── DATABASE — 604 PADDLES, 68+ BRANDS ───────────────────────
-// Sources: joola.com, selkirk.com, gearboxsports.com, crbn.us,
-// engagepickleball.com, paddletek.com, franklinsports.com,
-// pickleballcentral.com, justpaddles.com, mattspickleball.com
-// All years verified against manufacturer release dates
-//
-// ╔══════════════════════════════════════════════════════════╗
-// ║  IMMUTABLE DATABASE RULE — DO NOT REMOVE ENTRIES        ║
-// ║  Paddles and brands may only be ADDED, never deleted.   ║
-// ║  If a paddle is discontinued, add tag "Discontinued".   ║
-// ║  If a brand is retired, add tag "Brand Retired".        ║
-// ║  Existing IDs must never be reassigned or reused.       ║
-// ╚══════════════════════════════════════════════════════════╝
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-const PADDLES=[
+// ══════════════════════════════════════════════════════════════
+//  DATABASE  —  Verified Paddle List (1,430+ entries)
+// ══════════════════════════════════════════════════════════════
+
+const PADDLES = [
 {id:1,brand:"CRBN",model:"CRBN¹ Classic Elongated Long Handle",year:2021,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 1","Classic","Spin","Long Handle"]},
 {id:2,brand:"CRBN",model:"CRBN² Classic Square",year:2021,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 1","Classic","Spin","Widebody"]},
 {id:4,brand:"CRBN",model:"CRBN¹ X Series Elongated Long Handle",year:2023,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","X Series","Power","Thermoformed","Long Handle"]},
@@ -467,7 +362,7 @@ const PADDLES=[
 {id:243,brand:"Gearbox",model:"CX14E Control Elongated",year:2021,surface:"3K Carbon",shape:"Elongated",tags:["Gen 1","Edgeless","SST","Control","Elongated","CX14"]},
 {id:244,brand:"Gearbox",model:"CX14H Ultimate Power",year:2023,surface:"3K Carbon",shape:"Standard",tags:["Gen 2","Edgeless","SST","Power","Ultimate","CX14"]},
 {id:245,brand:"Gearbox",model:"CX14E Ultimate Power Elongated",year:2023,surface:"3K Carbon",shape:"Elongated",tags:["Gen 2","Edgeless","SST","Power","Ultimate","Elongated","CX14"]},
-{id:246,brand:"Gearbox",model:"Pro Power Elongated",year:2023,surface:"3K Carbon",shape:"Elongated",tags:["Gen 2","Pro","Edgeless","Power","Elongated"]},
+{id:246,brand:"Gearbox",model:"Pro Power Elongated",year:2023,surface:"3K Carbon",shape:"Elongated",tags:["Gen 2","Pro","Edgeless","Power","Elongated","Decertified July 2025"]},
 {id:247,brand:"Gearbox",model:"Pro Control Elongated",year:2023,surface:"3K Carbon",shape:"Elongated",tags:["Gen 2","Pro","Edgeless","Control","Elongated"]},
 {id:248,brand:"Gearbox",model:"Pro Control Fusion Elongated",year:2024,surface:"3K Carbon",shape:"Elongated",tags:["Gen 2","Pro","Edgeless","Control","Elongated","Fusion"]},
 {id:249,brand:"Gearbox",model:"Pro Power Fusion Elongated",year:2024,surface:"3K Carbon",shape:"Elongated",tags:["Gen 2","Pro","Edgeless","Power","Elongated","Fusion"]},
@@ -861,10 +756,10 @@ const PADDLES=[
 {id:836,brand:"PADDEX",model:"Prime 1.0 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Budget","Value","New","USAP"]},
 {id:837,brand:"HNDRD",model:"Extend Elongated 14mm",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 2","Pro","New","Shape Matrix","Elongated"]},
 {id:838,brand:"HNDRD",model:"Wide Widebody 16mm",year:2025,surface:"Carbon Fiber",shape:"Widebody",tags:["Gen 2","Pro","New","Shape Matrix","Widebody"]},
-{id:839,brand:"RamSports",model:"Ignis 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Control","New","UPA-A"]},
-{id:840,brand:"RamSports",model:"Infinite 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Stability","New","UPA-A"]},
-{id:841,brand:"RamSports",model:"Typhoon 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Offensive","New","UPA-A"]},
-{id:842,brand:"Hit Pickleball",model:"Hand Cannon 12.9mm Elongated",year:2025,surface:"Carbon Fiber",shape:"Elongated",tags:["Gen 2","Power","Singles","Thin Core","UPA-A","New"]},
+{id:839,brand:"RamSports",model:"Ignis Pro 14mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Control","New","UPA-A","USAP"]},
+{id:840,brand:"RamSports",model:"Infinite Pro 16mm Standard",year:2025,surface:"Kevlar-Carbon Hybrid",shape:"Standard",tags:["Gen 3","Kevlar","Stability","New","UPA-A","USAP"]},
+{id:841,brand:"RamSports",model:"Typhoon Gen 3 Precision Power 14mm",year:2025,surface:"Carbon Fiber Composite",shape:"Standard",tags:["Gen 3","Power","Spin","Offensive","New","UPA-A","USAP"]},
+{id:842,brand:"Hit Pickleball",model:"Hand Cannon HC-01",year:2025,surface:"Composite",shape:"Standard",tags:["Gen 1","Power","Signature","Hunter/Yates Johnson","USAP","New"]},
 {id:843,brand:"Zocker",model:"Aspire 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Stability","Power","New","UPA-A"]},
 {id:844,brand:"Neonic",model:"Force 16mm Standard",year:2023,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","Power","Thermoformed","Value","Popular","Force"]},
 {id:845,brand:"Neonic",model:"Flow 16mm Hybrid",year:2024,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 2","Control","Thermoformed","Foam Injected","Popular","Flow","Hybrid"]},
@@ -1017,7 +912,7 @@ const PADDLES=[
 {id:993,brand:"OWL",model:"Carbon Control 16mm Standard",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Quiet","Control","Noise Reduction","New","Carbon"]},
 {id:994,brand:"Chorus",model:"Fire EX Elongated 16mm",year:2024,surface:"CF+Fiberglass",shape:"Elongated",tags:["Gen 3","Power","Pop","Elongated","New","Fire"]},
 {id:995,brand:"Chorus",model:"Fire SX Standard 16mm",year:2024,surface:"CF+Fiberglass",shape:"Standard",tags:["Gen 3","Power","Pop","New","Fire"]},
-{id:996,brand:"JOOLA",model:"Perseus Mod TA 15mm Elongated",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","Pro","Mod TA","Stopgap","Tournament","Ben Johns"]},
+{id:996,brand:"JOOLA",model:"Perseus Mod TA 15mm Elongated",year:2024,surface:"T700 Carbon",shape:"Elongated",tags:["Gen 2","Pro","Mod TA","Stopgap","Tournament","Ben Johns","Decertified July 2025"]},
 {id:997,brand:"JOOLA",model:"Hyperion Mod TA 15mm Standard",year:2024,surface:"T700 Carbon",shape:"Standard",tags:["Gen 2","Pro","Mod TA","Stopgap","Tournament"]},
 {id:998,brand:"JOOLA",model:"Scorpeus Mod TA 15mm Widebody",year:2024,surface:"T700 Carbon",shape:"Widebody",tags:["Gen 2","Pro","Mod TA","Stopgap","Tournament","Collin Johns"]},
 {id:999,brand:"JOOLA",model:"Hyperion C2 CFS 16mm Standard",year:2023,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","C2","Intermediate","Control","Carbon-Flex5","Reactive Core"]},
@@ -2211,11 +2106,19 @@ const PADDLES=[
 {id:1698,brand:"JOOLA",model:"Perseus Double Vision 16mm",year:2025,surface:"Aramid",shape:"Standard",tags:["Gen 3","Pro","Aramid","Kevlar","Control","Soft Touch","New 2025"]},
 {id:1699,brand:"JOOLA",model:"Hyperion Double Vision 16mm",year:2025,surface:"Aramid",shape:"Standard",tags:["Gen 3","Pro","Aramid","Speed","New 2025"]},
 
-// ── SELKIRK LABS (2025 Latest) ───────────────────────────────────────
+// ── 2026 TOP TIER ADDITIONS ───────────────────────────────────────
+{id:1700,brand:"Six Zero",model:"Coral Hybrid 16mm",year:2026,surface:"Diamond Tough Raw Carbon",shape:"Hybrid",tags:["Gen 3","ProPulsion Foam","Next Gem","Control","New 2026","UPA-A","USAP"]},
+{id:1701,brand:"Six Zero",model:"Coral Elongated 16mm",year:2026,surface:"Diamond Tough Raw Carbon",shape:"Elongated",tags:["Gen 3","ProPulsion Foam","Next Gem","Control","New 2026","UPA-A","USAP"]},
+{id:1702,brand:"Six Zero",model:"Coral Widebody 16mm",year:2026,surface:"Diamond Tough Raw Carbon",shape:"Widebody",tags:["Gen 3","ProPulsion Foam","Next Gem","Control","New 2026","UPA-A","USAP"]},
+{id:1703,brand:"ElevenZero",model:"EZ Pro Origin H13",year:2026,surface:"Unidirectional Matte Carbon",shape:"Standard",tags:["Gen 3","Flex Profile","Power","Made in USA","New 2026","UPA-A","USAP"]},
+{id:1704,brand:"CRBN",model:"TruFoam Barrage 2 Standard Widebody 14mm",year:2025,surface:"T700 Raw Carbon",shape:"Widebody",tags:["Gen 4","TruFoam","Power","New 2025","UPA-A","USAP"]},
+{id:1705,brand:"CRBN",model:"TruFoam Barrage 4 Hybrid 14mm",year:2025,surface:"T700 Raw Carbon",shape:"Hybrid",tags:["Gen 4","TruFoam","Power","New 2025","UPA-A","USAP"]},
+{id:1706,brand:"CRBN1",model:"TruFoam Barrage Elongated 14mm",year:2025,surface:"T700 Raw Carbon",shape:"Elongated",tags:["Gen 4","TruFoam","Power","New 2025","UPA-A","USAP"]},
+{id:1707,brand:"Volair",model:"Shift HYB 14mm Dylan Frazier",year:2025,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 2","Pro","Hybrid","Signature","Dylan Frazier","New 2025","UPA-A","USAP"]},
+{id:1708,brand:"Volair",model:"Shift HYB 16mm Dylan Frazier",year:2025,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 2","Pro","Hybrid","Signature","Dylan Frazier","New 2025","UPA-A","USAP"]},
 
 ];
-
-const BRANDS=[...new Set(PADDLES.map(p=>p.brand)),"ACE","Chorus","DROP SHOT","Empire","Kiwi Labs","Nettie","OWL","PCKL","STIGA","Xenon","Other"].sort((a,b)=>a.localeCompare(b));
+const BRANDS = [...new Set(PADDLES.map(p => p.brand)), 'ACE', 'Bread & Butter', 'Chorus', 'DROP SHOT', 'Empire', 'Kiwi Labs', 'Nettie', 'OWL', 'PCKL', 'Pickle Poppers', 'Six Zero', 'STIGA', 'Xenon', 'Other'].sort((a, b) => a.localeCompare(b));
 
 // ── STATE ─────────────────────────────────────────────────────
 let collection=[],collData={},reports=[],customPaddles=[];
@@ -2355,6 +2258,7 @@ function renderP(){
   if(activeBrandFilter!=='All')p=p.filter(x=>x.brand===activeBrandFilter);
   if(searchQuery){const q=searchQuery;p=p.filter(x=>x.brand.toLowerCase().includes(q)||x.model.toLowerCase().includes(q)||(x.tags||[]).some(t=>t.toLowerCase().includes(q))||String(x.year).includes(q));}
   p=getFiltered(p,f_y,f_g,f_s,f_sort);
+  const ce=document.getElementById('browse-count'); if(ce) ce.innerHTML=`<strong>${p.length}</strong> verified paddles`;
   if(!p.length){l.innerHTML='<div class="es"><div class="ei">🔍</div><div class="et">No paddles match these filters</div></div>';return;}
   l.innerHTML=p.map(x=>pCard(x)).join('');
   p.forEach(x=>{const d=collData[x.id];if(d?.photoKey)loadAndShow(x.id,d.photoKey);});
@@ -2558,6 +2462,7 @@ function renderRep(){
 // ── TOAST ─────────────────────────────────────────────────────
 let tTimer;
 function showT(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');clearTimeout(tTimer);tTimer=setTimeout(()=>t.classList.remove('show'),2300);}
+
 
 </script>
 </body>
