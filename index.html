@@ -142,6 +142,9 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 .sources-list{font-size:11px;color:var(--tf);margin-top:20px;padding:15px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid var(--cbr);}
 .sources-list a{color:var(--bb);text-decoration:none;font-weight:600;}
 .sources-list a:hover{text-decoration:underline;}
+.footer{text-align:center;padding:40px 20px 100px;opacity:0.6;font-size:11px;line-height:1.6;color:var(--tf);border-top:1px solid var(--cbr);margin-top:30px;}
+.footer b{color:var(--bb);font-weight:700;}
+.footer a{color:inherit;text-decoration:none;font-weight:600;}
 </style>
 </head>
 <body>
@@ -259,6 +262,13 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
     
     <div id="reports-list" style="margin-top:22px;"></div>
   </div>
+
+  <footer class="footer">
+    <div>Created by <b>Brian Marcelo</b></div>
+    <div><a href="mailto:brianmarcelo@gmail.com">brianmarcelo@gmail.com</a></div>
+    <div style="margin-top:8px;max-width:280px;margin-left:auto;margin-right:auto;">Archiving every flagship pickleball paddle from 2010 to the present.</div>
+  </footer>
+
 </div>
 </div>
 
@@ -2277,6 +2287,28 @@ const PADDLES = [
 {id:1728,brand:"Gamma",model:"Compass",year:2019,surface:"Graphite",shape:"Elongated",tags:["Classic","Reach"]},
 {id:1729,brand:"Electrum",model:"Electrum Pro (Original)",year:2020,surface:"Raw Carbon",shape:"Standard",tags:["Original","Carbon Pioneer"]},
 {id:1730,brand:"Vulcan",model:"V550",year:2019,surface:"Carbon Fiber",shape:"Standard",tags:["Classic","Hybrid Core"]},
+
+// ── THE PIONEER ERA (2010 - 2017 Expansion) ─────────────────────
+{id:1731,brand:"Pickleball Inc",model:"Champion Graphite (Original)",year:2010,surface:"Graphite",shape:"Standard",tags:["Pioneer","Gen 1","Classic","Red/Blue Grid"]},
+{id:1732,brand:"Pickleball Inc",model:"Champion Poly",year:2011,surface:"Composite",shape:"Standard",tags:["Pioneer","Early Polymer","Soft Feel"]},
+{id:1733,brand:"Pro-Lite",model:"Magnum Graphite",year:2012,surface:"Graphite",shape:"Standard",tags:["Pioneer","Pop","Widebody"]},
+{id:1734,brand:"Pro-Lite",model:"Titan Pro",year:2015,surface:"Carbon Fiber",shape:"Standard",tags:["Early Carbon","High End","Pioneer"]},
+{id:1735,brand:"Paddletek",model:"Bantam EX-L",year:2014,surface:"Composite",shape:"Standard",tags:["Early Power","Polymer Core","Tournament Standard"]},
+{id:1736,brand:"Paddletek",model:"Phoenix Pro",year:2013,surface:"Composite",shape:"Standard",tags:["Control","Pioneer","Quiet"]},
+{id:1737,brand:"Selkirk",model:"20P-XL Epic (First Edition)",year:2015,surface:"Composite",shape:"Standard",tags:["Selkirk Origins","Gen 1","Pioneer"]},
+{id:1738,brand:"Selkirk",model:"30P-XL Epic",year:2016,surface:"Graphite",shape:"Standard",tags:["Selkirk Origins","Control","Classic"]},
+{id:1739,brand:"Engage",model:"Encore (Original 2014)",year:2014,surface:"Liquid Graphite",shape:"Standard",tags:["Pioneer","Soft","Spin"]},
+{id:1740,brand:"Engage",model:"Guardian",year:2015,surface:"Composite",shape:"Standard",tags:["Heavy Duty","Control"]},
+{id:1741,brand:"Onix",model:"Zen",year:2015,surface:"Composite",shape:"Standard",tags:["Style Pioneer","Aesthetic"]},
+{id:1742,brand:"Manta",model:"Matrix",year:2015,surface:"Carbon Fiber",shape:"Standard",tags:["High End Canada","Carbon Pioneer"]},
+{id:1743,brand:"Gamma",model:"Atomic",year:2016,surface:"Composite",shape:"Standard",tags:["Gamma Origins","Polymer"]},
+{id:1744,brand:"Gamma",model:"Voltage",year:2016,surface:"Graphite",shape:"Standard",tags:["Gamma Origins","Pop"]},
+{id:1745,brand:"ProKennex",model:"Kinetic Pro (Original)",year:2016,surface:"Composite",shape:"Standard",tags:["Tennis Tech","Arm Protection","Pioneer"]},
+{id:1746,brand:"Head",model:"Radical Tour (Original)",year:2017,surface:"Graphite",shape:"Standard",tags:["Major Brand Entry","Control"]},
+{id:1747,brand:"Gearbox",model:"G7",year:2016,surface:"Carbon Fiber",shape:"Standard",tags:["Gearbox Origins","Solid Body"]},
+{id:1748,brand:"Wilson",model:"Echo (First Edition)",year:2017,surface:"Graphite",shape:"Standard",tags:["Major Brand Entry","Speed"]},
+{id:1749,brand:"Manta",model:"Tornado",year:2014,surface:"Graphite",shape:"Standard",tags:["Classic Power"]},
+{id:1750,brand:"Pickleball Inc",model:"Champion Graphite X",year:2015,surface:"Graphite",shape:"Standard",tags:["Redesign","Gradient Style"]},
 
 ];
 const BRANDS = [...new Set(PADDLES.map(p => p.brand)), 'ACE', 'Bread & Butter', 'Chorus', 'DROP SHOT', 'Empire', 'Kiwi Labs', 'Nettie', 'OWL', 'PCKL', 'Pickle Poppers', 'Six Zero', 'STIGA', 'Xenon', 'Other'].sort((a, b) => a.localeCompare(b));
