@@ -129,6 +129,16 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
 .bb2 span{font-size:10px;font-weight:600;}
 .count-text{font-size:11px;color:var(--tf);margin-bottom:10px;font-weight:600;letter-spacing:0.3px;opacity:0.9;}
 .count-text strong{color:var(--bb);font-weight:700;}
+.tag-qty{background:var(--bb);color:white;font-size:10px;font-weight:800;padding:2px 6px;border-radius:20px;margin-left:auto;}
+.qty-row{display:flex;align-items:center;gap:12px;background:var(--cbr);padding:10px 14px;border-radius:var(--rs);margin-bottom:16px;}
+.qty-ctrl{display:flex;align-items:center;gap:14px;}
+.qty-btn{width:28px;height:28px;border:none;background:white;color:var(--bb);font-weight:bold;font-size:18px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.qty-val{font-weight:700;font-size:16px;color:var(--bd);min-width:16px;text-align:center;}
+.ep-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(80px, 1fr));gap:10px;margin-top:12px;}
+.ep-box{aspect-ratio:1;border-radius:var(--rs);background:var(--cbr);position:relative;overflow:hidden;border:1.5px dashed var(--tf);}
+.ep-box img{width:100%;height:100%;object-fit:cover;}
+.ep-box label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.ep-del{position:absolute;top:2px;right:2px;background:rgba(220,38,38,0.85);color:white;border:none;width:20px;height:20px;border-radius:50%;font-size:12px;font-weight:bold;cursor:pointer;}
 .sources-list{font-size:11px;color:var(--tf);margin-top:20px;padding:15px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid var(--cbr);}
 .sources-list a{color:var(--bb);text-decoration:none;font-weight:600;}
 .sources-list a:hover{text-decoration:underline;}
@@ -2290,7 +2300,21 @@ function guestIn(){isGuest=true;currentUser=null;showApp('Guest');}
 function doSignOut(){if(isGuest){isGuest=false;currentUser=null;collection=[];collData={};reports=[];customPaddles=[];document.getElementById('main-app').style.display='none';document.getElementById('auth-screen').style.display='flex';return;}auth.signOut();}
 auth.onAuthStateChanged(u=>{if(u){isGuest=false;currentUser=u;showApp(u.displayName||u.email.split('@')[0]);loadData();}else if(!isGuest){document.getElementById('auth-screen').style.display='flex';document.getElementById('main-app').style.display='none';}});
 function showApp(n){document.getElementById('auth-screen').style.display='none';document.getElementById('main-app').style.display='block';document.getElementById('greet').textContent=`Hi, ${n}`;init();}
-function authErr(c){const m={'auth/user-not-found':'No account found with that email.','auth/wrong-password':'Incorrect password.','auth/invalid-credential':'Incorrect email or password.','auth/email-already-in-use':'An account with that email already exists.','auth/invalid-email':'Please enter a valid email address.','auth/too-many-requests':'Too many attempts. Please try again later.','auth/popup-closed-by-user':'Sign-in popup was closed.','auth/network-request-failed':'Network error. Check your connection.'};return m[c]||'Something went wrong. Please try again.';}
+function authErr(c){
+  const m={
+    'auth/user-not-found':'No account found with that email.',
+    'auth/wrong-password':'Incorrect password.',
+    'auth/invalid-credential':'Incorrect email or password.',
+    'auth/email-already-in-use':'An account with that email already exists.',
+    'auth/invalid-email':'Please enter a valid email address.',
+    'auth/too-many-requests':'Too many attempts. Please try again later.',
+    'auth/popup-closed-by-user':'Sign-in popup was closed.',
+    'auth/network-request-failed':'Network error. Check your connection.',
+    'auth/operation-not-allowed':'Google sign-in is not enabled in Firebase console.',
+    'auth/user-disabled':'This account has been disabled.'
+  };
+  return m[c]||`Auth Error: ${c}. Please ensure Google Sign-In is enabled and your domain is authorized in Firebase console.`;
+}
 document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;if(document.getElementById('auth-screen').style.display==='none')return;document.getElementById('form-login').style.display!=='none'?doSignIn():doSignUp();});
 
 // ── DATA ──────────────────────────────────────────────────────
@@ -2397,7 +2421,7 @@ function pCard(p){
       `<svg width="100%" height="100%" viewBox="0 0 24 44" fill="none" preserveAspectRatio="xMidYMid meet"><g transform="translate(-2.95,3.58) rotate(15,12,24)"><ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="#0d2954" opacity="0.55"/><ellipse cx="12" cy="9" rx="9.5" ry="12" fill="#111111" opacity="0.5"/><rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="#0d2954" opacity="0.6"/></g></svg>`}</div>
     <div class="pi"><div class="pb2">${p.brand}</div><div class="pn">${p.model}</div>
       <div class="py">${p.year}${p.surface?' · '+p.surface:''}${p.shape?' · '+p.shape:''}</div>
-      <div class="pst">${stars(d?.rating||0)}</div></div>
+      <div style="display:flex;align-items:center;gap:8px;"><div class="pst">${stars(d?.rating||0)}</div>${d?.qty && d.qty > 1 ? `<span class="tag-qty">x${d.qty}</span>`:''}</div></div>
     ${ic?'<span class="vbdg">✓ Vault</span>':''}</div>
     <div>${(p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
     ${d?.notes?`<div class="pnote">"${d.notes}"</div>`:''}</div>`;
@@ -2508,8 +2532,9 @@ function updateStats(){
 // ── DETAIL MODAL ──────────────────────────────────────────────
 async function openD(pid){
   const p=allP().find(x=>x.id==pid);if(!p)return;
-  const ic=collection.includes(pid),d=collData[pid]||{rating:0,notes:'',photoKey:null};
+  const ic=collection.includes(pid),d=collData[pid]||{rating:0,notes:'',photoKey:null,qty:1,extraPhotoKeys:[]};
   window._mR=d.rating;window._mPK=d.photoKey||null;window._mNP=null;
+  window._mQTY=d.qty||1;window._mExtraPKs=d.extraPhotoKeys||[];window._mExtraNPs={};
   let src=null;if(d.photoKey)src=await loadImg(d.photoKey);
   const th=src?`<img src="${src}" onclick="expandPhoto('${src}')" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;" title="Tap to expand">`:`<svg width="100%" height="100%" viewBox="0 0 24 44" fill="none" preserveAspectRatio="xMidYMid meet"><g transform="translate(-2.95,3.58) rotate(15,12,24)"><ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="#0d2954" opacity="0.65"/><ellipse cx="12" cy="9" rx="9.5" ry="12" fill="#111111" opacity="0.65"/><rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="#0d2954" opacity="0.7"/></g></svg>`;
   document.getElementById('mc').innerHTML=`
@@ -2520,28 +2545,57 @@ async function openD(pid){
         <div style="font-size:14px;font-weight:600;color:var(--tm);margin-top:2px;">${p.year}${p.surface?' · '+p.surface:''}</div>
         ${p.shape?`<div style="font-size:11px;color:var(--tf);margin-top:1px;">${p.shape} shape</div>`:''}
         <div>${(p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div></div></div>
-    <hr style="border:none;border-top:1px solid var(--cbr);margin:13px 0;">
+    
+    <div class="qty-row"><div style="font-size:12px;font-weight:600;color:var(--tm);flex:1;">Number Owned</div><div class="qty-ctrl">
+      <button class="qty-btn" onclick="modQ(-1)">-</button><div class="qty-val" id="mqty">${window._mQTY}</div><button class="qty-btn" onclick="modQ(1)">+</button></div></div>
+
     <div class="fg"><label>Your Rating</label><div class="stri" id="mstars">
       ${[1,2,3,4,5].map(i=>`<button class="strbtn ${i<=d.rating?'active':''}" onclick="setMR(${JSON.stringify(pid)},${i})">★</button>`).join('')}</div></div>
     <div class="fg"><label>Notes</label><textarea id="mnotes" placeholder="Your thoughts…">${d.notes||''}</textarea></div>
-    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(device-only; won't sync)</span></label>
+    <div class="fg"><label>Primary Photo</label>
       <label class="pu" for="mpf"><input type="file" id="mpf" accept="image/*" onchange="prevMP(this)">
-      <div class="puico">📷</div><div class="putxt">Upload your own photo</div>
+      <div class="puico">📷</div><div class="putxt">Upload main photo</div>
       ${src?`<img src="${src}" class="pprev" id="mpprev" onclick="expandPhoto('${src}')" style="cursor:zoom-in;">`:'<img class="pprev" id="mpprev" style="display:none;cursor:zoom-in;" onclick="expandPhoto(this.src)">'}</label></div>
+    
+    <div id="extra-photos-sect" style="${window._mQTY>1?'':'display:none'}">
+       <div style="font-size:12px;font-weight:600;color:var(--tm);margin:18px 0 8px;">Additional Unit Photos</div>
+       <div class="ep-grid" id="ep-grid"></div>
+    </div>
+
     <button class="pbtn" onclick="saveMD(${JSON.stringify(pid)},${ic})">${ic?'💾 Save Changes':'+ Add to My Vault'}</button>
     ${ic?`<button class="sbtn" style="color:#dc2626;border-color:#fca5a5;" onclick="remV(${JSON.stringify(pid)})">Remove from Vault</button>`:''}
   `;
+  renderEP(pid);
   document.getElementById('modal').classList.add('open');
 }
+function modQ(v){const n=Math.max(1,Math.min(5,window._mQTY+v));window._mQTY=n;const el=document.getElementById('mqty');if(el)el.textContent=n;const s=document.getElementById('extra-photos-sect');if(s)s.style.display=n>1?'block':'none';renderEP();}
+async function renderEP(pid){
+  const g=document.getElementById('ep-grid');if(!g)return;let h='';
+  for(let i=0;i<window._mQTY-1;i++){
+    const k=window._mExtraPKs[i];let src=window._mExtraNPs[i]||null;
+    if(k&&!src)src=await loadImg(k);
+    h+=`<div class="ep-box">${src?`<img src="${src}" onclick="expandPhoto('${src}')"><button class="ep-del" onclick="delEP(${i})">×</button>`:`<label><input type="file" style="display:none" onchange="prevEP(this,${i})">📷</label>`}</div>`;
+  }
+  g.innerHTML=h;
+}
+function prevEP(inp,idx){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=async e=>{const c=await compressImage(e.target.result);window._mExtraNPs[idx]=c;renderEP();};r.readAsDataURL(f);}
+function delEP(idx){if(window._mExtraPKs[idx])window._mExtraPKs[idx]=null;delete window._mExtraNPs[idx];renderEP();}
+
 function setMR(pid,v){window._mR=v;document.querySelectorAll('#mstars .strbtn').forEach((b,i)=>b.classList.toggle('active',i<v));}
 function prevMP(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=async e=>{const compressed=await compressImage(e.target.result);window._mNP=compressed;const i=document.getElementById('mpprev');if(i){i.src=compressed;i.style.display='block';}};r.readAsDataURL(f);}
 async function saveMD(pid,was){
   const n=document.getElementById('mnotes').value;
   let k=collData[pid]?.photoKey||null;
   if(window._mNP){k=imgKey(pid);await saveImg(k,window._mNP);}
-  collData[pid]={rating:window._mR||0,notes:n,photoKey:k};
+  const eks=[];
+  for(let i=0;i<window._mQTY-1;i++){
+    let ek=window._mExtraPKs[i];
+    if(window._mExtraNPs[i]){ek=imgKey(pid)+'_e'+i;await saveImg(ek,window._mExtraNPs[i]);}
+    if(ek)eks.push(ek);
+  }
+  collData[pid]={rating:window._mR||0,notes:n,photoKey:k,qty:window._mQTY,extraPhotoKeys:eks};
   if(!was)collection.push(pid);
-  updateStats();closeM();await saveData();showT(was?'💾 Changes saved':'<span style="display:flex;align-items:center;gap:6px;"><svg width="20" height="20" viewBox="0 0 44 44" fill="none"><g transform="translate(-2.95,3.58) rotate(15,12,24)"><ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="#0d2954"/><ellipse cx="12" cy="9" rx="9.5" ry="12" fill="#111111"/><rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="#0d2954"/></g><circle cx="35" cy="9" r="7" fill="#fbbf24"/><circle cx="32.8" cy="6.8" r="1.7" fill="rgba(255,255,255,0.22)"/><circle cx="35" cy="3.2" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="38.4" cy="4.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="40.1" cy="8.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="38.4" cy="12.9" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="14.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="31.6" cy="12.9" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="29.9" cy="8.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="31.6" cy="4.8" r="0.95" fill="rgba(120,60,0,0.55)"/><circle cx="35" cy="9" r="0.85" fill="rgba(120,60,0,0.48)"/></svg> Added to your Vault!</span>');
+  updateStats();closeM();await saveData();showT(was?'💾 Changes saved':'Added to Vault');
   if(currentView==='collection')renderColl();if(currentView==='browse')renderP();
 }
 async function remV(pid){
@@ -2559,9 +2613,9 @@ document.getElementById('stat-modal').addEventListener('click',function(e){if(e.
 function initSwipe(id, fn) {
   const el = document.getElementById(id), md = el.querySelector('.md');
   let sY = 0, cY = 0, drg = false;
-  el.addEventListener('touchstart', e => { if (e.target.closest('.mh')) { sY = e.touches[0].clientY; drg = true; md.style.transition = 'none'; } });
-  el.addEventListener('touchmove', e => { if (!drg) return; cY = e.touches[0].clientY - sY; if (cY > 0) { md.style.transform = `translateY(${cY}px)`; e.preventDefault(); } }, {passive:false});
-  el.addEventListener('touchend', () => { if (!drg) return; drg = false; md.style.transition = ''; md.style.transform = ''; if (cY > 100) fn(); cY = 0; });
+  el.addEventListener('touchstart', e => { if (e.target.closest('.mh') || md.scrollTop <= 0) { sY = e.touches[0].clientY; drg = true; md.style.transition = 'none'; } });
+  el.addEventListener('touchmove', e => { if (!drg) return; cY = e.touches[0].clientY - sY; if (cY > 0) { md.style.transform = `translateY(${cY}px)`; e.preventDefault(); } else { drg=false; md.style.transform=''; md.style.transition=''; } }, {passive:false});
+  el.addEventListener('touchend', () => { if (!drg) return; drg = false; md.style.transition = ''; md.style.transform = ''; if (cY > 120) fn(); cY = 0; });
 }
 initSwipe('modal', closeM);
 initSwipe('stat-modal', closeStatM);
