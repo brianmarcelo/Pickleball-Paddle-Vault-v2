@@ -232,7 +232,7 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
     <div class="fg"><label>Additional Tags</label><input type="text" id="ct" placeholder="e.g. Gen 3, Carbon Fiber, Power (comma separated)"></div>
     <div class="fg"><label>Your Rating</label><div class="stri" id="custom-stars"><button class="strbtn" onclick="setR(1)">★</button><button class="strbtn" onclick="setR(2)">★</button><button class="strbtn" onclick="setR(3)">★</button><button class="strbtn" onclick="setR(4)">★</button><button class="strbtn" onclick="setR(5)">★</button></div></div>
     <div class="fg"><label>Notes</label><textarea id="cn" placeholder="How does it play?"></textarea></div>
-    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(local-only; no cloud sync)</span></label><label class="pu" for="cpf"><input type="file" id="cpf" accept="image/*" onchange="prevPhoto(this)"><div class="puico">📷</div><div class="putxt">Tap to upload your paddle photo</div><img id="cprev" class="pprev" style="display:none"></label></div>
+    <div class="fg"><label>Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(saves to device only, won't sync to other devices)</span></label><label class="pu" for="cpf"><input type="file" id="cpf" accept="image/*" onchange="prevPhoto(this)"><div class="puico">📷</div><div class="putxt">Tap to upload your paddle photo</div><img id="cprev" class="pprev" style="display:none"></label></div>
     <button class="pbtn" onclick="saveCustom()">Save to My Vault</button>
     <button class="sbtn" onclick="clearCustom()">Clear Form</button>
   </div>
@@ -2254,6 +2254,30 @@ const PADDLES = [
 {id:1707,brand:"Volair",model:"Shift HYB 14mm Dylan Frazier",year:2025,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 2","Pro","Hybrid","Signature","Dylan Frazier","New 2025","UPA-A","USAP"]},
 {id:1708,brand:"Volair",model:"Shift HYB 16mm Dylan Frazier",year:2025,surface:"T700 Carbon",shape:"Hybrid",tags:["Gen 2","Pro","Hybrid","Signature","Dylan Frazier","New 2025","UPA-A","USAP"]},
 
+// ── HISTORICAL FLAGSHIPS (2017 - 2022 Expansion) ─────────────────
+{id:1709,brand:"Selkirk",model:"AMPED Epic (Original)",year:2018,surface:"FiberFlex",shape:"Standard",tags:["Classic","Original","X5 Core","Control"]},
+{id:1710,brand:"Selkirk",model:"AMPED S2 (Original)",year:2018,surface:"FiberFlex",shape:"Standard",tags:["Classic","Short Handle","Large Sweet Spot"]},
+{id:1711,brand:"Selkirk",model:"Invikta AMPED (Original)",year:2019,surface:"FiberFlex",shape:"Elongated",tags:["Classic","Flagship","Tyson McGuffin Signature"]},
+{id:1712,brand:"Paddletek",model:"Tempest Wave II",year:2018,surface:"Graphite",shape:"Standard",tags:["Classic","Pro Choice","Control"]},
+{id:1713,brand:"Onix",model:"Z5 Graphite",year:2017,surface:"Graphite",shape:"Standard",tags:["Legendary","Pop","Loud","Beginner Favorite"]},
+{id:1714,brand:"Engage",model:"Encore 6.0",year:2019,surface:"FiberTek",shape:"Standard",tags:["Classic","Soft","Thick Core"]},
+{id:1715,brand:"Engage",model:"Poach Advantage",year:2019,surface:"Composite",shape:"Standard",tags:["Classic","Power","Top Heavy"]},
+{id:1716,brand:"Franklin",model:"Ben Johns Signature (Original)",year:2020,surface:"MaxGrit",shape:"Standard",tags:["Classic","First Grit","Ben Johns"]},
+{id:1717,brand:"Prince",model:"Response Pro",year:2019,surface:"Composite",shape:"Standard",tags:["Classic","Round Head","Simone Jardim Signature"]},
+{id:1718,brand:"Gearbox",model:"GX5 Control",year:2019,surface:"Carbon Fiber",shape:"Standard",tags:["Classic","No Frame","Durability"]},
+{id:1719,brand:"Head",model:"Extreme Tour (Original)",year:2020,surface:"Graphite",shape:"Standard",tags:["Classic","Swift","Diamond Head"]},
+{id:1720,brand:"Selkirk",model:"VANGUARD Invikta 1.0",year:2020,surface:"Carbon Fiber",shape:"Elongated",tags:["Classic","Premium","Carbon"]},
+{id:1721,brand:"Joola",model:"Radius C7",year:2022,surface:"Carbon Fiber",shape:"Standard",tags:["Original","Round","Control"]},
+{id:1722,brand:"CRBN",model:"CRBN-1 (Original Non-X)",year:2021,surface:"Raw Carbon",shape:"Elongated",tags:["Original","Carbon Revolution"]},
+{id:1723,brand:"Legacy",model:"Legacy Pro (Batch 1)",year:2022,surface:"T700 Carbon",shape:"Elongated",tags:["Original","Thermoformed Disruptor","December 2022"]},
+{id:1724,brand:"Engage",model:"Pursuit MX 6.0 (Original)",year:2021,surface:"Carbon Fiber",shape:"Elongated",tags:["Classic","Pro","Spin"]},
+{id:1725,brand:"Luzz",model:"Pro 4 Inferno — Blue Blaze Edition",year:2026,surface:"Carbon/Composite",shape:"Standard",tags:["New 2026","MPP Core","Special Colorway","Electroplated Edge"]},
+{id:1726,brand:"Luzz",model:"Pro 4 Tornazo — Shadow Edition",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Special Edition","Blackout","PEBAZ Core","Control"]},
+{id:1727,brand:"Onix",model:"Evoke Premier",year:2019,surface:"Composite",shape:"Standard",tags:["Classic","Pro","Matt Wright Signature"]},
+{id:1728,brand:"Gamma",model:"Compass",year:2019,surface:"Graphite",shape:"Elongated",tags:["Classic","Reach"]},
+{id:1729,brand:"Electrum",model:"Electrum Pro (Original)",year:2020,surface:"Raw Carbon",shape:"Standard",tags:["Original","Carbon Pioneer"]},
+{id:1730,brand:"Vulcan",model:"V550",year:2019,surface:"Carbon Fiber",shape:"Standard",tags:["Classic","Hybrid Core"]},
+
 ];
 const BRANDS = [...new Set(PADDLES.map(p => p.brand)), 'ACE', 'Bread & Butter', 'Chorus', 'DROP SHOT', 'Empire', 'Kiwi Labs', 'Nettie', 'OWL', 'PCKL', 'Pickle Poppers', 'Six Zero', 'STIGA', 'Xenon', 'Other'].sort((a, b) => a.localeCompare(b));
 // ── STATE ─────────────────────────────────────────────────────
@@ -2552,7 +2576,7 @@ async function openD(pid){
     <div class="fg"><label>Your Rating</label><div class="stri" id="mstars">
       ${[1,2,3,4,5].map(i=>`<button class="strbtn ${i<=d.rating?'active':''}" onclick="setMR(${JSON.stringify(pid)},${i})">★</button>`).join('')}</div></div>
     <div class="fg"><label>Notes</label><textarea id="mnotes" placeholder="Your thoughts…">${d.notes||''}</textarea></div>
-    <div class="fg"><label>Primary Photo</label>
+    <div class="fg"><label>Primary Photo <span style="font-size:10px;color:var(--tf);font-weight:400;text-transform:none;">(saves to device only, won't sync to other devices)</span></label>
       <label class="pu" for="mpf"><input type="file" id="mpf" accept="image/*" onchange="prevMP(this)">
       <div class="puico">📷</div><div class="putxt">Upload main photo</div>
       ${src?`<img src="${src}" class="pprev" id="mpprev" onclick="expandPhoto('${src}')" style="cursor:zoom-in;">`:'<img class="pprev" id="mpprev" style="display:none;cursor:zoom-in;" onclick="expandPhoto(this.src)">'}</label></div>
