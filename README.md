@@ -1,47 +1,53 @@
-# 🏓 Paddle Vault — Pickleball Collection Tracker
+# 🏓 Paddle Vault V3 — Ultimate Pickleball Collection Tracker
 
-**800+ paddles · 60 brands · 2016–2026 · Google Login · Local Image Cache · Cloud Sync**
+**1,750+ paddles · 123 verified real brands · 2010–2026 · Google Login · Mobile-First UI · Monolithic Architecture**
+
+---
+
+## ✨ Version 3.0 — The "Monolith" Update
+
+Paddle Vault V3 has been completely re-engineered as a **high-performance, single-file application**. All CSS, JavaScript, and data are now contained within a single `index.html` file for zero-latency loading and seamless deployment to GitHub Pages.
+
+### 📱 New Mobile-First Features
+*   **Swipe-to-Dismiss**: Premium vertical swipe-to-dismiss gestures for all modals (iPhone style) with spring-physics and haptic-ready interactions.
+*   **Duplicate Management**: Track multiple units of the same paddle. Added a "Quantity" selector that updates your vault stats automatically.
+*   **Multi-Photo Support**: Dynamically unlocking additional photo slots when you own more than 1 unit of a paddle.
+*   **Glassmorphism UI**: A beautiful, premium dark-mode aesthetic with blurred backgrounds, vibrant gradients, and micro-animations.
+*   **Full-Screen Expand**: Full-screen photo viewer with pinch-to-zoom and cross-device scaling.
 
 ---
 
 ## 📁 File Structure
 
 ```
-paddlevault/
-├── index.html                 # App shell + auth screen
-├── style.css                  # All styles
-├── firebase-config.js         # Your Firebase credentials (local only)
-├── firebase-config.EXAMPLE.js # Safe template to commit
-├── auth.js                    # Email + Google login
-├── db.js                      # 800+ paddle database
-├── app.js                     # App logic, cloud save, local image cache
-├── deploy.sh                  # Mac/Linux deploy script
-├── deploy.bat                 # Windows deploy script
-├── .gitignore                 # Keeps firebase-config.js off GitHub
-└── README.md
+Pickleball-Paddle-Vault-V3/
+├── index.html                 # The entire application (HTML, CSS, JS, Data)
+├── .gitignore                 # Standard git exclusions
+└── README.md                  # This file
 ```
 
 ---
 
-## 🔧 Step 1 — Firebase Setup (free)
+## 🔧 Firebase Setup (Mandatory for Cloud Sync)
 
-### Create Project
-1. Go to **https://console.firebase.google.com**
-2. **Add project** → name it `paddle-vault` → Create
-3. Click **`</>`** (Web) → register app → copy `firebaseConfig`
-4. Paste it into **`firebase-config.js`** (replacing placeholder values)
+To enable Google Login and your data to sync across devices, you must link your own Firebase project:
 
-### Enable Authentication
-- Firebase Console → **Authentication** → **Get Started**
-- **Email/Password** → Enable ✅
-- **Google** → Enable ✅ → add your support email → Save
+### 1. Create Project
+1. Go to [Firebase Console](https://console.firebase.google.com).
+2. Create a new project (e.g., `paddle-vault-v3`).
+3. Click **`</>`** (Web) to register an app.
+4. **Copy the `firebaseConfig` object** and paste it into the `firebaseConfig` variable inside `index.html` (around line 2300).
 
-### Enable Firestore
-- Firebase Console → **Firestore Database** → **Create database**
-- Start in **test mode** → choose region → Enable
+### 2. Enable Authentication
+1. Go to **Authentication** → **Sign-in method**.
+2. Enable **Email/Password**.
+3. Enable **Google** (add your support email).
+4. **Authorized Domains**: Ensure `brianmarcelo.github.io` and `localhost` are added.
 
-### Firestore Security Rules (set before going live)
-```
+### 3. Enable Firestore
+1. Go to **Firestore Database** → **Create database**.
+2. Start in **test mode** or set rules:
+```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -52,81 +58,39 @@ service cloud.firestore {
 }
 ```
 
-### Authorize your domain for Google Login
-- Firebase Console → **Authentication** → **Settings** → **Authorized domains**
-- Add: `brianmarcelo.github.io` (and `localhost` for local testing)
+---
+
+## 🗃️ The Database (1,750+ Entries)
+
+The database is cross-referenced with official manufacturer logs and the USAP Approved list. It spans **16 years of sport history**:
+
+*   **Pioneer Era (2010–2017)**: Iconic models like the **Pickleball Inc. Champion**, **Pro-Lite Magnum**, and the first-ever **Selkirk 20P-XL**.
+*   **Evolution (2018–2022)**: The rise of raw carbon and thermoforming. **CRBN 1X**, **Selkirk Vanguard**, **Legacy Pro**, and the **Franklin Ben Johns Signature**.
+*   **Modern Era (2023–2026)**: Gen 3 and Gen 4 tech. **Joola Perseus/Mod-TA**, **Six Zero Ruby/Coral**, **11SIX24 Hurache-X**, and **Friday Aura (Gen 4 Foam Core)**.
+
+### Verified Brands Include:
+Selkirk, JOOLA, CRBN, Gearbox, Engage, Franklin, Onix, Paddletek, Luzz, Six Zero, Vatic Pro, Ronbus, Volair, Bread & Butter, Ace, ElevenZero, Chorus, ProKennex, Babolat, Head, Wilson, Prince, Vulcan, Gamma, and **100+ more**.
 
 ---
 
-## 🚀 Step 2 — Deploy to GitHub Pages
+## 📸 Photo Storage & Privacy
 
-**Mac/Linux:**
-```bash
-chmod +x deploy.sh
-./deploy.sh
-```
-
-**Windows:** Double-click `deploy.bat`
-
-After pushing, enable Pages:
-- `github.com/brianmarcelo/Pickleball-Paddle-Vault-Test-1/settings/pages`
-- Source: **main** branch → `/root` → Save
-
-**Live URL:** `https://brianmarcelo.github.io/Pickleball-Paddle-Vault-Test-1`
+Photos are stored locally in your browser's **IndexedDB** — not in the cloud.
+*   ✅ **Device-Only**: Your photos stay on your device and won't sync to other devices (privacy-first).
+*   ✅ **Persistence**: Photos remain even if you refresh or update the app.
+*   ⚠️ **Caution**: Clearing your browser cache/data will remove local photos. Ratings, notes, and collection data will still sync via the cloud.
 
 ---
 
-## 📱 Features
+## 🚀 Deployment
 
-| Feature | Details |
-|---------|---------|
-| **Browse** | 800+ paddles, 60 brands, search + brand filters |
-| **CRBN default** | App opens showing CRBN paddles first |
-| **My Vault** | Personal collection, star ratings, notes, photos |
-| **Photo storage** | Saved in browser/phone cache (IndexedDB) — works offline |
-| **Google Login** | One-tap sign in with Gmail |
-| **Email Login** | Traditional email/password |
-| **Guest Mode** | No account needed, saves locally |
-| **Cloud Sync** | Collection syncs across devices when logged in |
-| **Custom Paddles** | Add any paddle not in the database |
-| **Report Missing** | Flag paddles to be added |
+The app is built for **GitHub Pages**. Just push your `index.html` to a public repository and enable Pages in the settings:
+1. `github.com/your-username/your-repo/settings/pages`
+2. Source: **main** branch → `/root`
+3. Hit Save.
 
 ---
 
-## 📸 How Photo Storage Works
-
-Photos are stored in **IndexedDB** — the browser's built-in local storage — not in Firestore or Firebase Storage (which would cost money). This means:
-
-- ✅ Photos are saved on your phone/browser and persist between sessions
-- ✅ Free — no storage costs
-- ✅ Fast — no network needed to display photos
-- ⚠️ Photos are device-specific — they don't sync to other devices
-- ⚠️ If you clear your browser data, photos are lost (ratings/notes still sync via cloud)
-
----
-
-## 🗃️ Database (800+ paddles, 60 brands)
-
-Key brands covered:
-- **CRBN** — All TruFoam Genesis, Waves, Barrage (4 shapes each), X Series, Classics
-- **JOOLA** — Perseus, Scorpeus, Hyperion, Kosmos, 3S, Pro V, Vision, Radius, Solaire
-- **Selkirk** — Full LABS lineup (002–008), Boomstik, Vanguard, AMPED, SLK
-- **Proton** — Series 1–4, Flamingo (4 variants), Peacock (4 variants), ERA
-- **11SIX24** — Power 2 (Vapor/Pegasus/Hurache-X HexGrit), Excalibur, Apex
-- **FLiK** — F1, F2, F3 Triple Foam (3 shapes)
-- **Honolulu** — J2NF (#1 2026), J6CR, J2FC+, J2K
-- **Holbrook** — Fuze, Origin, Fuze Pro
-- Plus: Gearbox, Engage, Paddletek, Six Zero, Diadem, Franklin, HEAD, Onix, Gamma, ProKennex, Vatic Pro, Bread & Butter, RPM, Thrive, Gruvn, GRIT, SENS, RAD, Spartus, Komodo, Avoura, Thompson, and more
-
----
-
-## 🔄 Adding Paddles
-
-Edit `db.js` and add to the `PADDLES` array:
-```js
-{ id: 999, brand: "Brand", model: "Model 14mm", year: 2025,
-  surface: "Carbon Fiber", shape: "Standard",
-  tags: ["Pro","Power","New"] }
-```
-
-Shapes: `Standard` · `Elongated` · `Widebody` · `Hybrid` · `Round`
+### Created by **Brian Marcelo**
+[brianmarcelo@gmail.com](mailto:brianmarcelo@gmail.com)
+*Aiming to archive every flagship pickleball paddle from 2010 to the present.*
