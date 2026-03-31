@@ -250,13 +250,24 @@ textarea{resize:none;min-height:78px;line-height:1.5;}
     <button class="pbtn" onclick="submitReport()">Submit Report</button>
     
     <div class="sources-list">
-      <div style="font-weight:700;margin-bottom:8px;color:var(--tm);text-transform:uppercase;letter-spacing:1px;font-size:10px;">Verified Data Sources</div>
-      Our database is audited against official sources:
+      <div style="font-weight:700;margin-bottom:8px;color:var(--tm);text-transform:uppercase;letter-spacing:1px;font-size:10px;">Verification & Manufacturer Sources</div>
+      Our database is audited against official manufacturer logs and industry leaders:
       <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:10px;">
         <a href="https://usapickleball.org/paddles" target="_blank">USA Pickleball</a> • 
         <a href="https://unitedpickleball.com/certified-paddles" target="_blank">UPA-A (Pro)</a> • 
         <a href="https://pickleballcentral.com" target="_blank">Pickleball Central</a> • 
+        <a href="https://www.pickleballwarehouse.com" target="_blank">Pickleball Warehouse</a> • 
+        <a href="https://www.justpaddles.com" target="_blank">JustPaddles</a> • 
+        <a href="https://pickleballsuperstore.com" target="_blank">PB Superstore</a> • 
         <a href="https://pickler.com" target="_blank">Pickler</a>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;opacity:0.8;font-size:11px;">
+        <a href="https://www.selkirk.com" target="_blank">Selkirk</a> • 
+        <a href="https://joola.com" target="_blank">JOOLA</a> • 
+        <a href="https://crbnpickleball.com" target="_blank">CRBN</a> • 
+        <a href="https://www.gearboxsports.com" target="_blank">Gearbox</a> • 
+        <a href="https://engagepickleball.com" target="_blank">Engage</a> • 
+        <a href="https://franklinpickleball.com" target="_blank">Franklin</a>
       </div>
     </div>
     
@@ -1752,7 +1763,18 @@ const PADDLES = [
 {id:1682,brand:"Yonex",model:"VCORE Plus Midweight",year:2024,surface:"Fiberglass",shape:"Standard",tags:["Gen 2","Midweight","Power","Made in Japan"]},
 {id:843,brand:"Zocker",model:"Aspire 16mm Standard",year:2025,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Stability","Power","New","UPA-A"]},
 {id:1589,brand:"Zocker",model:"Aspire x Phuc Huynh",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Signature","Pro","Lightweight"]},
-{id:1590,brand:"Zocker",model:"HP07 Pro Series Balance 14.3mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Mid-range","Balance"]}
+{id:1590,brand:"Zocker",model:"HP07 Pro Series Balance 14.3mm",year:2024,surface:"Carbon Fiber",shape:"Standard",tags:["Gen 2","Mid-range","Balance"]},
+{id:1767,brand:"Enhance Pickleball",model:"Turbo MPP 16mm Elongated",year:2026,surface:"CFC Layup",shape:"Elongated",tags:["Gen 4","MPP Foam","Floating Core","Springy","New 2026","Top Rated"]},
+{id:1768,brand:"Enhance Pickleball",model:"Turbo EPP 14mm Standard",year:2025,surface:"CFC Layup",shape:"Standard",tags:["Gen 4","EPP Foam","Value","New 2025"]},
+{id:1769,brand:"Selkirk",model:"Boomstik Pro 14mm Power",year:2026,surface:"ProGrit",shape:"Elongated",tags:["Gen 3","Power","Atomic Foam","New 2026","Top Rated"]},
+{id:1770,brand:"Selkirk",model:"Boomstik Pro 16mm Control",year:2026,surface:"ProGrit",shape:"Elongated",tags:["Gen 3","Power","Atomic Foam","Control","New 2026"]},
+{id:1771,brand:"Selkirk",model:"Luxx Control Air Invikta II",year:2026,surface:"Toray T700",shape:"Elongated",tags:["Gen 2","Edgeless","Quiet Tech","Dwell","New 2026"]},
+{id:1772,brand:"Vatic Pro",model:"V-SOL Pro Standard 16mm",year:2026,surface:"Raw Carbon",shape:"Standard",tags:["Gen 3","Value","Foam Injected","Top Rated","New 2026"]},
+{id:1773,brand:"Helios Pickleball",model:"Athos T700/Kevlar Standard",year:2025,surface:"Kevlar CF",shape:"Standard",tags:["Gen 2","Hybrid Face","New 2025","Athos"]},
+{id:1774,brand:"Forwrd",model:"RUNOUT Series One Standard",year:2025,surface:"T700 Carbon",shape:"Standard",tags:["Gen 2","Lifetime Guarantee","Value","New 2025"]},
+{id:1775,brand:"Six Zero",model:"Ruby II Titanium Infused",year:2026,surface:"Titanium Carbon",shape:"Hybrid",tags:["Gen 3","Spin","Titanium","Top Rated","New 2026","Ruby"]},
+{id:1776,brand:"11SIX24",model:"Hurache-X Power 3",year:2026,surface:"HexGrit CF",shape:"Elongated",tags:["Gen 4","Full Foam","HexGrit","Speed","New 2026","Hurache"]},
+{id:1777,brand:"Gearbox",model:"Pro Power Ultimate 2026",year:2026,surface:"3K Carbon",shape:"Elongated",tags:["Gen 4","Edgeless","Ultimate Power","New 2026"]}
 ];
 const BRANDS = [...new Set(PADDLES.map(p => p.brand)), 'ACE', 'Bread & Butter', 'Chorus', 'DROP SHOT', 'Empire', 'Kiwi Labs', 'Nettie', 'OWL', 'PCKL', 'Pickle Poppers', 'Six Zero', 'STIGA', 'Xenon', 'Other'].sort((a, b) => a.localeCompare(b));
 // ── STATE ─────────────────────────────────────────────────────
@@ -2138,9 +2160,16 @@ async function submitReport(){
   const details=document.getElementById('rd').value.trim();
   const fb=brand==='Other'?ob.trim():brand;
   if(!fb||!model){showT('⚠️ Brand and model required');return;}
-  reports.push({brand:fb,model,year,details,date:new Date().toLocaleDateString()});
+  
+  const report = {brand:fb,model,year,details,date:new Date().toLocaleDateString()};
+  reports.push(report);
+  
+  const subject = encodeURIComponent(`Missing Paddle Report: ${fb} ${model}`);
+  const body = encodeURIComponent(`I found a missing paddle for the Vault:\n\nBrand: ${fb}\nModel: ${model}\nYear: ${year}\nDetails: ${details}\n\nReported on: ${report.date}\nUser: ${currentUser ? currentUser.displayName || currentUser.email : 'Guest'}`);
+  window.location.href = `mailto:brianmarcelo@gmail.com?subject=${subject}&body=${body}`;
+
   ['rb','rm','ry','rd','rbo'].forEach(id=>document.getElementById(id).value='');document.getElementById('rb-other').style.display='none';
-  await saveData();showT('✓ Report submitted. Thank you!');renderRep();
+  await saveData();showT('✓ Report submitted & Email drafted. Thank you!');renderRep();
 }
 function renderRep(){
   const l=document.getElementById('reports-list');
