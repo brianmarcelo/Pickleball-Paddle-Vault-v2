@@ -2,19 +2,200 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Paddle Vault — Pickleball Collection Tracker</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Paddle Vault">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1a4b8c">
-<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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 (truncated 5519 lines) src="" alt="Expanded View">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="auth-screen" class="as">
+  <div class="ac">
+    <div class="al">
+      <svg width="34" height="34" viewBox="0 0 24 44" fill="none" style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+        <g transform="translate(-2.95,3.58) rotate(15,12,24)">
+          <ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="white" opacity="0.95"/>
+          <ellipse cx="12" cy="9" rx="9.5" ry="12" fill="white" opacity="0.6"/>
+          <rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="white" opacity="0.8"/>
+        </g>
+      </svg>
+    </div>
+    <div class="at">PADDLE VAULT</div>
+    <div class="asub">DREAM COLLECTION TRACKER</div>
+    
+    <button class="gb" onclick="signInWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.49h4.84c-.21 1.12-.84 2.07-1.79 2.7l2.85 2.21c1.67-1.54 2.63-3.81 2.63-6.56z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.85-2.21c-.79.53-1.8.85-3.11.85-2.39 0-4.41-1.61-5.14-3.77L.95 13.43c1.5 2.97 4.56 5 8.05 5z"/><path fill="#FBBC05" d="M3.86 10.69c-.19-.55-.3-1.13-.3-1.69s.11-1.14.3-1.69L.95 4.57C.35 5.78 0 7.15 0 8.58s.35 2.8 0.95 4.01l2.91-2.72z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0 5.51 0 2.45 2.03.95 5L3.86 7.3c.73-2.16 2.75-3.77 5.14-3.77z"/></svg>
+      Sign in with Google
+    </button>
+    
+    <div class="dv">OR USE EMAIL</div>
+    
+    <div class="atabs">
+      <button id="tab-login" class="atab active" onclick="swTab('login')">LOGIN</button>
+      <button id="tab-signup" class="atab" onclick="swTab('signup')">SIGN UP</button>
+    </div>
+
+    <div id="form-login">
+      <div class="af"><label>Email</label><input type="email" id="le" placeholder="email@example.com"></div>
+      <div class="af"><label>Password</label><input type="password" id="lp" placeholder="••••••••"></div>
+      <div id="lerr" class="aerr"></div>
+      <button class="abtn" onclick="doSignIn()">LOG IN</button>
+    </div>
+
+    <div id="form-signup" style="display:none;">
+      <div class="af"><label>Display Name</label><input type="text" id="sn2" placeholder="Your Name"></div>
+      <div class="af"><label>Email</label><input type="email" id="se" placeholder="email@example.com"></div>
+      <div class="af"><label>Password</label><input type="password" id="sp" placeholder="••••••••"></div>
+      <div id="serr" class="aerr"></div>
+      <button class="abtn" onclick="doSignUp()">SIGN UP</button>
+    </div>
+
+    <button class="agbtn" onclick="guestIn()">CONTINUE AS GUEST</button>
+  </div>
+</div>
+
+<div id="main-app" style="display:none;">
+  <div id="app">
+    <header class="hdr">
+      <div class="logo">
+        <svg width="28" height="28" viewBox="0 0 24 44" fill="none">
+          <g transform="translate(-2.95,3.58) rotate(15,12,24)">
+            <ellipse cx="12" cy="9" rx="10.7" ry="13.2" fill="white" opacity="0.95"/>
+            <rect x="8.2" y="21.5" width="7.6" height="18.5" rx="2.2" fill="white" opacity="0.8"/>
+          </g>
+        </svg>
+      </div>
+      <div class="htxt">
+        <div class="ttl">PADDLE VAULT</div>
+        <div id="greet" class="stl">Hi, Vault Hunter</div>
+      </div>
+      <button class="sob" onclick="doSignOut()" title="Sign Out">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </header>
+
+    <div class="sbar">
+      <div class="sc scc" onclick="showStatView('all')"><div id="sc1" class="sn">—</div><div class="sl">MASTER LIST</div></div>
+      <div class="sc scc" onclick="showStatView('brands')"><div id="sc2" class="sn">—</div><div class="sl">BRANDS</div></div>
+      <div class="sc scc" onclick="showStatView('ratings')"><div id="sc3" class="sn">—</div><div class="sl">AVG RATING</div></div>
+    </div>
+
+    <div class="ntabs">
+      <button id="nav-browse" class="ntab active" onclick="showView('browse')">BROWSE</button>
+      <button id="nav-collection" class="ntab" onclick="showView('collection')">MY VAULT (<span id="sc0">0</span>)</button>
+      <button id="nav-add" class="ntab" onclick="showView('add')">+ CUSTOM</button>
+      <button id="nav-report" class="ntab" onclick="showView('report')">MISSING?</button>
+    </div>
+
+    <div id="view-browse" class="view active">
+      <div class="sw">
+        <input type="text" class="si" placeholder="Search brands, models, gens..." oninput="filterP(this.value)">
+      </div>
+      
+      <div class="bsel-wrap">
+        <select id="brand-filters-sel" class="bsel" onchange="setBFSel(this.value)"></select>
+        <div class="bsel-arrow">▼</div>
+      </div>
+
+      <div class="f-bar">
+        <select id="filter-year" class="bsel f-sel" onchange="setFilter('year',this.value)"></select>
+        <select class="bsel f-sel" onchange="setFilter('sort',this.value)">
+           <option value="Newest">Newest First</option>
+           <option value="Oldest">Oldest First</option>
+           <option value="Brand">By Brand</option>
+        </select>
+      </div>
+
+      <div id="browse-count" class="count-text">0 paddles found</div>
+      <div id="paddle-list"></div>
+    </div>
+
+    <div id="view-collection" class="view">
+      <div class="sectit">MY VAULT</div>
+      <div class="f-bar">
+        <select id="v-filter-year" class="bsel f-sel" onchange="setFilter('year',this.value,'v')"></select>
+        <select class="bsel f-sel" onchange="setFilter('sort',this.value,'v')">
+           <option value="Newest">Newest Added</option>
+           <option value="Brand">By Brand</option>
+           <option value="Rating">By Rating</option>
+        </select>
+      </div>
+      <div id="collection-list"></div>
+    </div>
+
+    <div id="view-add" class="view">
+      <div class="sectit">ADD CUSTOM PADDLE</div>
+      <div class="rsub">Can't find a paddle? Add it manually for your vault only.</div>
+      <div class="fg"><label>Brand</label><select id="cb" onchange="onCB()"></select></div>
+      <div id="cb-other" class="fg" style="display:none;"><label>Brand Name</label><input type="text" id="cbo" placeholder="Enter brand name..."></div>
+      <div class="fg"><label>Model Name</label><input type="text" id="cm" placeholder="e.g. Prototype Pro"></div>
+      <div class="fg"><label>Year</label><select id="cy"></select></div>
+      <div class="fg"><label>Performance Rating</label><div class="stri" id="custom-stars">
+        <button class="strbtn" onclick="setR(1)">★</button><button class="strbtn" onclick="setR(2)">★</button><button class="strbtn" onclick="setR(3)">★</button><button class="strbtn" onclick="setR(4)">★</button><button class="strbtn" onclick="setR(5)">★</button>
+      </div></div>
+      <div class="fg"><label>Notes</label><textarea id="cn" placeholder="Why is this in your vault?"></textarea></div>
+      <div class="fg"><label>Tags (Optional)</label><input type="text" id="ct" placeholder="Gen 3, Foam Injected, etc (comma sep)"></div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;">
+        <div class="af"><label>Length (in)</label><input type="text" id="cspecl" placeholder="16.5"></div>
+        <div class="af"><label>Width (in)</label><input type="text" id="cspecw" placeholder="7.5"></div>
+        <div class="af"><label>Static Wt (oz)</label><input type="text" id="cspecst" placeholder="8.0"></div>
+        <div class="af"><label>Swing Wt</label><input type="text" id="cspecsw" placeholder="115"></div>
+        <div class="af" style="grid-column: span 2;"><label>Twist Wt</label><input type="text" id="cspectw" placeholder="6.5"></div>
+      </div>
+
+      <div class="fg"><label>Photo</label>
+        <label class="pu" for="cpf"><input type="file" id="cpf" accept="image/*" onchange="prevPhoto(this)">
+        <div class="puico">📷</div><div class="putxt">Capture or Upload</div>
+        <img class="pprev" id="cprev" style="display:none;"></label>
+      </div>
+      <button class="pbtn" onclick="saveCustom()">SAVE TO VAULT</button>
+    </div>
+
+    <div id="view-report" class="view">
+      <div class="sectit">REPORT MISSING MODELS</div>
+      <div class="rsub">Help us stay comprehensive! If we're missing an official released model, let us know and we'll add it to the master database.</div>
+      <div class="fg"><label>Brand</label><select id="rb" onchange="onRB()"></select></div>
+      <div id="rb-other" class="fg" style="display:none;"><label>Brand Name</label><input type="text" id="rbo" placeholder="Official brand name"></div>
+      <div class="fg"><label>Model Name</label><input type="text" id="rm" placeholder="Official model name"></div>
+      <div class="fg"><label>Approval/Release Year</label><select id="ry"></select></div>
+      <div class="fg"><label>Specs / Source URL</label><textarea id="rd" placeholder="Link to manufacturer site or spec details..."></textarea></div>
+      <button class="pbtn" onclick="submitReport()">SUBMIT REPORT</button>
+      <div id="reports-list"></div>
+    </div>
+  </div>
+
+  <nav class="bn">
+    <button class="bb2 ntab active" onclick="showView('browse')"><span>🔎</span><span>Browse</span></button>
+    <button class="bb2 ntab" onclick="showView('collection')"><span>📦</span><span>Vault</span></button>
+    <button class="bb2 ntab" onclick="showView('add')"><span>➕</span><span>Custom</span></button>
+    <button class="bb2 ntab" onclick="showView('report')"><span>🚩</span><span>Report</span></button>
+  </nav>
+</div>
+
+<!-- Modals -->
+<div id="modal" class="mo"><div class="md"><div class="mh"></div><div id="mc"></div></div></div>
+<div id="stat-modal" class="mo"><div class="md"><div class="mh"></div><div id="smc"></div></div></div>
+<div id="photo-exp" onclick="closeExp()">
+  <button class="close-exp">×</button>
+  <img id="exp-img" src="" alt="Expanded View">
 </div>
 
 <div id="toast" class="toast"></div>
 
-<!-- Data & Logic Imports -->
+<!-- SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<!-- Scripts -->
 <script src="firebase-config.js"></script>
 <script src="db.js"></script>
 <script src="app.js"></script>
